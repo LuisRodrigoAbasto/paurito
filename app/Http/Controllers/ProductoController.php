@@ -69,6 +69,10 @@ class ProductoController extends Controller
         $cont=Producto::count();
         $pdf = \PDF::loadView('pdf.productospdf',['productos'=>$productos,'cont'=>$cont]);
         return $pdf->download('productos.pdf');
+
+//         $pdf = App::make('dompdf.wrapper');
+// $pdf->loadHTML('<h1>Test</h1>');
+// return $pdf->stream();
     }
     public function selectProducto(Request $request)
     {

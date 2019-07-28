@@ -28,7 +28,7 @@ mix.styles([
   //  'resources/plantilla/js/bootstrap.min.js',
     'resources/plantilla/js/perfect-scrollbar.min.js',
     'resources/plantilla/js/coreui.min.js',
-    'resources/plantilla/js/Chart.min.js',
+    // 'resources/plantilla/js/Chart.min.js',
     'resources/plantilla/js/custom-tooltips.min.js',
     'resources/plantilla/js/main.js',
     'resources/plantilla/js/sweetalert2.all.min.js'
