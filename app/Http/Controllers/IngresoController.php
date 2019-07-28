@@ -91,14 +91,14 @@ class IngresoController extends Controller
             return $pdf->download('venta_'.$numventa[0]->id.'.pdf');
     
         }
-        public function listaringresos_egresos(Request $request)
+        public function listarIngreso(Request $request)
         {
-            if(!$request->ajax()) return redirect('/');
+            // if(!$request->ajax()) return redirect('/');
             $id = $request->id;
-            $detalles = DetalleVenta::join('ingresos_egresos','ingresos_egresos.id','=','detalle_ingresos_egresos.idVenta')
-            ->join('productos','productos.id','detalle_ingresos_egresos.idProducto')
-            ->where('detalle_ingresos_egresos.idVenta','=',$id) 
-            ->select('productos.id as idProducto','productos.nombre as producto','detalle_ingresos_egresos.cantidad','productos.codigo','productos.unidad','detalle_ingresos_egresos.precio','detalle_ingresos_egresos.descripcionD')
+            $detalles = DetalleIE::join('cuentas','cuentas.id','detalle_ingresos_egresos.idCuenta')
+            ->where('detalle_ingresos_egresos.idIE','=',$id) 
+            ->where('detalle_ingresos_egresos.estado','=','1')
+            ->select('cuentas.id as idCuenta',DB::raw("concat(tipo,'.',nivel1,'.',nivel2,'.',nivel3,'.',nivel4)as codigo"),'cuentas.nombre as cuenta','debe','haber','orden','descripcionD')
             ->get();
             return ['detalles'=>$detalles];
         }
@@ -110,22 +110,22 @@ class IngresoController extends Controller
                 DB::beginTransaction();
                 $mytime= Carbon::now('America/La_Paz');
                 $ingreso = new IngresoEgreso();
-                $ingreso->idCuenta = $request->idCuenta;
                 $ingreso->fecha = $mytime->toDateTimeString();
-                $ingreso->montoIE = $request->montoIE;
                 $ingreso->descripcion = $request->descripcion;
-                $ingreso->tipo = $request->tipo;
+                $ingreso->tipo ='1';
                 $ingreso->estado = '1';
                 $ingreso->save();
     
                 $detalles = $request->data;//Array de detalles
                 //Recorro todos los elementos
-               
+               $contar=0;
                 foreach($detalles as $ep=>$det)
                 {
+                    $contar++;
                     $detalle = new DetalleIE();
-                    $detalle->idIE= $ingreso->idIE;
+                    $detalle->idIE= $ingreso->id;
                     $detalle->idCuenta = $det['idCuenta'];
+                    $detalle->orden=$contar;
                     $detalle->debe = $det['debe'];   
                     $detalle->haber = $det['haber']; 
                     $detalle->descripcionD = $det['descripcionD'];
@@ -140,86 +140,34 @@ class IngresoController extends Controller
         public function update(Request $request)
         {
             if(!$request->ajax()) return redirect('/');
-            try{
             DB::beginTransaction();  
+            try{
+           
             $mytime= Carbon::now('America/La_Paz');
             $ingreso = IngresoEgreso::findOrFail($request->id);
-            $ingreso->idCuenta = $request->idCuenta;
             $ingreso->fecha = $mytime->toDateTimeString();
-            $ingreso->montoIE = $request->montoIE;
             $ingreso->descripcion = $request->descripcion;
-            $ingreso->tipo = $request->tipo;
+            $ingreso->tipo ='1';
             $ingreso->estado = '1';
             $ingreso->save();
 
-            $detalle = DetalleIE::where('idIE','=',$ingreso->id)->update(['estado'=>'0']);
-
             $detalles = $request->data;//Array de detalles
+            $detalle = DetalleIE::where('idIE','=',$ingreso->id)->update(['estado'=>'0']);
                  //Recorro todos los elementos
-                
-                 foreach($detalles as $ep=>$det)
-                 {         
-                    $descripcionDT = $det['descripcionD'];
-                    if($descripcionDT==''){
-                        $descripcionDT =null;
-                    }                
-                     $detalleED=DetalleIE::updateOrInsert(['idIE' =>$ingreso->id,'idCuenta'=>$det['idCuenta']],
-                     ['debe'=>$det['debe'],'haber'=>$det['haber'],'descripcionD'=>$descripcionDT,'estado'=>'1']);
-     
-                 }          
+                 $contar=0;
+            foreach($detalles as $ep=>$det)
+            {         
+            $contar++;              
+            $detalleED=DetalleIE::updateOrInsert(['idIE' =>$ingreso->id,'idCuenta'=>$det['idCuenta']],
+            ['orden'=>$contar,'debe'=>$det['debe'],'haber'=>$det['haber'],'descripcionD'=>$det['descripcionD'],'estado'=>'1']);
+            }          
 
             DB::commit();
         } catch (Exception $e){
             DB::rollBack();
         }
         }
-    
-        public function insertarDetalle(Request $request)
-        {
-            if(!$request->ajax()) return redirect('/');
-            try{            
-                $ingreso->idFormula = $request->idFormula;
-                $idVenta = $request->idVenta;
-                $detalles = $request->data;
-                foreach($detalles as $ep=>$det)
-                {
-                    $detalle = new DetalleVenta();
-                    $detalle->idVenta= $idVenta;
-                    $detalle->idProducto= $det['idProducto'];
-                    $detalle->cantidad = $det['cantidad'];   
-                    $detalle->precio = $det['precio'];
-                    if($ingreso->idFormula){
-                        $detalle->descripcionD = $det['descripcionD'];
-                    }
-                    else
-                    {
-                        $detalle->descripcionD = '';
-                    }
-                    $detalle->save();
-                }          
-            
-            DB::commit();
-            } catch (Exception $e){
-                DB::rollBack();
-            }
-        }
-    
-        public function eliminarDetalle(Request $request)
-        {
-            if(!$request->ajax()) return redirect('/');
-            try{
-            $detalle = DetalleVenta::find($request->idVenta);
-            if($request->idVenta){
-            $detalle ->delete();        
-            DB::commit();
-            }
-            else{
-                 DB::rollBack();
-            }
-            } catch (Exception $e){
-                DB::rollBack();
-            }
-        }
+        
         public function desactivar(Request $request)
         {
             if(!$request->ajax()) return redirect('/');

@@ -52,7 +52,6 @@ Route::group(['middleware'=>['auth']],function(){
    Route::put('/producto/desactivar', 'ProductoController@desactivar');
    Route::put('/producto/activar', 'ProductoController@activar');
    Route::get('/producto/selectProducto', 'ProductoController@selectProducto');
-   Route::get('/producto/buscarProducto', 'ProductoController@buscarProducto');
    Route::get('/producto/listarProducto', 'ProductoController@listarProducto');
    Route::get('/producto/listarPdf', 'ProductoController@listarPdf')->name('productos_pdf');
    
@@ -78,8 +77,10 @@ Route::group(['middleware'=>['auth']],function(){
    Route::put('/cuenta/actualizar', 'CuentaController@update');
    Route::put('/cuenta/desactivar', 'CuentaController@desactivar');
    Route::put('/cuenta/activar', 'CuentaController@activar');
+   Route::get('/cuenta/cuenta', 'CuentaController@cuenta');
    Route::get('/cuenta/selectCuenta', 'CuentaController@selectCuenta');
    Route::get('/cuenta/buscarCuenta', 'CuentaController@buscarCuenta');
+   Route::get('/cuenta/listarCuenta', 'CuentaController@listarCuenta');
 
    Route::get('/plancuenta', 'PlanCuentaController@index');
    Route::post('/plancuenta/registrar', 'PlanCuentaController@store');
@@ -92,12 +93,16 @@ Route::group(['middleware'=>['auth']],function(){
    Route::put('/ingreso/actualizar', 'IngresoController@update');
    Route::put('/ingreso/desactivar', 'IngresoController@desactivar');
    Route::put('/ingreso/activar', 'IngresoController@activar');
+   Route::get('/ingreso/obtenerDetalles', 'IngresoController@obtenerDetalles');
+   Route::get('/ingreso/listarIngreso', 'IngresoController@listarIngreso');
 
    Route::get('/egreso', 'EgresoController@index');
    Route::post('/egreso/registrar', 'EgresoController@store');
    Route::put('/egreso/actualizar', 'EgresoController@update');
    Route::put('/egreso/desactivar', 'EgresoController@desactivar');
    Route::put('/egreso/activar', 'EgresoController@activar');
+   Route::get('/egreso/obtenerDetalles', 'EgresoController@obtenerDetalles');
+   Route::get('/egreso/listarEgreso', 'EgresoController@listarEgreso');
 
    });
    

@@ -30,7 +30,7 @@ class DashboardController extends Controller
         $ingresos=DB::table('ingreso_egresos')
         ->select(DB::raw('MONTH(ingreso_egresos.fecha) as mes'),
         DB::raw('YEAR(ingreso_egresos.fecha) as anio'),
-        DB::raw('SUM(ingreso_egresos.montoIE) as total'))
+        DB::raw('SUM(ingreso_egresos.monto) as total'))
         ->where('ingreso_egresos.tipo','=','1')
         ->whereYear('ingreso_egresos.fecha',$anio)
         ->groupBy(DB::raw('MONTH(ingreso_egresos.fecha)'),DB::raw('YEAR(ingreso_egresos.fecha)'))
@@ -39,9 +39,9 @@ class DashboardController extends Controller
         $egresos=DB::table('ingreso_egresos')
         ->select(DB::raw('MONTH(ingreso_egresos.fecha) as mes'),
         DB::raw('YEAR(ingreso_egresos.fecha) as anio'),
-        DB::raw('SUM(ingreso_egresos.montoIE) as total'))
+        DB::raw('SUM(ingreso_egresos.monto) as total'))
         ->whereYear('ingreso_egresos.fecha',$anio)
-        ->where('ingreso_egresos.tipo','=','0')
+        ->where('ingreso_egresos.tipo','=','2')
         ->groupBy(DB::raw('MONTH(ingreso_egresos.fecha)'),DB::raw('YEAR(ingreso_egresos.fecha)'))
         ->get();
         return ['compras'=>$compras,'ventas'=>$ventas,'ingresos'=>$ingresos,'egresos'=>$egresos,'anio'=>$anio];      

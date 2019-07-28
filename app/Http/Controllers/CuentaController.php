@@ -45,43 +45,94 @@ class CuentaController extends Controller
             'cuentas' => $cuentas
         ];
     }
-    public function selectCuenta(Request $request)
-    {
-        if(!$request->ajax()) return redirect('/');
-        $filtro = $request->filtro;
-        $cuentas = Cuenta::where('estado','=','1')
-        ->where('nombre','like','%'.$filtro.'%')
-        ->select('nombre','id')
-        ->orderBy('nombre','asc')
-        ->get();
-        return ['cuentas'=>$cuentas];
-    }
-
     public function buscarCuenta(Request $request){
         // if(!$request->ajax()) return redirect('/');
+        $nivel=$request->nivel;
         $tipo = $request->tipo;
         $nivel1 = $request->nivel1;
         $nivel2 = $request->nivel2;
         $nivel3 = $request->nivel3;
         $nivel4 = $request->nivel4;
+        if($nivel==1){
         $cuentas = Cuenta::where('estado','=','1')
-        ->where('tipo','=',$tipo)
+        ->where('tipo','>','0')
         ->where('nivel1','=',$nivel1)
         ->where('nivel2','=',$nivel2)
         ->where('nivel3','=',$nivel3)
         ->where('nivel4','=',$nivel4)
-        ->select('id','nombre','telefono','empresa','direccion','tipo','nivel1','nivel2','nivel3','nivel4',
-        DB::raw("(select MAX(tipo) from cuentas where estado=1)as tipoU"),
-        DB::raw("(select MAX(nivel1) from cuentas where tipo=$tipo and estado=1)as nivel1U"),
-        DB::raw("(select MAX(nivel2) from cuentas where tipo=$tipo and nivel1=$nivel1 and estado=1)as nivel2U"),
-        DB::raw("(select MAX(nivel3) from cuentas where tipo=$tipo and nivel1=$nivel1 and nivel2=$nivel2 and estado=1)as nivel3U"),
-        DB::raw("(select MAX(nivel4) from cuentas where tipo=$tipo and nivel1=$nivel1 and nivel2=$nivel2 and nivel3=$nivel3 and estado=1)as nivel4U"))
-        ->groupBy('id','nombre','telefono','empresa','direccion','tipo','nivel1','nivel2','nivel3','nivel4')
-        ->take(1)
-        ->get();
+        ->max('tipo');
+        }
+        if($nivel==2){
+            $cuentas = Cuenta::where('estado','=','1')
+            ->where('tipo','=',$tipo)
+            ->where('nivel1','>','0')
+            ->where('nivel2','=',$nivel2)
+            ->where('nivel3','=',$nivel3)
+            ->where('nivel4','=',$nivel4)
+            ->max('nivel1');
+            }
+            if($nivel==3){
+                $cuentas = Cuenta::where('estado','=','1')
+                ->where('tipo','=',$tipo)
+                ->where('nivel1','=',$nivel1)
+                ->where('nivel2','>','0')
+                ->where('nivel3','=',$nivel3)
+                ->where('nivel4','=',$nivel4)
+                ->max('nivel2');
+                }
+                if($nivel==4){
+                    $cuentas = Cuenta::where('estado','=','1')
+                    ->where('tipo','=',$tipo)
+                    ->where('nivel1','=',$nivel1)
+                    ->where('nivel2','=',$nivel2)
+                    ->where('nivel3','>','0')
+                    ->where('nivel4','=',$nivel4)
+                    ->max('nivel3');
+                    }
+                    if($nivel==5){
+                        $cuentas = Cuenta::where('estado','=','1')
+                        ->where('tipo','=',$tipo)
+                        ->where('nivel1','=',$nivel1)
+                        ->where('nivel2','=',$nivel2)
+                        ->where('nivel3','=',$nivel3)
+                        ->where('nivel4','>','0')
+                        ->max('nivel4');
+                        }
+
         return ['cuentas'=>$cuentas];
     }
 
+    public function cuenta(Request $request)
+    {
+        // if(!$request->ajax()) return redirect('/');
+        $filtro = $request->filtro;
+        $cuentas = Cuenta::where('estado','=','1')
+        ->where('nivel4','=','0')
+        ->where('nombre','like','%'.$filtro.'%')
+        ->orderBy('nombre','asc')
+        ->get();
+        return ['cuentas'=>$cuentas];
+    }
+    public function selectCuenta(Request $request)
+    {
+        // if(!$request->ajax()) return redirect('/');
+        $filtro = $request->filtro;
+        $cuentas = Cuenta::where('estado','=','1')
+        ->where('nombre','like','%'.$filtro.'%')
+        ->orderBy('nombre','asc')
+        ->get();
+        return ['cuentas'=>$cuentas];
+    }
+    public function listarCuenta(Request $request)
+    {
+        // if(!$request->ajax()) return redirect('/');
+        $filtro = $request->filtro;
+        $cuentas = Cuenta::where('estado','=','1')
+        ->where('nombre','like','%'.$filtro.'%')
+        ->orderBy('nombre','asc')
+        ->get();
+        return ['cuentas'=>$cuentas];
+    }
     public function store(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
@@ -90,6 +141,7 @@ class CuentaController extends Controller
         $cuentas->telefono = $request->telefono;
         $cuentas->empresa = $request->empresa;
         $cuentas->direccion = $request->direccion;
+        $cuentas->nivel=$request->nivel;
         $cuentas->tipo = $request->tipo;
         $cuentas->nivel1 = $request->nivel1;
         $cuentas->nivel2 = $request->nivel2;
@@ -107,6 +159,7 @@ class CuentaController extends Controller
         $cuentas->telefono = $request->telefono;
         $cuentas->empresa = $request->empresa;
         $cuentas->direccion = $request->direccion;
+        $cuentas->nivel=$request->nivel;
         $cuentas->tipo = $request->tipo;
         $cuentas->nivel1 = $request->nivel1;
         $cuentas->nivel2 = $request->nivel2;

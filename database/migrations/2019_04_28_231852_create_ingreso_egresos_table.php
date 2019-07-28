@@ -17,7 +17,7 @@ class CreateIngresoEgresosTable extends Migration
             $table->increments('id');
             // $table->integer('idCuenta')->unsigned();
             $table->dateTime('fecha');
-            $table->decimal('montoIE',11,2);
+            $table->decimal('monto',11,2);
             $table->string('descripcion',200)->nullable();
             $table->integer('tipo');
             $table->boolean('estado')->default(1);

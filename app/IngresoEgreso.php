@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class IngresoEgreso extends Model
 {
-    protected $fillable = ['fecha','montoIE','descripcion','tipo','estado'];
+    protected $fillable = ['fecha','monto','descripcion','tipo','estado'];
 }

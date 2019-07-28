@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Venta;
 use App\DetalleVenta;
+use App\Formula;
 
 class VentaController extends Controller
 {
@@ -109,13 +110,17 @@ class VentaController extends Controller
     {
         // if(!$request->ajax()) return redirect('/');
         $id = $request->id;
+        $idFormula=$request->idFormula;
         $detalles = DetalleVenta::join('ventas','ventas.id','=','detalle_ventas.idVenta')
         ->join('productos','productos.id','=','detalle_ventas.idProducto')
         ->where('detalle_ventas.idVenta','=',$id)
         ->where('detalle_ventas.estado','=','1') 
-        ->select('detalle_ventas.idProducto','productos.nombre','detalle_ventas.cantidad','productos.codigo','productos.unidad','detalle_ventas.precio','detalle_ventas.descripcionD')
+        ->select('detalle_ventas.idProducto','productos.nombre as producto','detalle_ventas.cantidad','productos.codigo','productos.unidad','detalle_ventas.precio','detalle_ventas.descripcionD')
         ->get();
-        return ['detalles'=>$detalles];
+        $formula=Formula::where('estado','=','1')->where('id','=',$idFormula)
+        ->get();
+
+        return ['detalles'=>$detalles,'formula'=>$formula];
     }
     
     public function store(Request $request)

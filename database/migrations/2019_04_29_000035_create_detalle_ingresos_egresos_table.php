@@ -16,8 +16,9 @@ class CreateDetalleIngresosEgresosTable extends Migration
         Schema::create('detalle_ingresos_egresos', function (Blueprint $table) {
             $table->integer('idIE')->unsigned();
             $table->integer('idCuenta')->unsigned();
-            $table->decimal('debe',11,2);
-            $table->decimal('haber',11,2);
+            $table->integer('orden');
+            $table->decimal('debe',11,2)->nullable();
+            $table->decimal('haber',11,2)->nullable();
             $table->string('descripcionD',200)->nullable();
             $table->boolean('estado')->default(1);
             $table->primary(['idIE','idCuenta']);

@@ -51,10 +51,10 @@ class ProductoController extends Controller
         $criterio = $request->criterio;
         if($buscar=='')
         {
-            $productos=Producto::where('estado','=','1')->orderBy('id','desc')->paginate(10);
+            $productos=Producto::where('estado','=','1')->orderBy('id','desc')->get();
         }
         else{
-            $productos = Producto::where($criterio, 'like','%'.$buscar.'%')->where('estado','=','1')->orderBy('id','desc')->paginate(10);
+            $productos = Producto::where($criterio, 'like','%'.$buscar.'%')->where('estado','=','1')->orderBy('id','desc')->get();
         }
      
         return ['productos' => $productos];
@@ -75,26 +75,10 @@ class ProductoController extends Controller
         if(!$request->ajax()) return redirect('/');
         $filtro = $request->filtro;
         $productos = Producto::where('estado','=','1')
-        ->Where('nombre','like','%'.$filtro.'%')
+        ->where('nombre','like','%'.$filtro.'%')
         ->orderBy('nombre','asc')
         ->get();
         return ['productos'=>$productos];
-        
-    }
-
-    public function buscarProducto(Request $request)
-    {
-        if(!$request->ajax()) return redirect('/');
-        $filtro = $request->filtro;
-        if($filtro!=''){
-        $productos = Producto::where('nombre','like','%'.$filtro.'%')
-        ->select('id','nombre','stock','codigo','unidad')->orderBy('nombre','asc')->take(1)->get();
-        return ['productos'=>$productos];}
-        else{
-            {
-                $productos = Producto::where('estado','=','1')->get();
-                return ['productos'=>$productos];}
-        }
     }
     /**
      * Store a newly created resource in storage.

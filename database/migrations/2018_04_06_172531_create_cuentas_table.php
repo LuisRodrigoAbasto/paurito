@@ -19,6 +19,7 @@ class CreateCuentasTable extends Migration
             $table->string('telefono',20)->nullable();
             $table->string('empresa',100)->nullable();
             $table->string('direccion',100)->nullable();
+            $table->integer('nivel');
             $table->integer('tipo');
             $table->integer('nivel1');
             $table->integer('nivel2');
