@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDetalleIngresosEgresosTable extends Migration
+class CreateDetalleEgresosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,17 @@ class CreateDetalleIngresosEgresosTable extends Migration
      */
     public function up()
     {
-        Schema::create('detalle_ingresos_egresos', function (Blueprint $table) {
-            $table->integer('idIE')->unsigned();
+        Schema::create('detalle_egresos', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('idEgreso')->unsigned();
             $table->integer('idCuenta')->unsigned();
             $table->integer('orden');
             $table->decimal('debe',11,2)->nullable();
             $table->decimal('haber',11,2)->nullable();
             $table->string('descripcionD',200)->nullable();
             $table->boolean('estado')->default(1);
-            $table->primary(['idIE','idCuenta']);
-            $table->foreign('idIE')->references('id')->on('ingreso_egresos');
+            // $table->primary(['idIE','idCuenta']);
+            $table->foreign('idEgreso')->references('id')->on('egresos');
             $table->foreign('idCuenta')->references('id')->on('cuentas');
             $table->timestamps();
         });
@@ -35,6 +36,6 @@ class CreateDetalleIngresosEgresosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('detalle_ingresos_egresos');
+        Schema::dropIfExists('detalle_egresos');
     }
 }

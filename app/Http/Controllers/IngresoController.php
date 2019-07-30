@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use App\IngresoEgreso;
-use App\DetalleIE;
+use App\Ingreso;
+use App\DetalleIngreso;
 
 class IngresoController extends Controller
 {
@@ -17,11 +17,11 @@ class IngresoController extends Controller
             $criterio = $request->criterio;
             if($buscar=='')
             {
-                $ingresos= IngresoEgreso::where('tipo','=','1')->orderBy('estado','desc')->orderBy('id','desc')->paginate(5);
+                $ingresos= Ingreso::where('tipo','=','1')->orderBy('estado','desc')->orderBy('id','desc')->paginate(5);
             }
             else{
-                    $ingresos= IngresoEgreso::where('tipo','=','1')
-                    ->where('ingreso_egresos.'.$criterio, 'like', '%'. $buscar . '%')
+                    $ingresos= Ingreso::where('tipo','=','1')
+                    ->where('ingresos.'.$criterio, 'like', '%'. $buscar . '%')
                     ->orderBy('estado','desc')
                     >orderBy('id','desc')->paginate(5);
             }
@@ -45,11 +45,11 @@ class IngresoController extends Controller
     
             $id = $request->id;
           
-                $ingreso= IngresoEgreso::join('cuentas','ingresos_egresos.idCuenta','=','cuentas.id')
-                ->select('ingresos_egresos.id','idFormula',DB::raw("concat(cuentas.nombre,' ',cuentas.apellido) as cliente"),
-                'fecha','pago','cantidad','descripcion','montoVenta','ingresos_egresos.estado')
-                ->where('ingresos_egresos.id','=',$id)
-                ->orderBy('ingresos_egresos.id','desc')
+                $ingreso= Ingreso::join('cuentas','ingresos.idCuenta','=','cuentas.id')
+                ->select('ingresos.id','idFormula',DB::raw("concat(cuentas.nombre,' ',cuentas.apellido) as cliente"),
+                'fecha','pago','cantidad','descripcion','montoVenta','ingresos.estado')
+                ->where('ingresos.id','=',$id)
+                ->orderBy('ingresos.id','desc')
                 ->take(1)
                 ->get();
           
@@ -60,32 +60,32 @@ class IngresoController extends Controller
         {
             if(!$request->ajax()) return redirect('/');
             $id = $request->id;
-            $detalles = DetalleVenta::join('ingresos_egresos','ingresos_egresos.id','=','detalle_ingresos_egresos.idVenta')
-            ->join('productos','productos.id','detalle_ingresos_egresos.idProducto')
-            ->select('productos.id as idProducto','productos.nombre as producto','detalle_ingresos_egresos.cantidad','productos.unidad','detalle_ingresos_egresos.precio','detalle_ingresos_egresos.descripcionD')
-            ->where('detalle_ingresos_egresos.idVenta','=',$id)
-            ->orderBy('detalle_ingresos_egresos.idProducto','desc')
+            $detalles = DetalleVenta::join('ingresos','ingresos.id','=','detalle_ingresos.idVenta')
+            ->join('productos','productos.id','detalle_ingresos.idProducto')
+            ->select('productos.id as idProducto','productos.nombre as producto','detalle_ingresos.cantidad','productos.unidad','detalle_ingresos.precio','detalle_ingresos.descripcionD')
+            ->where('detalle_ingresos.idVenta','=',$id)
+            ->orderBy('detalle_ingresos.idProducto','desc')
             ->get();
             return ['detalles'=>$detalles];
         }
         public function pdf(Request $request, $id)
         {
-            $ingreso= IngresoEgreso::join('cuentas','ingresos_egresos.idCuenta','=','cuentas.id')
-            ->select('ingresos_egresos.id','idFormula',DB::raw("concat(cuentas.nombre,' ',cuentas.apellido) as cliente"),
-            'fecha','pago','cantidad','descripcion','montoVenta','ingresos_egresos.estado')
-            ->where('ingresos_egresos.id','=',$id)
-            ->orderBy('ingresos_egresos.id','desc')
+            $ingreso= Ingreso::join('cuentas','ingresos.idCuenta','=','cuentas.id')
+            ->select('ingresos.id','idFormula',DB::raw("concat(cuentas.nombre,' ',cuentas.apellido) as cliente"),
+            'fecha','pago','cantidad','descripcion','montoVenta','ingresos.estado')
+            ->where('ingresos.id','=',$id)
+            ->orderBy('ingresos.id','desc')
             ->take(1)
             ->get();
     
-            $detalles = DetalleVenta::join('ingresos_egresos','ingresos_egresos.id','=','detalle_ingresos_egresos.idVenta')
-            ->join('productos','productos.id','detalle_ingresos_egresos.idProducto')
-            ->select('productos.id as idProducto','productos.nombre as producto','detalle_ingresos_egresos.cantidad','productos.unidad','detalle_ingresos_egresos.precio','detalle_ingresos_egresos.descripcionD')
-            ->where('detalle_ingresos_egresos.idVenta','=',$id)
-            ->orderBy('detalle_ingresos_egresos.idProducto','desc')
+            $detalles = DetalleVenta::join('ingresos','ingresos.id','=','detalle_ingresos.idVenta')
+            ->join('productos','productos.id','detalle_ingresos.idProducto')
+            ->select('productos.id as idProducto','productos.nombre as producto','detalle_ingresos.cantidad','productos.unidad','detalle_ingresos.precio','detalle_ingresos.descripcionD')
+            ->where('detalle_ingresos.idVenta','=',$id)
+            ->orderBy('detalle_ingresos.idProducto','desc')
             ->get();
     
-            $numventa= IngresoEgreso::select('ingresos_egresos.id')->where('id',$id)->get();
+            $numventa= Ingreso::select('ingresos.id')->where('id',$id)->get();
             
             $pdf = \PDF::loadView('pdf.venta',['venta'=>$ingreso,'detalles'=>$detalles]);
             return $pdf->download('venta_'.$numventa[0]->id.'.pdf');
@@ -95,9 +95,9 @@ class IngresoController extends Controller
         {
             // if(!$request->ajax()) return redirect('/');
             $id = $request->id;
-            $detalles = DetalleIE::join('cuentas','cuentas.id','detalle_ingresos_egresos.idCuenta')
-            ->where('detalle_ingresos_egresos.idIE','=',$id) 
-            ->where('detalle_ingresos_egresos.estado','=','1')
+            $detalles = DetalleIngreso::join('cuentas','cuentas.id','detalle_ingresos.idCuenta')
+            ->where('detalle_ingresos.idIngreso','=',$id) 
+            ->where('detalle_ingresos.estado','=','1')
             ->select('cuentas.id as idCuenta',DB::raw("concat(tipo,'.',nivel1,'.',nivel2,'.',nivel3,'.',nivel4)as codigo"),'cuentas.nombre as cuenta','debe','haber','orden','descripcionD')
             ->get();
             return ['detalles'=>$detalles];
@@ -109,7 +109,7 @@ class IngresoController extends Controller
             try{
                 DB::beginTransaction();
                 $mytime= Carbon::now('America/La_Paz');
-                $ingreso = new IngresoEgreso();
+                $ingreso = new Ingreso();
                 $ingreso->fecha = $mytime->toDateTimeString();
                 $ingreso->descripcion = $request->descripcion;
                 $ingreso->tipo ='1';
@@ -122,8 +122,8 @@ class IngresoController extends Controller
                 foreach($detalles as $ep=>$det)
                 {
                     $contar++;
-                    $detalle = new DetalleIE();
-                    $detalle->idIE= $ingreso->id;
+                    $detalle = new DetalleIngreso();
+                    $detalle->idIngreso= $ingreso->id;
                     $detalle->idCuenta = $det['idCuenta'];
                     $detalle->orden=$contar;
                     $detalle->debe = $det['debe'];   
@@ -144,7 +144,7 @@ class IngresoController extends Controller
             try{
            
             $mytime= Carbon::now('America/La_Paz');
-            $ingreso = IngresoEgreso::findOrFail($request->id);
+            $ingreso = Ingreso::findOrFail($request->id);
             $ingreso->fecha = $mytime->toDateTimeString();
             $ingreso->descripcion = $request->descripcion;
             $ingreso->tipo ='1';
@@ -152,13 +152,13 @@ class IngresoController extends Controller
             $ingreso->save();
 
             $detalles = $request->data;//Array de detalles
-            $detalle = DetalleIE::where('idIE','=',$ingreso->id)->update(['estado'=>'0']);
+            $detalle = DetalleIngreso::where('idIngreso','=',$ingreso->id)->update(['estado'=>'0']);
                  //Recorro todos los elementos
                  $contar=0;
             foreach($detalles as $ep=>$det)
             {         
             $contar++;              
-            $detalleED=DetalleIE::updateOrInsert(['idIE' =>$ingreso->id,'idCuenta'=>$det['idCuenta']],
+            $detalleED=DetalleIngreso::updateOrInsert(['idIngreso' =>$ingreso->id,'idCuenta'=>$det['idCuenta']],
             ['orden'=>$contar,'debe'=>$det['debe'],'haber'=>$det['haber'],'descripcionD'=>$det['descripcionD'],'estado'=>'1']);
             }          
 
@@ -171,7 +171,7 @@ class IngresoController extends Controller
         public function desactivar(Request $request)
         {
             if(!$request->ajax()) return redirect('/');
-            $ingreso = IngresoEgreso::findOrFail($request->id);
+            $ingreso = Ingreso::findOrFail($request->id);
             $ingreso->estado = '0';
             $ingreso->save();
         }
@@ -179,7 +179,7 @@ class IngresoController extends Controller
         public function activar(Request $request)
         {
             if(!$request->ajax()) return redirect('/');
-            $ingreso = IngresoEgreso::findOrFail($request->id);
+            $ingreso = Ingreso::findOrFail($request->id);
             $ingreso->estado = '1';
             $ingreso->save();
         }

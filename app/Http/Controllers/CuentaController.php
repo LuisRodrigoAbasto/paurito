@@ -154,6 +154,7 @@ class CuentaController extends Controller
         $cuentas = Cuenta::where('estado','=','1')
         ->where('nombre','like','%'.$filtro.'%')
         ->orderBy('nombre','asc')
+        ->limit(10)
         ->get();
         return ['cuentas'=>$cuentas];
     }

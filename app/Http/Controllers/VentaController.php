@@ -142,12 +142,14 @@ class VentaController extends Controller
 
             $detalles = $request->data;//Array de detalles
             //Recorro todos los elementos
-           
+           $contar=0;
             foreach($detalles as $ep=>$det)
             {
+                $contar++;
                 $detalle = new DetalleVenta();
                 $detalle->idVenta= $venta->id;
                 $detalle->idProducto= $det['idProducto'];
+                $detalle->orden=$contar;
                 $detalle->cantidad = $det['cantidad'];   
                 $detalle->precio = $det['precio']; 
                 $detalle->descripcionD = '';
@@ -184,9 +186,10 @@ class VentaController extends Controller
 
        $detalles = $request->data;//Array de detalles
             //Recorro todos los elementos
-           
+        $contar=0;
             foreach($detalles as $ep=>$det)
-            {             
+            {           
+                $contar++;  
                 $descripcionDT =null;
                 if($venta->idFormula==0){
                     $descripcionDT = $det['descripcionD'];
@@ -194,7 +197,7 @@ class VentaController extends Controller
                         $descripcionDT =null;
                     }
                 }
-                $detalleED=DetalleVenta::updateOrInsert(['idVenta' =>$venta->id,'idProducto'=>$det['idProducto']],['cantidad'=>$det['cantidad'],'precio'=>$det['precio'],'descripcionD'=>$descripcionDT,'estado'=>'1']);
+                $detalleED=DetalleVenta::updateOrInsert(['idVenta' =>$venta->id,'idProducto'=>$det['idProducto']],['orden'=>$contar,'cantidad'=>$det['cantidad'],'precio'=>$det['precio'],'descripcionD'=>$descripcionDT,'estado'=>'1']);
             }          
         DB::commit();    
     }

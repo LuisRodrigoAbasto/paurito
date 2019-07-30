@@ -82,12 +82,14 @@ class CompraController extends Controller
 
             $detalles = $request->data;//Array de detalles
             //Recorro todos los elementos
-
+            $contar=0;
             foreach($detalles as $ep=>$det)
             {
+                $contar++;
                 $detalle = new DetalleCompra();
                 $detalle->idCompra= $compra->id;
                 $detalle->idProducto= $det['idProducto'];
+                $detalle->orden=$contar;
                 $detalle->cantidad = $det['cantidad'];   
                 $detalle->precio = $det['precio']; 
                 $detalle->save();
@@ -117,11 +119,12 @@ class CompraController extends Controller
 
         $detalles = $request->data;//Array de detalles
             //Recorro todos los elementos
-           
+           $contar=0;
             foreach($detalles as $ep=>$det)
-            {                        
+            {        
+                $contar++;                
                 $detalleED=DetalleCompra::updateOrInsert(['idCompra' =>$compra->id,'idProducto'=>$det['idProducto']]
-                ,['cantidad'=>$det['cantidad'],'precio'=>$det['precio'],'estado'=>'1']);
+                ,['orden'=>$contar,'cantidad'=>$det['cantidad'],'precio'=>$det['precio'],'estado'=>'1']);
             }          
         DB::commit();    
     }

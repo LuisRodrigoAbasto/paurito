@@ -82,11 +82,14 @@ class FormulaController extends Controller
 
             $detalles = $request->data;//Array de detalles
             //Recorro todos los elementos
+            $contar=0;
             foreach($detalles as $ep=>$det)
             {
+                $contar++;
                 $detalle = new DetalleFormula();
                 $detalle->idFormula= $formula->id;
                 $detalle->idProducto= $det['idProducto'];
+                $detalle->orden=$contar;
                 $detalle->cantidad = $det['cantidad'];   
                 $detalle->save();
             }          
@@ -110,10 +113,11 @@ class FormulaController extends Controller
         
        $detalles = $request->data;//Array de detalles
        //Recorro todos los elementos
-      
+      $contar=0;
        foreach($detalles as $ep=>$det)
-       {                      
-           $detalleED=DetalleFormula::updateOrInsert(['idFormula' =>$formula->id,'idProducto'=>$det['idProducto']],['cantidad'=>$det['cantidad'],'estado'=>'1']);
+       {        
+           $contar++;              
+           $detalleED=DetalleFormula::updateOrInsert(['idFormula' =>$formula->id,'idProducto'=>$det['idProducto']],['orden'=>$contar,'cantidad'=>$det['cantidad'],'estado'=>'1']);
        }          
         DB::commit();
     } catch (Exception $e){

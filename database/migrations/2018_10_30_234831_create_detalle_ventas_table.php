@@ -14,13 +14,15 @@ class CreateDetalleVentasTable extends Migration
     public function up()
     {
         Schema::create('detalle_ventas', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('idVenta')->unsigned();
             $table->integer('idProducto')->unsigned();
+            $table->integer('orden');
             $table->decimal('cantidad',11,2);
             $table->decimal('precio',11,2);
             $table->string('descripcionD',200)->nullable();
             $table->boolean('estado')->default(1);
-            $table->primary(['idVenta','idProducto']);
+            // $table->primary(['idVenta','idProducto']);
             $table->foreign('idVenta')->references('id')->on('ventas');
             $table->foreign('idProducto')->references('id')->on('productos');
             $table->timestamps();

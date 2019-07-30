@@ -4190,6 +4190,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -5025,6 +5044,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 
@@ -5461,6 +5482,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-select/dist/vue-select.css */ "./node_modules/vue-select/dist/vue-select.css");
 /* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_2__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -7004,6 +7044,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -81183,7 +81225,7 @@ var render = function() {
                             },
                             [
                               _c("i", { staticClass: "fa fa-search" }),
-                              _vm._v(" Buscar\n                ")
+                              _vm._v(" Buscar\n                  ")
                             ]
                           )
                         ])
@@ -81525,6 +81567,10 @@ var render = function() {
                           {
                             staticClass:
                               "btn btn-success form-control btnagregar",
+                            attrs: {
+                              "data-toggle": "modal",
+                              "data-target": "#ModalLong"
+                            },
                             on: {
                               click: function($event) {
                                 return _vm.abrirModal()
@@ -81997,11 +82043,10 @@ var render = function() {
     _c(
       "div",
       {
-        staticClass: "modal fade",
-        class: { mostrar: _vm.modal },
-        staticStyle: { display: "none" },
+        staticClass: "modal fade bd-example-modal-lg",
         attrs: {
           tabindex: "-1",
+          id: "ModalLong",
           role: "dialog",
           "aria-labelledby": "myModalLabel",
           "aria-hidden": "true"
@@ -82026,7 +82071,11 @@ var render = function() {
                   "button",
                   {
                     staticClass: "close",
-                    attrs: { type: "button", "aria-label": "Close" },
+                    attrs: {
+                      type: "button",
+                      "data-dismiss": "modal",
+                      "aria-label": "Close"
+                    },
                     on: {
                       click: function($event) {
                         return _vm.cerrarModal()
@@ -82056,7 +82105,7 @@ var render = function() {
                               expression: "criterioP"
                             }
                           ],
-                          staticClass: "form-control col-md-3",
+                          staticClass: "form-control col-md-5",
                           on: {
                             change: function($event) {
                               var $$selectedVal = Array.prototype.filter
@@ -82219,7 +82268,7 @@ var render = function() {
                   "button",
                   {
                     staticClass: "btn btn-secondary",
-                    attrs: { type: "button" },
+                    attrs: { type: "button", "data-dismiss": "modal" },
                     on: {
                       click: function($event) {
                         return _vm.cerrarModal()
@@ -82795,6 +82844,10 @@ var render = function() {
                           {
                             staticClass:
                               "btn btn-success form-control btnagregar",
+                            attrs: {
+                              "data-toggle": "modal",
+                              "data-target": "#ModalLong"
+                            },
                             on: {
                               click: function($event) {
                                 return _vm.abrirModal()
@@ -83045,11 +83098,10 @@ var render = function() {
     _c(
       "div",
       {
-        staticClass: "modal fade",
-        class: { mostrar: _vm.modal },
-        staticStyle: { display: "none" },
+        staticClass: "modal fade bd-example-modal-lg",
         attrs: {
           tabindex: "-1",
+          id: "ModalLong",
           role: "dialog",
           "aria-labelledby": "myModalLabel",
           "aria-hidden": "true"
@@ -83074,7 +83126,11 @@ var render = function() {
                   "button",
                   {
                     staticClass: "close",
-                    attrs: { type: "button", "aria-label": "Close" },
+                    attrs: {
+                      type: "button",
+                      "data-dismiss": "modal",
+                      "aria-label": "Close"
+                    },
                     on: {
                       click: function($event) {
                         return _vm.cerrarModal()
@@ -83267,7 +83323,7 @@ var render = function() {
                   "button",
                   {
                     staticClass: "btn btn-secondary",
-                    attrs: { type: "button" },
+                    attrs: { type: "button", "data-dismiss": "modal" },
                     on: {
                       click: function($event) {
                         return _vm.cerrarModal()
@@ -83505,7 +83561,7 @@ var render = function() {
                             },
                             [
                               _c("i", { staticClass: "fa fa-search" }),
-                              _vm._v(" Buscar\n                ")
+                              _vm._v(" Buscar\n                  ")
                             ]
                           )
                         ])
@@ -83847,6 +83903,10 @@ var render = function() {
                           {
                             staticClass:
                               "btn btn-success form-control btnagregar",
+                            attrs: {
+                              "data-toggle": "modal",
+                              "data-target": "#ModalLong"
+                            },
                             on: {
                               click: function($event) {
                                 return _vm.abrirModal()
@@ -84319,11 +84379,10 @@ var render = function() {
     _c(
       "div",
       {
-        staticClass: "modal fade",
-        class: { mostrar: _vm.modal },
-        staticStyle: { display: "none" },
+        staticClass: "modal fade bd-example-modal-lg",
         attrs: {
           tabindex: "-1",
+          id: "ModalLong",
           role: "dialog",
           "aria-labelledby": "myModalLabel",
           "aria-hidden": "true"
@@ -84348,7 +84407,11 @@ var render = function() {
                   "button",
                   {
                     staticClass: "close",
-                    attrs: { type: "button", "aria-label": "Close" },
+                    attrs: {
+                      type: "button",
+                      "data-dismiss": "modal",
+                      "aria-label": "Close"
+                    },
                     on: {
                       click: function($event) {
                         return _vm.cerrarModal()
@@ -84378,7 +84441,7 @@ var render = function() {
                               expression: "criterioP"
                             }
                           ],
-                          staticClass: "form-control col-md-3",
+                          staticClass: "form-control col-md-5",
                           on: {
                             change: function($event) {
                               var $$selectedVal = Array.prototype.filter
@@ -84541,7 +84604,7 @@ var render = function() {
                   "button",
                   {
                     staticClass: "btn btn-secondary",
-                    attrs: { type: "button" },
+                    attrs: { type: "button", "data-dismiss": "modal" },
                     on: {
                       click: function($event) {
                         return _vm.cerrarModal()
@@ -85524,7 +85587,11 @@ var render = function() {
             "button",
             {
               staticClass: "btn btn-secondary",
-              attrs: { type: "button" },
+              attrs: {
+                type: "button",
+                "data-toggle": "modal",
+                "data-target": "#ModalLong"
+              },
               on: {
                 click: function($event) {
                   return _vm.abrirModal("producto", "registrar")
@@ -86742,7 +86809,7 @@ var render = function() {
                               }
                             },
                             [
-                              _c("option", { attrs: { value: "3" } }, [
+                              _c("option", { attrs: { value: "" } }, [
                                 _vm._v("Seleccione")
                               ]),
                               _vm._v(" "),

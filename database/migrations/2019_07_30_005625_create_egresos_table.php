@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIngresoEgresosTable extends Migration
+class CreateEgresosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateIngresoEgresosTable extends Migration
      */
     public function up()
     {
-        Schema::create('ingreso_egresos', function (Blueprint $table) {
+        Schema::create('egresos', function (Blueprint $table) {
             $table->increments('id');
             // $table->integer('idCuenta')->unsigned();
             $table->dateTime('fecha');
@@ -33,6 +33,6 @@ class CreateIngresoEgresosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ingreso_egresos');
+        Schema::dropIfExists('egresos');
     }
 }
