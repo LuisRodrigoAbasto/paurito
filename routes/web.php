@@ -17,10 +17,11 @@
 
 
 Route::group(['middleware'=>['auth']],function(){
-    Route::get('/',function(){
-        return view('contenido/contenido');
-    })->name('main');
-   
+    // Route::get('/',function(){
+    //     return view('contenido/contenido');
+    // })->name('main');
+    Route::get('/', 'HomeController@index')->name('home');
+
    Route::get('/dashboard','DashboardController');
 
    Route::get('/cliente', 'ClienteController@index');
@@ -54,6 +55,7 @@ Route::group(['middleware'=>['auth']],function(){
    Route::get('/producto/selectProducto', 'ProductoController@selectProducto');
    Route::get('/producto/listarProducto', 'ProductoController@listarProducto');
    Route::get('/producto/listarPdf', 'ProductoController@listarPdf')->name('productos_pdf');
+   Route::get('/producto/notificaciones', 'ProductoController@notificaciones');
    
    Route::get('/venta', 'VentaController@index');
    Route::post('/venta/registrar', 'VentaController@store');
@@ -81,6 +83,7 @@ Route::group(['middleware'=>['auth']],function(){
    Route::get('/cuenta/selectCuenta', 'CuentaController@selectCuenta');
    Route::get('/cuenta/buscarCuenta', 'CuentaController@buscarCuenta');
    Route::get('/cuenta/listarCuenta', 'CuentaController@listarCuenta');
+   Route::get('/cuenta/listarPdf', 'CuentaController@listarPdf')->name('cuentas_pdf');
 
    Route::get('/plancuenta', 'PlanCuentaController@index');
    Route::post('/plancuenta/registrar', 'PlanCuentaController@store');
@@ -108,4 +111,4 @@ Route::group(['middleware'=>['auth']],function(){
    
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+

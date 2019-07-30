@@ -61,7 +61,7 @@ class CuentaController extends Controller
         ->where('nivel3','=',$nivel3)
         ->where('nivel4','=',$nivel4)
         ->max('tipo');
-        }
+        }else{
         if($nivel==2){
             $cuentas = Cuenta::where('estado','=','1')
             ->where('tipo','=',$tipo)
@@ -71,6 +71,7 @@ class CuentaController extends Controller
             ->where('nivel4','=',$nivel4)
             ->max('nivel1');
             }
+            else{
             if($nivel==3){
                 $cuentas = Cuenta::where('estado','=','1')
                 ->where('tipo','=',$tipo)
@@ -80,6 +81,7 @@ class CuentaController extends Controller
                 ->where('nivel4','=',$nivel4)
                 ->max('nivel2');
                 }
+                else{
                 if($nivel==4){
                     $cuentas = Cuenta::where('estado','=','1')
                     ->where('tipo','=',$tipo)
@@ -89,6 +91,7 @@ class CuentaController extends Controller
                     ->where('nivel4','=',$nivel4)
                     ->max('nivel3');
                     }
+                    else{
                     if($nivel==5){
                         $cuentas = Cuenta::where('estado','=','1')
                         ->where('tipo','=',$tipo)
@@ -98,10 +101,30 @@ class CuentaController extends Controller
                         ->where('nivel4','>','0')
                         ->max('nivel4');
                         }
+                    }
+                }
+            }
+       }
 
         return ['cuentas'=>$cuentas];
     }
+    public function listarPdf(Request $request)
+    {
+        $cuentas=Cuenta::where('estado','=','1')
+        // select('id','tipo','nivel1','nivel2','nivel3','nivel4','nombre','telefono','empresa','direccion','nivel','estado')
+        
+        ->orderBy('tipo','asc')
+        ->orderBy('nivel1','asc')
+        ->orderBy('nivel2','asc')
+        ->orderBy('nivel3','asc')
+        ->orderBy('nivel4','asc')
+        ->get();
 
+        $cont=Cuenta::count();
+        $pdf = \PDF::loadView('pdf.cuentaspdf',['cuentas'=>$cuentas,'cont'=>$cont]);
+        return $pdf->download('cuentas.pdf');
+    }
+    
     public function cuenta(Request $request)
     {
         // if(!$request->ajax()) return redirect('/');
@@ -120,6 +143,7 @@ class CuentaController extends Controller
         $cuentas = Cuenta::where('estado','=','1')
         ->where('nombre','like','%'.$filtro.'%')
         ->orderBy('nombre','asc')
+        ->limit(5)
         ->get();
         return ['cuentas'=>$cuentas];
     }

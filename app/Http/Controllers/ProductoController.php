@@ -42,7 +42,17 @@ class ProductoController extends Controller
         ];
         
     }
+    public function notificaciones(Request $request)
+    {
+       // if(!$request->ajax()) return redirect('/');
 
+        $productos=Producto::where('stock','<=','100')
+        ->where('estado','=','1')
+        ->get();
+
+        return ['productos' => $productos];
+        
+    }
     public function listarProducto(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
