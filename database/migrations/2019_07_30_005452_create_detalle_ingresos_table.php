@@ -23,7 +23,7 @@ class CreateDetalleIngresosTable extends Migration
             $table->string('descripcionD',200)->nullable();
             $table->boolean('estado')->default(1);
             // $table->primary(['idIE','idCuenta']);
-            $table->foreign('idIngreso')->references('id')->on('ingreso_egresos');
+            $table->foreign('idIngreso')->references('id')->on('ingresos');
             $table->foreign('idCuenta')->references('id')->on('cuentas');
             $table->timestamps();
         });
