@@ -114,6 +114,7 @@ class EgresoController extends Controller
                 $egreso->fecha = $mytime->toDateTimeString();
                 $egreso->descripcion = $request->descripcion;
                 $egreso->tipo ='2';
+                $egreso->monto=1000;
                 $egreso->estado = '1';
                 $egreso->save();
     

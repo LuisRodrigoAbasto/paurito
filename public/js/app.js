@@ -7305,6 +7305,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -7329,7 +7338,8 @@ __webpack_require__.r(__webpack_exports__);
       },
       offset: 3,
       criterio: "nombre",
-      buscar: ""
+      buscar: "",
+      primaryModal: false
     };
   },
   computed: {
@@ -86213,8 +86223,48 @@ var render = function() {
               ])
             ])
           ]
+        ),
+        _vm._v(" "),
+        _c(
+          "b-button",
+          {
+            staticClass: "mr-1",
+            attrs: { type: "button", variant: "primary" },
+            on: {
+              click: function($event) {
+                _vm.primaryModal = true
+              }
+            }
+          },
+          [_vm._v("Launch primary modal")]
+        ),
+        _vm._v(" "),
+        _c(
+          "b-modal",
+          {
+            staticClass: "modal-primary",
+            attrs: { title: "Modal title" },
+            on: {
+              ok: function($event) {
+                _vm.primaryModal = false
+              }
+            },
+            model: {
+              value: _vm.primaryModal,
+              callback: function($$v) {
+                _vm.primaryModal = $$v
+              },
+              expression: "primaryModal"
+            }
+          },
+          [
+            _vm._v(
+              "\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n  "
+            )
+          ]
         )
-      ]
+      ],
+      1
     )
   ])
 }

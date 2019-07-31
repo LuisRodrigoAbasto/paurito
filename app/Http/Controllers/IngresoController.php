@@ -113,6 +113,7 @@ class IngresoController extends Controller
                 $ingreso->fecha = $mytime->toDateTimeString();
                 $ingreso->descripcion = $request->descripcion;
                 $ingreso->tipo ='1';
+                $ingreso->monto=1000;
                 $ingreso->estado = '1';
                 $ingreso->save();
     
