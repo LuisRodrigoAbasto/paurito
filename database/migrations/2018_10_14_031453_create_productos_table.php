@@ -17,8 +17,9 @@ class CreateProductosTable extends Migration
             $table->increments('id');
             $table->string('nombre', 100);
             $table->decimal('stock', 11,2);
+            $table->string('unidad',20);
             $table->decimal('codigo',11,2);
-            $table->string('unidad',50);
+            $table->string('referencia',20);
             $table->boolean('estado')->default(1);
             $table->timestamps();
         });

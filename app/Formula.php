@@ -8,5 +8,5 @@ class Formula extends Model
 {
    // protected $table = 'formulas';
    // protected $primaryKey = 'id';
-    protected $fillable = ['nombre','estado'];
+    protected $fillable = ['nombre','cantidad','estado'];
 }

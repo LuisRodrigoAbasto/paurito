@@ -22,11 +22,12 @@ class ProductoController extends Controller
         $criterio = $request->criterio;
         if($buscar=='')
         {
-            $productos=Producto::select('id','nombre','stock','unidad','codigo',DB::raw("floor(stock) as total,truncate(((stock-floor(stock))*codigo),2) as decimales"),'estado')
+            $productos=Producto::select('id','nombre','stock','unidad','codigo',DB::raw("floor(stock) as total,truncate(((stock-floor(stock))*codigo),2) as decimales"),'referencia','estado')
             ->orderBy('id','desc')->paginate(10);
         }
         else{
-            $productos = Producto::where($criterio, 'like','%'.$buscar.'%')->select('id','nombre','stock','unidad','codigo',DB::raw("floor(stock) as total,((stock-floor(stock))*codigo) as decimales"),'estado')->orderBy('id','desc')->paginate(10);
+            $productos = Producto::where($criterio, 'like','%'.$buscar.'%')->select('id','nombre','stock','unidad','codigo',DB::raw("floor(stock) as total,truncate(((stock-floor(stock))*codigo),2) as decimales"),'referencia','estado')
+            ->orderBy('id','desc')->paginate(10);
         }
      
         return [
@@ -73,10 +74,11 @@ class ProductoController extends Controller
     public function listarPdf(Request $request)
     {
         $productos=Producto::select('id','nombre','stock','unidad','codigo',
-        DB::raw("floor(stock) as total,truncate(((stock-floor(stock))*codigo),2) as decimales"),'estado')
+        DB::raw("floor(stock) as total,truncate(((stock-floor(stock))*codigo),2) as decimales"),'referencia','estado')
+        ->where('estado','=','1')
         ->orderBy('estado','desc')->orderBy('id','desc')->get();
 
-        $cont=Producto::count();
+        $cont=Producto::where('estado','=','1')->count('id');
         $pdf = \PDF::loadView('pdf.productospdf',['productos'=>$productos,'cont'=>$cont]);
         return $pdf->download('productos.pdf');
 
@@ -106,8 +108,9 @@ class ProductoController extends Controller
         $productos = new Producto();
         $productos->nombre = $request->nombre;
         $productos->stock = $request->stock;
-        $productos->codigo = $request->codigo;
         $productos->unidad = $request->unidad;
+        $productos->codigo = $request->codigo;
+        $productos->referencia= $request->referencia;
         $productos->estado = '1';
         $productos->save();
     }
@@ -126,8 +129,10 @@ class ProductoController extends Controller
         $productos = Producto::findOrFail($request->id);
         $productos->nombre = $request->nombre;
         $productos->stock = $request->stock;
-        $productos->codigo = $request->codigo;
         $productos->unidad = $request->unidad;
+        $productos->codigo = $request->codigo;
+        $productos->referencia= $request->referencia;
+        
         $productos->estado = '1';
         $productos->save();
     }

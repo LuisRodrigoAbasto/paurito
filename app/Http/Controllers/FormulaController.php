@@ -64,7 +64,7 @@ class FormulaController extends Controller
         ->join('productos','productos.id','detalle_formulas.idProducto')
         ->where('detalle_formulas.idFormula','=',$id) 
         ->where('detalle_formulas.estado','=','1')
-        ->select('detalle_formulas.idProducto','productos.nombre as producto','detalle_formulas.cantidad','productos.unidad','productos.codigo')
+        ->select('detalle_formulas.idProducto','productos.nombre as producto','detalle_formulas.cantidad','productos.unidad','productos.referencia','productos.codigo')
         ->orderBy('detalle_formulas.created_at','asc')
         ->get();
         return ['detalles'=>$detalles];
@@ -77,6 +77,7 @@ class FormulaController extends Controller
 
             $formula = new Formula();
             $formula->nombre = $request->nombre;
+            $formula->cantidad=$request->cantidad;
             $formula->estado = '1';
             $formula->save();
 
@@ -106,6 +107,7 @@ class FormulaController extends Controller
         DB::beginTransaction();  
         $formula = Formula::findOrFail($request->id);
         $formula->nombre = $request->nombre;
+        $formula->cantidad=$request->cantidad;
         $formula->estado = '1';
         $formula->save();
 
