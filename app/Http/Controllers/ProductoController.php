@@ -23,10 +23,10 @@ class ProductoController extends Controller
         if($buscar=='')
         {
             $productos=Producto::select('id','nombre','stock','unidad','codigo',DB::raw("floor(stock) as total,truncate(((stock-floor(stock))*codigo),2) as decimales"),'estado')
-            ->orderBy('id','desc')->paginate(5);
+            ->orderBy('id','desc')->paginate(10);
         }
         else{
-            $productos = Producto::where($criterio, 'like','%'.$buscar.'%')->select('id','nombre','stock','unidad','codigo',DB::raw("floor(stock) as total,((stock-floor(stock))*codigo) as decimales"),'estado')->orderBy('id','desc')->paginate(5);
+            $productos = Producto::where($criterio, 'like','%'.$buscar.'%')->select('id','nombre','stock','unidad','codigo',DB::raw("floor(stock) as total,((stock-floor(stock))*codigo) as decimales"),'estado')->orderBy('id','desc')->paginate(10);
         }
      
         return [
