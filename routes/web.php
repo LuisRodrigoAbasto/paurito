@@ -44,7 +44,6 @@ Route::group(['middleware'=>['auth']],function(){
    Route::put('/formula/desactivar', 'FormulaController@desactivar');
    Route::put('/formula/activar', 'FormulaController@activar');
    Route::get('/formula/selectFormula', 'FormulaController@selectFormula');
-   Route::get('/formula/buscarFormula', 'FormulaController@buscarFormula');
    Route::get('/formula/listarFormula', 'FormulaController@listarFormula');
    
    Route::get('/producto', 'ProductoController@index');

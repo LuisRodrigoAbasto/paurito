@@ -141,9 +141,10 @@ class CuentaController extends Controller
         // if(!$request->ajax()) return redirect('/');
         $filtro = $request->filtro;
         $cuentas = Cuenta::where('estado','=','1')
+        ->where('nivel','=','5')
         ->where('nombre','like','%'.$filtro.'%')
         ->orderBy('nombre','asc')
-        ->limit(5)
+        ->limit(10)
         ->get();
         return ['cuentas'=>$cuentas];
     }

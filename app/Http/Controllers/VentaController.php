@@ -77,7 +77,7 @@ class VentaController extends Controller
         $id = $request->id;
         $detalles = DetalleVenta::join('ventas','ventas.id','=','detalle_ventas.idVenta')
         ->join('productos','productos.id','=','detalle_ventas.idProducto')
-        ->select('productos.id as idProducto','productos.nombre as producto','detalle_ventas.cantidad','productos.unidad','detalle_ventas.precio','detalle_ventas.descripcionD')
+        ->select('productos.id as idProducto','productos.nombre as producto','detalle_ventas.cantidad','productos.unidad','productos.referencia','detalle_ventas.precio','productos.codigo','detalle_ventas.descripcionD')
         ->where('detalle_ventas.idVenta','=',$id)
         ->where('detalle_ventas.estado','=','1') 
         ->get();

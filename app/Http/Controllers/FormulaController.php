@@ -36,22 +36,13 @@ class FormulaController extends Controller
         ];
         
     }
-    public function buscarFormula(Request $request)
-    {
-        if (!$request->ajax()) return redirect('/');
- 
-        $filtro = $request->filtro;
-        $formulas = Formula::where('id','=', $filtro)
-        ->select('id','nombre')->orderBy('nombre', 'asc')->take(1)->get();
- 
-        return ['formulas' => $formulas];
-    }
     public function selectFormula(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
         $filtro = $request->filtro;
         $formulas = Formula::where('estado','=','1')
         ->where('nombre','like','%'.$filtro.'%')
+        ->limit(10)
         ->get();
         return ['formulas'=>$formulas];
         

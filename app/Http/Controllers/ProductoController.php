@@ -29,7 +29,7 @@ class ProductoController extends Controller
             $productos = Producto::where($criterio, 'like','%'.$buscar.'%')->select('id','nombre','stock','unidad','codigo',DB::raw("floor(stock) as total,truncate(((stock-floor(stock))*codigo),2) as decimales"),'referencia','estado')
             ->orderBy('id','desc')->paginate(10);
         }
-     
+        
         return [
             'pagination' => [
                 'total'        => $productos->total(),
@@ -62,10 +62,17 @@ class ProductoController extends Controller
         $criterio = $request->criterio;
         if($buscar=='')
         {
-            $productos=Producto::where('estado','=','1')->orderBy('id','desc')->get();
+            $productos=Producto::where('estado','=','1')
+            ->orderBy('id','desc')
+            ->limit(10)
+            ->get();
         }
         else{
-            $productos = Producto::where($criterio, 'like','%'.$buscar.'%')->where('estado','=','1')->orderBy('id','desc')->get();
+            $productos = Producto::where($criterio, 'like','%'.$buscar.'%')
+            ->where('estado','=','1')
+            ->orderBy('id','desc')
+            ->limit(10)
+            ->get();
         }
      
         return ['productos' => $productos];
@@ -93,6 +100,7 @@ class ProductoController extends Controller
         $productos = Producto::where('estado','=','1')
         ->where('nombre','like','%'.$filtro.'%')
         ->orderBy('nombre','asc')
+        ->limit(10)
         ->get();
         return ['productos'=>$productos];
     }

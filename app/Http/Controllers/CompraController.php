@@ -19,20 +19,20 @@ class CompraController extends Controller
         if($buscar=='')
         {
             $compras= Compra::join('cuentas','compras.idProveedor','=','cuentas.id')
-            ->select('compras.id','cuentas.nombre','compras.idProveedor','fecha','pago','descripcion','montoCompra','compras.estado')
+            ->select('compras.id','cuentas.nombre','compras.idProveedor','fecha','pago','cantidad','descripcion','montoCompra','compras.estado')
             ->orderBy('compras.estado','desc')->orderBy('compras.id','desc')->paginate(5);
         }
         else{
             if($criterio=='descripcion'){
                 $compras= Compra::join('cuentas','compras.idProveedor','=','cuentas.id')
-                ->select('compras.id','cuentas.nombre','compras.idProveedor','fecha','pago','descripcion','montoCompra','compras.estado')
+                ->select('compras.id','cuentas.nombre','compras.idProveedor','fecha','pago','cantidad','descripcion','montoCompra','compras.estado')
                 ->where('compras.'.$criterio, 'like', '%'. $buscar . '%')
                 ->orderBy('compras.estado','desc')
                 ->orderBy('compras.id','desc')->paginate(5);
             }
             else{
                 $compras= Compra::join('cuentas','compras.idProveedor','=','cuentas.id')
-                ->select('compras.id','idFormula','cuentas.nombre','compras.idProveedor','fecha','pago','descripcion','montoVenta','compras.estado')
+                ->select('compras.id','idFormula','cuentas.nombre','compras.idProveedor','fecha','pago','cantidad','descripcion','montoVenta','compras.estado')
                 ->where('cuentas.nombre', 'like', '%'. $buscar . '%')
                 ->orderBy('compras.estado','desc')
                 ->orderBy('compras.id','desc')->paginate(5);
@@ -61,7 +61,7 @@ class CompraController extends Controller
         ->join('productos','productos.id','detalle_compras.idProducto')
         ->where('detalle_compras.idCompra','=',$id)
         ->where('detalle_compras.estado','=','1')
-        ->select('productos.id as idProducto','productos.nombre as producto','detalle_compras.cantidad','productos.codigo','productos.unidad','detalle_compras.precio')
+        ->select('productos.id as idProducto','productos.nombre as producto','detalle_compras.cantidad','productos.codigo','productos.unidad','productos.referencia','detalle_compras.precio')
         ->get();
         return ['detalles'=>$detalles];
     }
@@ -74,6 +74,7 @@ class CompraController extends Controller
             $compra = new Compra();
             $compra->idProveedor = $request->idProveedor;
             $compra->fecha = $mytime->toDateTimeString();
+            $compra->cantidad=$request->cantidad;
             $compra->pago = $request->pago;
             $compra->montoCompra = $request->montoCompra;
             $compra->descripcion = $request->descripcion;
@@ -110,6 +111,7 @@ class CompraController extends Controller
         $compra = Compra::findOrFail($request->id);
         $compra->idProveedor = $request->idProveedor;
         $compra->fecha = $mytime->toDateTimeString();
+        $compra->cantidad=$request->cantidad;
         $compra->pago = $request->pago;
         $compra->montoCompra= $request->montoCompra;
         $compra->descripcion = $request->descripcion;
