@@ -106,8 +106,9 @@ class IngresoController extends Controller
         public function store(Request $request)
         {   
             if (!$request->ajax()) return redirect('/');
+            DB::beginTransaction();
             try{
-                DB::beginTransaction();
+                
                 $mytime= Carbon::now('America/La_Paz');
                 $ingreso = new Ingreso();
                 $ingreso->fecha = $mytime->toDateTimeString();

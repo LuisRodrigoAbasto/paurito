@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Venta extends Model
 {
-    protected $fillable = ['idCliente','idFormula','fecha','pago','cantidad','montoVenta','descripcion','estado'];
+    protected $fillable = ['factura','registro','idCliente','idFormula','fecha','pago','cantidad','montoVenta','descripcion','estado'];
 
     // public function cuenta(){
     //     return $this->belongsTo('App\Cuenta');

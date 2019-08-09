@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Compra;
 use App\DetalleCompra;
+use App\Producto;
 
 class CompraController extends Controller
 {
@@ -68,8 +69,8 @@ class CompraController extends Controller
     public function store(Request $request)
     {   
         if (!$request->ajax()) return redirect('/');
+        DB::beginTransaction();
         try{
-            DB::beginTransaction();
             $mytime= Carbon::now('America/La_Paz');
             $compra = new Compra();
             $compra->idProveedor = $request->idProveedor;
@@ -94,6 +95,10 @@ class CompraController extends Controller
                 $detalle->cantidad = $det['cantidad'];   
                 $detalle->precio = $det['precio']; 
                 $detalle->save();
+
+                $producto = Producto::find($detalle->idProducto);
+                $producto->stock=$producto->stock+$detalle->cantidad;
+                $producto->save();
             }          
 
             DB::commit();
@@ -105,8 +110,9 @@ class CompraController extends Controller
     public function update(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-        try{
+        
         DB::beginTransaction();
+        try{
         $mytime= Carbon::now('America/La_Paz');
         $compra = Compra::findOrFail($request->id);
         $compra->idProveedor = $request->idProveedor;

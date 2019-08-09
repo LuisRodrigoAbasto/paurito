@@ -126,8 +126,8 @@ class VentaController extends Controller
     public function store(Request $request)
     {   
         if (!$request->ajax()) return redirect('/');
+        DB::beginTransaction();
         try{
-            DB::beginTransaction();
             $mytime= Carbon::now('America/La_Paz');
             $venta = new Venta();
             $venta->idCliente = $request->idCliente;
@@ -157,6 +157,10 @@ class VentaController extends Controller
                     $detalle->descripcionD = $det['descripcionD'];
                 }
                 $detalle->save();
+
+                $producto = Producto::find($detalle->idProducto);
+                $producto->stock=$producto->stock-$detalle->cantidad;
+                $producto->save();
             } 
             DB::commit();
         } catch (Exception $e){
@@ -167,9 +171,9 @@ class VentaController extends Controller
     public function update(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-       
+
+        DB::beginTransaction();  
         try{      
-            DB::beginTransaction();  
         $mytime= Carbon::now('America/La_Paz');
         $venta = Venta::findOrFail($request->id);
         $venta->idCliente = $request->idCliente;

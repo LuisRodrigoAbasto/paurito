@@ -107,8 +107,8 @@ class EgresoController extends Controller
         public function store(Request $request)
         {   
             if (!$request->ajax()) return redirect('/');
+            DB::beginTransaction();
             try{
-                DB::beginTransaction();
                 $mytime= Carbon::now('America/La_Paz');
                 $egreso = new Egreso();
                 $egreso->fecha = $mytime->toDateTimeString();
