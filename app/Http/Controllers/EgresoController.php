@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use App\Egreso;
 use App\DetalleEgreso;
+use App\Venta;
+use App\Compra;
+use App\Ingreso;
+use App\Egreso;
 
 class EgresoController extends Controller
 {
@@ -109,14 +112,26 @@ class EgresoController extends Controller
             if (!$request->ajax()) return redirect('/');
             DB::beginTransaction();
             try{
+                $year=date('Y');
+                $factura=Egreso::whereYear('fecha','=',$year)->max('factura');
+                
+                $venta=Venta::max('registro');
+                $ingreso=Ingreso::max('registro');
+                $egreso=Egreso::max('registro');
+                $compra=Compra::max('registro');
+    
+                $registro=$venta+$compra+$ingreso+$egreso;
+    
                 $mytime= Carbon::now('America/La_Paz');
-                $egreso = new Egreso();
-                $egreso->fecha = $mytime->toDateTimeString();
-                $egreso->descripcion = $request->descripcion;
-                $egreso->tipo ='2';
-                $egreso->monto=1000;
-                $egreso->estado = '1';
-                $egreso->save();
+                $egresos = new Egreso();
+                $egresos->factura=$factura+1;
+                $egresos->registro=$registro+1;
+                $egresos->fecha = $mytime->toDateTimeString();
+                $egresos->descripcion = $request->descripcion;
+                $egresos->tipo ='2';
+                $egresos->monto=1000;
+                $egresos->estado = '1';
+                $egresos->save();
     
                 $detalles = $request->data;//Array de detalles
                 //Recorro todos los elementos

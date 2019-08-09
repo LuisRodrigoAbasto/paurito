@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use App\Ingreso;
 use App\DetalleIngreso;
+use App\Venta;
+use App\Compra;
+use App\Ingreso;
+use App\Egreso;
 
 class IngresoController extends Controller
 {
@@ -108,15 +111,27 @@ class IngresoController extends Controller
             if (!$request->ajax()) return redirect('/');
             DB::beginTransaction();
             try{
+                $year=date('Y');
+                $factura=Ingreso::whereYear('fecha','=',$year)->max('factura');
+                
+    
+                $venta=Venta::max('registro');
+                $ingreso=Ingreso::max('registro');
+                $egreso=Egreso::max('registro');
+                $compra=Compra::max('registro');
+    
+                $registro=$venta+$compra+$ingreso+$egreso;
                 
                 $mytime= Carbon::now('America/La_Paz');
-                $ingreso = new Ingreso();
-                $ingreso->fecha = $mytime->toDateTimeString();
-                $ingreso->descripcion = $request->descripcion;
-                $ingreso->tipo ='1';
-                $ingreso->monto=1000;
-                $ingreso->estado = '1';
-                $ingreso->save();
+                $ingresos = new Ingreso();
+                $ingresos->factura=$factura+1;
+                $ingresos->registro=$registro+1;
+                $ingresos->fecha = $mytime->toDateTimeString();
+                $ingresos->descripcion = $request->descripcion;
+                $ingresos->tipo ='1';
+                $ingresos->monto=1000;
+                $ingresos->estado = '1';
+                $ingresos->save();
     
                 $detalles = $request->data;//Array de detalles
                 //Recorro todos los elementos

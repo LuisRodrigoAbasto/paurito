@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use App\Compra;
 use App\DetalleCompra;
 use App\Producto;
+use App\Venta;
+use App\Compra;
+use App\Ingreso;
+use App\Egreso;
 
 class CompraController extends Controller
 {
@@ -20,20 +23,20 @@ class CompraController extends Controller
         if($buscar=='')
         {
             $compras= Compra::join('cuentas','compras.idProveedor','=','cuentas.id')
-            ->select('compras.id','cuentas.nombre','compras.idProveedor','fecha','pago','cantidad','descripcion','montoCompra','compras.estado')
+            ->select('compras.id','compras.factura','compras.registro','cuentas.nombre','compras.idProveedor','fecha','pago','cantidad','descripcion','montoCompra','compras.estado')
             ->orderBy('compras.estado','desc')->orderBy('compras.id','desc')->paginate(5);
         }
         else{
             if($criterio=='descripcion'){
                 $compras= Compra::join('cuentas','compras.idProveedor','=','cuentas.id')
-                ->select('compras.id','cuentas.nombre','compras.idProveedor','fecha','pago','cantidad','descripcion','montoCompra','compras.estado')
+                ->select('compras.id','compras.factura','compras.registro','cuentas.nombre','compras.idProveedor','fecha','pago','cantidad','descripcion','montoCompra','compras.estado')
                 ->where('compras.'.$criterio, 'like', '%'. $buscar . '%')
                 ->orderBy('compras.estado','desc')
                 ->orderBy('compras.id','desc')->paginate(5);
             }
             else{
                 $compras= Compra::join('cuentas','compras.idProveedor','=','cuentas.id')
-                ->select('compras.id','idFormula','cuentas.nombre','compras.idProveedor','fecha','pago','cantidad','descripcion','montoVenta','compras.estado')
+                ->select('compras.id','compras.factura','compras.registro','cuentas.nombre','compras.idProveedor','fecha','pago','cantidad','descripcion','montoVenta','compras.estado')
                 ->where('cuentas.nombre', 'like', '%'. $buscar . '%')
                 ->orderBy('compras.estado','desc')
                 ->orderBy('compras.id','desc')->paginate(5);
@@ -71,16 +74,28 @@ class CompraController extends Controller
         if (!$request->ajax()) return redirect('/');
         DB::beginTransaction();
         try{
+            $year=date('Y');
+            $factura=Compra::whereYear('fecha','=',$year)->max('factura');
+
+            $venta=Venta::max('registro');
+            $ingreso=Ingreso::max('registro');
+            $egreso=Egreso::max('registro');
+            $compra=Compra::max('registro');
+
+            $registro=$venta+$compra+$ingreso+$egreso;
+
             $mytime= Carbon::now('America/La_Paz');
-            $compra = new Compra();
-            $compra->idProveedor = $request->idProveedor;
-            $compra->fecha = $mytime->toDateTimeString();
-            $compra->cantidad=$request->cantidad;
-            $compra->pago = $request->pago;
-            $compra->montoCompra = $request->montoCompra;
-            $compra->descripcion = $request->descripcion;
-            $compra->estado = '1';
-            $compra->save();
+            $compras = new Compra();
+            $compras->factura=$factura+1;
+            $compras->registro=$registro+1;
+            $compras->idProveedor = $request->idProveedor;
+            $compras->fecha = $mytime->toDateTimeString();
+            $compras->cantidad=$request->cantidad;
+            $compras->pago = $request->pago;
+            $compras->montoCompra = $request->montoCompra;
+            $compras->descripcion = $request->descripcion;
+            $compras->estado = '1';
+            $compras->save();
 
             $detalles = $request->data;//Array de detalles
             //Recorro todos los elementos
@@ -89,14 +104,14 @@ class CompraController extends Controller
             {
                 $contar++;
                 $detalle = new DetalleCompra();
-                $detalle->idCompra= $compra->id;
+                $detalle->idCompra= $compras->id;
                 $detalle->idProducto= $det['idProducto'];
                 $detalle->orden=$contar;
                 $detalle->cantidad = $det['cantidad'];   
                 $detalle->precio = $det['precio']; 
                 $detalle->save();
 
-                $producto = Producto::find($detalle->idProducto);
+                $producto = Producto::find($det['idProducto']);
                 $producto->stock=$producto->stock+$detalle->cantidad;
                 $producto->save();
             }          

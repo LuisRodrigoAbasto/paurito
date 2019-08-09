@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use App\Venta;
 use App\DetalleVenta;
+use App\Producto;
 use App\Formula;
+use App\Venta;
+use App\Compra;
+use App\Ingreso;
+use App\Egreso;
 
 class VentaController extends Controller
 {
@@ -20,20 +24,20 @@ class VentaController extends Controller
         if($buscar=='')
         {
             $ventas= Venta::join('cuentas','ventas.idCliente','=','cuentas.id')
-            ->select('ventas.id','idFormula','cuentas.nombre','ventas.idCliente','fecha','pago','cantidad','descripcion','montoVenta','ventas.estado')
+            ->select('ventas.id','ventas.factura','ventas.registro','idFormula','cuentas.nombre','ventas.idCliente','fecha','pago','cantidad','descripcion','montoVenta','ventas.estado')
             ->orderBy('ventas.estado','desc')->orderBy('ventas.id','desc')->paginate(5);
         }
         else{
             if($criterio=='descripcion'){
                 $ventas= Venta::join('cuentas','ventas.idCliente','=','cuentas.id')
-                ->select('ventas.id','idFormula','cuentas.nombre','ventas.idCliente','fecha','pago','cantidad','descripcion','montoVenta','ventas.estado')
+                ->select('ventas.id','ventas.factura','ventas.registro','idFormula','cuentas.nombre','ventas.idCliente','fecha','pago','cantidad','descripcion','montoVenta','ventas.estado')
                 ->where('ventas.'.$criterio, 'like', '%'. $buscar . '%')
                 ->orderBy('ventas.estado','desc')
                 ->orderBy('ventas.id','desc')->paginate(5);
             }
             else{
                 $ventas= Venta::join('cuentas','ventas.idCliente','=','cuentas.id')
-                ->select('ventas.id','idFormula','cuentas.nombre','ventas.idCliente','fecha','pago','cantidad','descripcion','montoVenta','ventas.estado')
+                ->select('ventas.id','ventas.factura','ventas.registro','idFormula','cuentas.nombre','ventas.idCliente','fecha','pago','cantidad','descripcion','montoVenta','ventas.estado')
                 ->where('cuentas.'.$criterio, 'like', '%'. $buscar . '%')
                 ->orderBy('ventas.estado','desc')
                 ->orderBy('ventas.id','desc')->paginate(5);
@@ -127,18 +131,31 @@ class VentaController extends Controller
     {   
         if (!$request->ajax()) return redirect('/');
         DB::beginTransaction();
-        try{
+        try{            
+            $year=date('Y');
+            $factura=Venta::whereYear('fecha','=',$year)->max('factura');
+            
+            $venta=Venta::max('registro');
+            $ingreso=Ingreso::max('registro');
+            $egreso=Egreso::max('registro');
+            $compra=Compra::max('registro');
+
             $mytime= Carbon::now('America/La_Paz');
-            $venta = new Venta();
-            $venta->idCliente = $request->idCliente;
-            $venta->idFormula =$request->idFormula;
-            $venta->fecha = $mytime->toDateTimeString();
-            $venta->pago = $request->pago;
-            $venta->cantidad = $request->cantidad;
-            $venta->montoVenta = $request->montoVenta;
-            $venta->descripcion = $request->descripcion;
-            $venta->estado = '1';
-            $venta->save();
+            $ventas = new Venta();
+
+            $registro=$venta+$compra+$ingreso+$egreso;
+
+            $ventas->factura=$factura+1;
+            $ventas->registro=$registro+1;
+            $ventas->idCliente = $request->idCliente;
+            $ventas->idFormula =$request->idFormula;
+            $ventas->fecha = $mytime->toDateTimeString();
+            $ventas->pago = $request->pago;
+            $ventas->cantidad = $request->cantidad;
+            $ventas->montoVenta = $request->montoVenta;
+            $ventas->descripcion = $request->descripcion;
+            $ventas->estado = '1';
+            $ventas->save();
 
             $detalles = $request->data;//Array de detalles
             //Recorro todos los elementos
@@ -147,18 +164,18 @@ class VentaController extends Controller
             {
                 $contar++;
                 $detalle = new DetalleVenta();
-                $detalle->idVenta= $venta->id;
+                $detalle->idVenta= $ventas->id;
                 $detalle->idProducto= $det['idProducto'];
                 $detalle->orden=$contar;
                 $detalle->cantidad = $det['cantidad'];   
                 $detalle->precio = $det['precio']; 
                 $detalle->descripcionD = '';
-                if($venta->idFormula==0){
+                if($ventas->idFormula==0){
                     $detalle->descripcionD = $det['descripcionD'];
                 }
                 $detalle->save();
 
-                $producto = Producto::find($detalle->idProducto);
+                $producto = Producto::find($det['idProducto']);
                 $producto->stock=$producto->stock-$detalle->cantidad;
                 $producto->save();
             } 
