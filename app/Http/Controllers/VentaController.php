@@ -119,7 +119,7 @@ class VentaController extends Controller
         ->join('productos','productos.id','=','detalle_ventas.idProducto')
         ->where('detalle_ventas.idVenta','=',$id)
         ->where('detalle_ventas.estado','=','1') 
-        ->select('detalle_ventas.idProducto','productos.nombre as producto','detalle_ventas.cantidad','productos.codigo','productos.unidad','detalle_ventas.precio','detalle_ventas.descripcionD')
+        ->select('detalle_ventas.idProducto','productos.nombre as producto','detalle_ventas.cantidad','productos.codigo','productos.unidad','productos.referencia','detalle_ventas.precio','detalle_ventas.descripcionD')
         ->get();
         $formula=Formula::where('estado','=','1')->where('id','=',$idFormula)
         ->get();

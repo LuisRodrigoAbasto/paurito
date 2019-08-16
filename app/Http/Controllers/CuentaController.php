@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Cuenta;
-// use DB;
 
 class CuentaController extends Controller
 {
@@ -159,6 +158,25 @@ class CuentaController extends Controller
         ->get();
         return ['cuentas'=>$cuentas];
     }
+    public function balanceGeneral(Request $request)
+    {
+        // if(!$request->ajax()) return redirect('/');
+
+        $cuentas=Cuenta::join('cuentas as c4','cuentas.idCuenta','=','c4.id')
+        ->join('cuentas as c3','c4.idCuenta','=','c3.id')
+        ->join('cuentas as c2','c3.idCuenta','=','c2.id')
+        ->join('cuentas as c1','c2.idCuenta','=','c1.id')
+        ->select('cuentas.id','c1.nombre as cuenta1','c2.nombre as cuenta2','c3.nombre as cuenta3','c4.nombre as cuenta4','cuentas.nombre as cuenta5','cuentas.nivel','cuentas.tipo','cuentas.nivel1','cuentas.nivel2','cuentas.nivel3',
+        'cuentas.nivel4','cuentas.estado')
+        ->orderBy('cuentas.tipo','asc')
+        ->orderBy('cuentas.nivel1','asc')
+        ->orderBy('cuentas.nivel2','asc')
+        ->orderBy('cuentas.nivel3','asc')
+        ->orderBy('cuentas.nivel4','asc')
+        ->get();
+
+        return ['cuentas' => $cuentas];
+    }
     public function store(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
@@ -168,6 +186,15 @@ class CuentaController extends Controller
         $cuentas->empresa = $request->empresa;
         $cuentas->direccion = $request->direccion;
         $cuentas->nivel=$request->nivel;
+
+        if($cuentas->nivel==1)
+        {
+            $cuentas->idCuenta=null;
+        }
+        else
+        {
+            $cuentas->idCuenta=$request->idCuenta;
+        }
         $cuentas->tipo = $request->tipo;
         $cuentas->nivel1 = $request->nivel1;
         $cuentas->nivel2 = $request->nivel2;

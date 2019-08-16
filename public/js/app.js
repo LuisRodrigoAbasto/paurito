@@ -1850,207 +1850,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -2067,7 +1866,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       empresa: "",
       direccion: "",
       arrayData: [],
-      arrayCuenta: [],
+      arrayDetalle: [],
       tipo: 0,
       nivel1: 0,
       nivel2: 0,
@@ -2087,10 +1886,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       },
       offset: 3,
       criterio: "nombre",
-      buscar: "",
-      selectedCuenta: null,
-      validaciones: "",
-      mensaje: ""
+      buscar: ""
     };
   },
   computed: {
@@ -2127,11 +1923,10 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
   methods: {
     listar: function listar(page, buscar, criterio) {
       var me = this;
-      var url = "/cuenta?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio;
+      var url = "/cuenta/balanceGeneral";
       axios.get(url).then(function (response) {
         var respuesta = response.data;
-        me.arrayData = respuesta.cuentas.data;
-        me.pagination = respuesta.pagination;
+        me.arrayData = respuesta.cuentas;
       })["catch"](function (error) {
         console.log(error);
       });
@@ -2145,258 +1940,6 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
     },
     cargarPdf: function cargarPdf() {
       window.open("http://localhost:8000/cuenta/listarPdf", "_blank");
-    },
-    selectCuenta: function selectCuenta(search, loading) {
-      var me = this;
-      loading(true);
-      var url = "/cuenta/cuenta?filtro=" + search;
-      axios.get(url).then(function (response) {
-        var respuesta = response.data;
-
-        q: search;
-
-        me.arrayCuenta = respuesta.cuentas;
-        loading(false);
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    getDatosCuenta: function getDatosCuenta(val1) {
-      var me = this;
-      me.loading = true;
-
-      try {
-        me.idCuenta = val1.id;
-        me.cuenta = val1.nombre;
-        me.nivel = val1.nivel + 1;
-        me.tipo = val1.tipo;
-        me.nivel1 = val1.nivel1;
-        me.nivel2 = val1.nivel2;
-        me.nivel3 = val1.nivel3;
-        me.nivel4 = val1.nivel4;
-        me.selectedCuenta = {
-          id: me.idCuenta,
-          nombre: me.cuenta,
-          nivel: me.nivel,
-          tipo: me.tipo,
-          nivel1: me.nivel1,
-          nivel2: me.nivel2,
-          nivel3: me.nivel3,
-          nivel4: me.nivel4
-        };
-        me.cambiarNivel();
-      } catch (error) {
-        me.idCuenta = 0;
-        me.cuenta = "";
-        me.tipo = 0;
-        me.nivel1 = 0;
-        me.nivel2 = 0;
-        me.nivel3 = 0;
-        me.nivel4 = 0;
-        me.nivel = 1;
-        me.selectedCuenta = null;
-        me.cambiarNivel();
-      }
-    },
-    cambiarNivel: function cambiarNivel() {
-      var me = this;
-      var url = "/cuenta/buscarCuenta?nivel=" + me.nivel + "&tipo=" + me.tipo + "&nivel1=" + me.nivel1 + "&nivel2=" + me.nivel2 + "&nivel3=" + me.nivel3 + "&nivel4=" + me.nivel4;
-      axios.get(url).then(function (response) {
-        var respuesta = response.data;
-
-        if (me.nivel == 1) {
-          me.tipo = respuesta.cuentas + 1;
-        } else {
-          if (me.nivel == 2) {
-            me.nivel1 = respuesta.cuentas + 1;
-          } else {
-            if (me.nivel == 3) {
-              me.nivel2 = respuesta.cuentas + 1;
-            } else {
-              if (me.nivel == 4) {
-                me.nivel3 = respuesta.cuentas + 1;
-              } else {
-                if (me.nivel == 5) {
-                  me.nivel4 = respuesta.cuentas + 1;
-                }
-              }
-            }
-          }
-        }
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    registrar: function registrar() {
-      this.cambiarNivel();
-
-      if (this.validar()) {
-        this.validaciones = "was-validated";
-        Swal.fire({
-          position: "center",
-          type: "error",
-          title: this.mensaje,
-          showConfirmButton: false,
-          timer: 1500
-        });
-        return;
-      }
-
-      var me = this;
-      axios.post("/cuenta/registrar", {
-        nombre: me.nombre,
-        direccion: me.direccion,
-        empresa: me.empresa,
-        telefono: me.telefono,
-        nivel: me.nivel,
-        nivel1: me.nivel1,
-        nivel2: me.nivel2,
-        nivel3: me.nivel3,
-        nivel4: me.nivel4,
-        tipo: me.tipo
-      }).then(function (response) {
-        $("#ModalLong").modal("hide");
-        me.cerrarModal();
-        me.listar(1, "", "nombre");
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    actualizar: function actualizar() {
-      this.cambiarNivel();
-
-      if (this.validar()) {
-        this.validaciones = "was-validated";
-        Swal.fire({
-          position: "center",
-          type: "error",
-          title: this.mensaje,
-          showConfirmButton: false,
-          timer: 1500
-        });
-        return;
-      }
-
-      var me = this;
-      axios.put("/cuenta/actualizar", {
-        nombre: this.nombre,
-        direccion: this.direccion,
-        empresa: this.empresa,
-        telefono: this.telefono,
-        nivel: this.nivel,
-        nivel1: this.nivel1,
-        nivel2: this.nivel2,
-        nivel3: this.nivel3,
-        nivel4: this.nivel4,
-        tipo: this.tipo,
-        id: this.cuenta_id
-      }).then(function (response) {
-        $("#ModalLong").modal("hide");
-        me.cerrarModal();
-        me.listar(1, "", "nombre");
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    desactivar: function desactivar(id) {
-      var _this = this;
-
-      var swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: "btn btn-success",
-          cancelButton: "btn btn-danger"
-        },
-        buttonsStyling: false
-      });
-      swalWithBootstrapButtons.fire({
-        title: "Estas Seguro de Desactivar el Registro?",
-        text: "Si Desactiva no estara en la Lista!",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Si, Desactivar!",
-        cancelButtonText: "No, Cancelar!",
-        reverseButtons: true
-      }).then(function (result) {
-        if (result.value) {
-          var me = _this;
-          axios.put("/cuenta/desactivar", {
-            id: id
-          }).then(function (response) {
-            me.listar(1, "", "nombre");
-            Swal.fire({
-              position: "center",
-              type: "success",
-              title: "El Registro ha sido Desactivado",
-              showConfirmButton: false,
-              timer: 1000
-            })["catch"](function (error) {
-              console.log(error);
-            });
-          });
-        } else if (result.dismiss == Swal.DismissReason.cancel) {
-          Swal.fire({
-            position: "center",
-            type: "error",
-            title: "Cancelado",
-            showConfirmButton: false,
-            timer: 1000
-          });
-        }
-      });
-    },
-    activar: function activar(id) {
-      var _this2 = this;
-
-      var swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: "btn btn-success",
-          cancelButton: "btn btn-danger"
-        },
-        buttonsStyling: false
-      });
-      swalWithBootstrapButtons.fire({
-        title: "Estas Seguro de Activar el Registro?",
-        text: "Si Activa estara en la Lista!",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Si, Activar!",
-        cancelButtonText: "No, Cancelar!",
-        reverseButtons: true
-      }).then(function (result) {
-        if (result.value) {
-          var me = _this2;
-          axios.put("/cuenta/activar", {
-            id: id
-          }).then(function (response) {
-            me.listar(1, "", "nombre");
-            Swal.fire({
-              position: "center",
-              type: "success",
-              title: "El Registro ha sido Activado",
-              showConfirmButton: false,
-              timer: 1000
-            })["catch"](function (error) {
-              console.log(error);
-            });
-          });
-        } else if (result.dismiss == Swal.DismissReason.cancel) {
-          Swal.fire({
-            position: "center",
-            type: "error",
-            title: "Cancelado",
-            showConfirmButton: false,
-            timer: 1000
-          });
-        }
-      });
-    },
-    validar: function validar() {
-      if (!this.nombre) {
-        this.mensaje = "Ingrese el Nombre de la Cuenta";
-        return true;
-      }
-
-      return false;
     },
     limpiarRegistro: function limpiarRegistro() {
       this.cuenta_id = 0;
@@ -2417,54 +1960,29 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       this.mensaje = "";
       this.validaciones = "";
     },
-    cerrarModal: function cerrarModal() {
-      this.tipoAccion = 0;
-      this.modal = 0;
-      this.tituloModal = "";
-      this.limpiarRegistro();
-    },
-    teclaRapida: function teclaRapida() {
-      if (this.editar) {
-        this.actualizar();
-      } else {
-        this.registrar();
-      }
-    },
-    abrirModal: function abrirModal(modelo, accion) {
-      var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-
-      switch (modelo) {
-        case "cuenta":
+    abrirNivel: function abrirNivel(accion, index, valor) {
+      switch (accion) {
+        case "tipo":
           {
-            switch (accion) {
-              case "registrar":
-                {
-                  this.editar = false;
-                  this.modal = 1;
-                  this.tituloModal = "Registrar Cuenta";
-                  this.limpiarRegistro();
-                  this.cambiarNivel();
-                  this.tipoAccion = 1;
-                  break;
-                }
+            this.arrayData[index].estado = valor;
+            break;
+          }
 
-              case "actualizar":
-                {
-                  this.editar = true;
-                  this.modal = 1;
-                  this.tituloModal = "Actualizar Cuenta";
-                  this.tipoAccion = 2;
-                  this.nivel = data["nivel"];
-                  this.tipo = data["tipo"];
-                  this.nivel1 = data["nivel1"];
-                  this.nivel2 = data["nivel2"];
-                  this.nivel3 = data["nivel3"];
-                  this.nivel4 = data["nivel4"];
-                  this.cuenta_id = data["id"];
-                  this.nombre = data["nombre"];
-                  break;
-                }
-            }
+        case "actualizar":
+          {
+            this.editar = true;
+            this.modal = 1;
+            this.tituloModal = "Actualizar Cuenta";
+            this.tipoAccion = 2;
+            this.nivel = data["nivel"];
+            this.tipo = data["tipo"];
+            this.nivel1 = data["nivel1"];
+            this.nivel2 = data["nivel2"];
+            this.nivel3 = data["nivel3"];
+            this.nivel4 = data["nivel4"];
+            this.cuenta_id = data["id"];
+            this.nombre = data["nombre"];
+            break;
           }
       }
     }
@@ -3859,9 +3377,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 
 
@@ -4055,6 +3570,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
 
       var me = this;
       axios.post("/cuenta/registrar", {
+        idCuenta: me.idCuenta,
         nombre: me.nombre,
         direccion: me.direccion,
         empresa: me.empresa,
@@ -78120,799 +77636,186 @@ var render = function() {
               [
                 _vm._m(2),
                 _vm._v(" "),
-                _c(
-                  "tbody",
-                  _vm._l(_vm.arrayData, function(data) {
-                    return _c("tr", { key: data.id }, [
-                      _c("td", [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-success btn-sm",
-                            attrs: {
-                              type: "button",
-                              "data-toggle": "modal",
-                              "data-target": "#ModalLong"
-                            },
-                            on: {
-                              click: function($event) {
-                                return _vm.abrirModal(
-                                  "cuenta",
-                                  "actualizar",
-                                  data
-                                )
-                              }
-                            }
-                          },
-                          [_c("i", { staticClass: "icon-plus" })]
-                        ),
-                        _vm._v("  \n                ")
-                      ]),
-                      _vm._v(" "),
-                      data.nivel == 1
-                        ? _c("td", [
-                            _c("u", [_c("b", [_vm._v(_vm._s(data.tipo))])])
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      data.nivel == 2
-                        ? _c("td", [
-                            _c("b", [
-                              _vm._v(_vm._s(data.tipo + "." + data.nivel1))
-                            ])
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      data.nivel == 3
-                        ? _c("td", [
-                            _c("u", [
-                              _vm._v(
-                                _vm._s(
-                                  data.tipo +
-                                    "." +
-                                    data.nivel1 +
-                                    ".0" +
-                                    data.nivel2
-                                )
-                              )
-                            ])
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      data.nivel == 4
-                        ? _c("td", [
-                            _vm._v(
-                              _vm._s(
-                                data.tipo +
-                                  "." +
-                                  data.nivel1 +
-                                  ".0" +
-                                  data.nivel2 +
-                                  ".0" +
-                                  data.nivel3
-                              )
-                            )
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      data.nivel == 5
-                        ? _c("td", [
-                            _vm._v(
-                              _vm._s(
-                                data.tipo +
-                                  "." +
-                                  data.nivel1 +
-                                  ".0" +
-                                  data.nivel2 +
-                                  ".0" +
-                                  data.nivel3 +
-                                  ".0" +
-                                  data.nivel4
-                              )
-                            )
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      data.nivel == 1
-                        ? _c(
-                            "td",
-                            [
-                              _c(
-                                "font",
-                                {
-                                  staticStyle: { "text-transform": "uppercase" }
-                                },
-                                [
-                                  _c("u", [
-                                    _c("b", [_vm._v(_vm._s(data.nombre))])
-                                  ])
-                                ]
-                              )
-                            ],
-                            1
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      data.nivel == 2
-                        ? _c(
-                            "td",
-                            [
-                              _vm._v(
-                                "\n                         \n                  "
-                              ),
-                              _c(
-                                "font",
-                                {
-                                  staticStyle: { "text-transform": "uppercase" }
-                                },
-                                [_c("b", [_vm._v(_vm._s(data.nombre))])]
-                              )
-                            ],
-                            1
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      data.nivel == 3
-                        ? _c(
-                            "td",
-                            [
-                              _vm._v(
-                                "\n                                 \n                  "
-                              ),
-                              _c(
-                                "font",
-                                {
-                                  staticStyle: { "text-transform": "uppercase" }
-                                },
-                                [_c("u", [_vm._v(_vm._s(data.nombre))])]
-                              )
-                            ],
-                            1
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      data.nivel == 4
-                        ? _c(
-                            "td",
-                            [
-                              _vm._v(
-                                "\n                                         \n                  "
-                              ),
-                              _c(
-                                "font",
-                                {
-                                  staticStyle: { "text-transform": "uppercase" }
-                                },
-                                [_vm._v(_vm._s(data.nombre))]
-                              )
-                            ],
-                            1
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      data.nivel == 5
-                        ? _c("td", [
-                            _vm._v(
-                              "\n                                                 \n                  " +
-                                _vm._s(data.nombre) +
-                                "\n                "
-                            )
-                          ])
-                        : _vm._e()
-                    ])
-                  }),
-                  0
-                )
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("nav", [
-            _c(
-              "ul",
-              { staticClass: "pagination" },
-              [
-                _vm.pagination.current_page > 1
-                  ? _c("li", { staticClass: "page-item" }, [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "page-link",
-                          attrs: { href: "#" },
-                          on: {
-                            click: function($event) {
-                              $event.preventDefault()
-                              return _vm.cambiarPagina(
-                                _vm.pagination.current_page - 1,
-                                _vm.buscar,
-                                _vm.criterio
-                              )
-                            }
-                          }
-                        },
-                        [_vm._v("Ant")]
-                      )
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm._l(_vm.pagesNumber, function(page) {
+                _vm._l(_vm.arrayData, function(data, index) {
                   return _c(
-                    "li",
-                    {
-                      key: page,
-                      staticClass: "page-item",
-                      class: [page == _vm.isActived ? "active" : ""]
-                    },
+                    "tbody",
+                    { key: data.id },
                     [
-                      _c("a", {
-                        staticClass: "page-link",
-                        attrs: { href: "#" },
-                        domProps: { textContent: _vm._s(page) },
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            return _vm.cambiarPagina(
-                              page,
-                              _vm.buscar,
-                              _vm.criterio
-                            )
-                          }
-                        }
-                      })
-                    ]
-                  )
-                }),
-                _vm._v(" "),
-                _vm.pagination.current_page < _vm.pagination.last_page
-                  ? _c("li", { staticClass: "page-item" }, [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "page-link",
-                          attrs: { href: "#" },
-                          on: {
-                            click: function($event) {
-                              $event.preventDefault()
-                              return _vm.cambiarPagina(
-                                _vm.pagination.current_page + 1,
-                                _vm.buscar,
-                                _vm.criterio
+                      data.cuenta1 != _vm.arrayData[index - 1]
+                        ? [
+                            _c("tr", [
+                              _c("td", [
+                                _c("u", [_c("b", [_vm._v(_vm._s(data.tipo))])])
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                [
+                                  _c(
+                                    "font",
+                                    {
+                                      staticStyle: {
+                                        "text-transform": "uppercase"
+                                      }
+                                    },
+                                    [
+                                      _c("u", [
+                                        _c("b", [_vm._v(_vm._s(data.cuenta1))])
+                                      ])
+                                    ]
+                                  )
+                                ],
+                                1
                               )
-                            }
-                          }
-                        },
-                        [_vm._v("Sig")]
-                      )
-                    ])
-                  : _vm._e()
+                            ])
+                          ]
+                        : _vm._e(),
+                      _vm._v(" "),
+                      data.cuenta2 == _vm.arrayData[index - 1]
+                        ? [
+                            _c("tr", [
+                              _c("td", [
+                                _c("b", [
+                                  _vm._v(_vm._s(data.tipo + "." + data.nivel1))
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                [
+                                  _vm._v(
+                                    "\n                             \n                      "
+                                  ),
+                                  _c(
+                                    "font",
+                                    {
+                                      staticStyle: {
+                                        "text-transform": "uppercase"
+                                      }
+                                    },
+                                    [_c("b", [_vm._v(_vm._s(data.cuenta2))])]
+                                  )
+                                ],
+                                1
+                              )
+                            ])
+                          ]
+                        : _vm._e(),
+                      _vm._v(" "),
+                      data.cuenta3 == _vm.arrayData[index - 1]
+                        ? [
+                            _c("tr", [
+                              _c("td", [
+                                _c("u", [
+                                  _vm._v(
+                                    _vm._s(
+                                      data.tipo +
+                                        "." +
+                                        data.nivel1 +
+                                        ".0" +
+                                        data.nivel2
+                                    )
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                [
+                                  _vm._v(
+                                    "\n                                     \n                      "
+                                  ),
+                                  _c(
+                                    "font",
+                                    {
+                                      staticStyle: {
+                                        "text-transform": "uppercase"
+                                      }
+                                    },
+                                    [_c("u", [_vm._v(_vm._s(data.cuenta3))])]
+                                  )
+                                ],
+                                1
+                              )
+                            ])
+                          ]
+                        : _vm._e(),
+                      _vm._v(" "),
+                      data.cuenta4 == _vm.arrayData[index - 1]
+                        ? [
+                            _c("tr", [
+                              _c("td", [
+                                _vm._v(
+                                  _vm._s(
+                                    data.tipo +
+                                      "." +
+                                      data.nivel1 +
+                                      ".0" +
+                                      data.nivel2 +
+                                      ".0" +
+                                      data.nivel3
+                                  )
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                [
+                                  _vm._v(
+                                    "\n                                             \n                      "
+                                  ),
+                                  _c(
+                                    "font",
+                                    {
+                                      staticStyle: {
+                                        "text-transform": "uppercase"
+                                      }
+                                    },
+                                    [_vm._v(_vm._s(data.cuenta4))]
+                                  )
+                                ],
+                                1
+                              )
+                            ])
+                          ]
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [
+                          _vm._v(
+                            _vm._s(
+                              data.tipo +
+                                "." +
+                                data.nivel1 +
+                                ".0" +
+                                data.nivel2 +
+                                ".0" +
+                                data.nivel3 +
+                                ".0" +
+                                data.nivel4
+                            )
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(
+                            "\n                                                     \n                      " +
+                              _vm._s(data.cuenta5) +
+                              "\n                    "
+                          )
+                        ])
+                      ])
+                    ],
+                    2
+                  )
+                })
               ],
               2
             )
           ])
         ])
       ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "modal fade bd-example-modal-lg",
-        attrs: {
-          tabindex: "-1",
-          role: "dialog",
-          id: "ModalLong",
-          "aria-labelledby": "myModalLabel",
-          "aria-hidden": "true"
-        }
-      },
-      [
-        _c(
-          "div",
-          {
-            staticClass: "modal-dialog modal-primary modal-lg",
-            attrs: { role: "document" }
-          },
-          [
-            _c("div", { staticClass: "modal-content" }, [
-              _c("div", { staticClass: "modal-header" }, [
-                _c("h4", {
-                  staticClass: "modal-title",
-                  domProps: { textContent: _vm._s(_vm.tituloModal) }
-                }),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "close",
-                    attrs: {
-                      type: "button",
-                      "data-dismiss": "modal",
-                      "aria-label": "Close"
-                    },
-                    on: {
-                      click: function($event) {
-                        return _vm.cerrarModal()
-                      }
-                    }
-                  },
-                  [
-                    _c("span", { attrs: { "aria-hidden": "true" } }, [
-                      _vm._v("×")
-                    ])
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { class: "modal-body " + _vm.validaciones }, [
-                _c(
-                  "form",
-                  {
-                    staticClass: "form-horizontal",
-                    attrs: {
-                      action: "",
-                      method: "POST",
-                      enctype: "multipart/form-data"
-                    }
-                  },
-                  [
-                    _c("div", { staticClass: "form-group row border" }, [
-                      _c("div", { staticClass: "col-md-2" }, [
-                        _c("div", { staticClass: "form-group" }, [
-                          _vm._m(3),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.tipo,
-                                expression: "tipo"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: { type: "text", readonly: "", value: "" },
-                            domProps: { value: _vm.tipo },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.tipo = $event.target.value
-                              }
-                            }
-                          })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-2" }, [
-                        _c("div", { staticClass: "form-group" }, [
-                          _vm._m(4),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.nivel1,
-                                expression: "nivel1"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: { type: "text", readonly: "", value: "" },
-                            domProps: { value: _vm.nivel1 },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.nivel1 = $event.target.value
-                              }
-                            }
-                          })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-2" }, [
-                        _c("div", { staticClass: "form-group" }, [
-                          _vm._m(5),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.nivel2,
-                                expression: "nivel2"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: { type: "text", readonly: "", value: "" },
-                            domProps: { value: _vm.nivel2 },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.nivel2 = $event.target.value
-                              }
-                            }
-                          })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-2" }, [
-                        _c("div", { staticClass: "form-group" }, [
-                          _vm._m(6),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.nivel3,
-                                expression: "nivel3"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: { type: "text", readonly: "", value: "" },
-                            domProps: { value: _vm.nivel3 },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.nivel3 = $event.target.value
-                              }
-                            }
-                          })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-2" }, [
-                        _c("div", { staticClass: "form-group" }, [
-                          _vm._m(7),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.nivel4,
-                                expression: "nivel4"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: { type: "text", readonly: "", value: "" },
-                            domProps: { value: _vm.nivel4 },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.nivel4 = $event.target.value
-                              }
-                            }
-                          })
-                        ])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _vm.editar == false
-                      ? [
-                          _c("div", { staticClass: "form-group row" }, [
-                            _c(
-                              "label",
-                              {
-                                staticClass: "col-md-3 form-control-label",
-                                attrs: { for: "text-input" }
-                              },
-                              [_vm._v("Clase")]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "col-md-9" },
-                              [
-                                _c("v-select", {
-                                  attrs: {
-                                    label: "nombre",
-                                    options: _vm.arrayCuenta,
-                                    placeholder: "Buscar Cuenta..."
-                                  },
-                                  on: {
-                                    search: _vm.selectCuenta,
-                                    input: _vm.getDatosCuenta
-                                  },
-                                  model: {
-                                    value: _vm.selectedCuenta,
-                                    callback: function($$v) {
-                                      _vm.selectedCuenta = $$v
-                                    },
-                                    expression: "selectedCuenta"
-                                  }
-                                })
-                              ],
-                              1
-                            )
-                          ])
-                        ]
-                      : _vm._e(),
-                    _vm._v(" "),
-                    [
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-md-3 form-control-label",
-                            attrs: { for: "text-input" }
-                          },
-                          [_vm._v("Nombre")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-9" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.nombre,
-                                expression: "nombre"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "text",
-                              required: "",
-                              placeholder: "Nombre............."
-                            },
-                            domProps: { value: _vm.nombre },
-                            on: {
-                              keyup: function($event) {
-                                if (
-                                  !$event.type.indexOf("key") &&
-                                  _vm._k(
-                                    $event.keyCode,
-                                    "enter",
-                                    13,
-                                    $event.key,
-                                    "Enter"
-                                  )
-                                ) {
-                                  return null
-                                }
-                                return _vm.teclaRapida()
-                              },
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.nombre = $event.target.value
-                              }
-                            }
-                          })
-                        ])
-                      ])
-                    ],
-                    _vm._v(" "),
-                    _vm.nivel == 5
-                      ? [
-                          _c("div", { staticClass: "form-group row" }, [
-                            _c(
-                              "label",
-                              {
-                                staticClass: "col-md-3 form-control-label",
-                                attrs: { for: "text-input" }
-                              },
-                              [_vm._v("Telefono")]
-                            ),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-md-9" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.telefono,
-                                    expression: "telefono"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  type: "text",
-                                  placeholder: "Telefono.............."
-                                },
-                                domProps: { value: _vm.telefono },
-                                on: {
-                                  keyup: function($event) {
-                                    if (
-                                      !$event.type.indexOf("key") &&
-                                      _vm._k(
-                                        $event.keyCode,
-                                        "enter",
-                                        13,
-                                        $event.key,
-                                        "Enter"
-                                      )
-                                    ) {
-                                      return null
-                                    }
-                                    return _vm.teclaRapida()
-                                  },
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.telefono = $event.target.value
-                                  }
-                                }
-                              })
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "form-group row" }, [
-                            _c(
-                              "label",
-                              {
-                                staticClass: "col-md-3 form-control-label",
-                                attrs: { for: "text-input" }
-                              },
-                              [_vm._v("Empresa")]
-                            ),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-md-9" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.empresa,
-                                    expression: "empresa"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  type: "text",
-                                  placeholder: "Empresa............"
-                                },
-                                domProps: { value: _vm.empresa },
-                                on: {
-                                  keyup: function($event) {
-                                    if (
-                                      !$event.type.indexOf("key") &&
-                                      _vm._k(
-                                        $event.keyCode,
-                                        "enter",
-                                        13,
-                                        $event.key,
-                                        "Enter"
-                                      )
-                                    ) {
-                                      return null
-                                    }
-                                    return _vm.teclaRapida()
-                                  },
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.empresa = $event.target.value
-                                  }
-                                }
-                              })
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "form-group row" }, [
-                            _c(
-                              "label",
-                              {
-                                staticClass: "col-md-3 form-control-label",
-                                attrs: { for: "text-input" }
-                              },
-                              [_vm._v("Direccion")]
-                            ),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-md-9" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.direccion,
-                                    expression: "direccion"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  type: "text",
-                                  placeholder: "Direccion............"
-                                },
-                                domProps: { value: _vm.direccion },
-                                on: {
-                                  keyup: function($event) {
-                                    if (
-                                      !$event.type.indexOf("key") &&
-                                      _vm._k(
-                                        $event.keyCode,
-                                        "enter",
-                                        13,
-                                        $event.key,
-                                        "Enter"
-                                      )
-                                    ) {
-                                      return null
-                                    }
-                                    return _vm.teclaRapida()
-                                  },
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.direccion = $event.target.value
-                                  }
-                                }
-                              })
-                            ])
-                          ])
-                        ]
-                      : _vm._e()
-                  ],
-                  2
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-secondary",
-                    attrs: { type: "button", "data-dismiss": "modal" },
-                    on: {
-                      click: function($event) {
-                        return _vm.cerrarModal()
-                      }
-                    }
-                  },
-                  [_vm._v("Cerrar")]
-                ),
-                _vm._v(" "),
-                _vm.tipoAccion == 1
-                  ? _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        attrs: { type: "button" },
-                        on: {
-                          click: function($event) {
-                            return _vm.registrar()
-                          }
-                        }
-                      },
-                      [_vm._v("Guardar")]
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.tipoAccion == 2
-                  ? _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        attrs: { type: "button" },
-                        on: {
-                          click: function($event) {
-                            return _vm.actualizar()
-                          }
-                        }
-                      },
-                      [_vm._v("Actualizar")]
-                    )
-                  : _vm._e()
-              ])
-            ])
-          ]
-        )
-      ]
-    )
+    ])
   ])
 }
 var staticRenderFns = [
@@ -78945,103 +77848,11 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th"),
-        _vm._v(" "),
         _c("th", [_vm._v("Codigo")]),
         _vm._v(" "),
         _c("th", [_vm._v("Nombre")])
       ])
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "label",
-      {
-        staticClass: "col-md-3 form-control-label",
-        attrs: { for: "text-input" }
-      },
-      [
-        _c("span", { staticClass: "badge badge-success" }, [
-          _c("i", { staticClass: "icon-check" }),
-          _vm._v(" Nivel 1\n                    ")
-        ])
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "label",
-      {
-        staticClass: "col-md-3 form-control-label",
-        attrs: { for: "text-input" }
-      },
-      [
-        _c("span", { staticClass: "badge badge-success" }, [
-          _c("i", { staticClass: "icon-check" }),
-          _vm._v(" Nivel 2\n                    ")
-        ])
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "label",
-      {
-        staticClass: "col-md-3 form-control-label",
-        attrs: { for: "text-input" }
-      },
-      [
-        _c("span", { staticClass: "badge badge-success" }, [
-          _c("i", { staticClass: "icon-check" }),
-          _vm._v(" Nivel 3\n                    ")
-        ])
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "label",
-      {
-        staticClass: "col-md-3 form-control-label",
-        attrs: { for: "text-input" }
-      },
-      [
-        _c("span", { staticClass: "badge badge-success" }, [
-          _c("i", { staticClass: "icon-check" }),
-          _vm._v(" Nivel 4\n                    ")
-        ])
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "label",
-      {
-        staticClass: "col-md-3 form-control-label",
-        attrs: { for: "text-input" }
-      },
-      [
-        _c("span", { staticClass: "badge badge-success" }, [
-          _c("i", { staticClass: "icon-check" }),
-          _vm._v(" Nivel 5\n                    ")
-        ])
-      ]
-    )
   }
 ]
 render._withStripped = true
@@ -79830,11 +78641,7 @@ var render = function() {
                                     _c(
                                       "span",
                                       { staticClass: "input-group-append" },
-                                      [
-                                        _vm._v(
-                                          "  " + _vm._s(detalle.referencia)
-                                        )
-                                      ]
+                                      [_vm._v("  Bs.")]
                                     )
                                   ]),
                                   _vm._v(" "),

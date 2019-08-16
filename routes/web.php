@@ -106,6 +106,8 @@ Route::group(['middleware'=>['auth']],function(){
    Route::get('/egreso/obtenerDetalles', 'EgresoController@obtenerDetalles');
    Route::get('/egreso/listarEgreso', 'EgresoController@listarEgreso');
 
+   Route::get('/cuenta/balanceGeneral', 'CuentaController@balanceGeneral');
+
    });
    
 Auth::routes();

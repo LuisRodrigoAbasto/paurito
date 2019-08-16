@@ -15,6 +15,7 @@ class CreateCuentasTable extends Migration
     {
         Schema::create('cuentas', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedinteger('idCuenta')->nullable();
             $table->string('nombre',200);
             $table->string('telefono',20)->nullable();
             $table->string('empresa',100)->nullable();
@@ -26,6 +27,7 @@ class CreateCuentasTable extends Migration
             $table->integer('nivel3');
             $table->integer('nivel4');
             $table->boolean('estado')->default(1);
+            $table->foreign('idCuenta')->references('id')->on('cuentas');
             $table->timestamps();
         });
     }
