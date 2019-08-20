@@ -119,9 +119,12 @@ class CuentaController extends Controller
         ->orderBy('nivel4','asc')
         ->get();
 
+        // $pdf = App::make('dompdf.wrapper');
+
         $cont=Cuenta::count();
         $pdf = \PDF::loadView('pdf.cuentaspdf',['cuentas'=>$cuentas,'cont'=>$cont]);
         return $pdf->download('cuentas.pdf');
+        // return $pdf->stream();
     }
     
     public function cuenta(Request $request)
@@ -220,8 +223,8 @@ class CuentaController extends Controller
                 ->join('compras','cuentas.id','=','compras.idProveedor')
                 ->join('ventas','cuentas.id','=','ventas.idCliente')
     
-                ->whereBetween('compras.fecha',[$fechaInicio,$fechaFin])
-                ->whereBetween('ventas.fecha',[$fechaInicio,$fechaFin])
+                // ->whereBetween('compras.fecha',[$fechaInicio,$fechaFin])
+                // ->whereBetween('ventas.fecha',[$fechaInicio,$fechaFin])
                 ->where('c1.id','=',$nivel1->id)
                 ->select('c2.id','c2.nombre','c2.nivel','c2.tipo','c2.nivel1','c2.estado')
                 ->groupBy('c2.id','c2.nombre','c2.nivel','c2.tipo','c2.nivel1','c2.estado')
@@ -260,8 +263,8 @@ class CuentaController extends Controller
                 ->join('cuentas as c1','c2.idCuenta','=','c1.id')
                 ->join('compras','cuentas.id','=','compras.idProveedor')
                 ->join('ventas','cuentas.id','=','ventas.idCliente')
-                ->whereBetween('compras.fecha',[$fechaInicio,$fechaFin])
-                ->whereBetween('ventas.fecha',[$fechaInicio,$fechaFin])
+                // ->whereBetween('compras.fecha',[$fechaInicio,$fechaFin])
+                // ->whereBetween('ventas.fecha',[$fechaInicio,$fechaFin])
                 ->where('c1.id','=',$nivel1->id)
                 ->where('c2.id','=',$nivel2->id)
                 ->select('c3.id','c3.nombre','c3.nivel','c3.tipo','c3.nivel1','c3.nivel2','c3.estado')
@@ -305,8 +308,8 @@ class CuentaController extends Controller
                     ->join('cuentas as c1','c2.idCuenta','=','c1.id')
                     ->join('compras','cuentas.id','=','compras.idProveedor')
                     ->join('ventas','cuentas.id','=','ventas.idCliente')
-                    ->whereBetween('compras.fecha',[$fechaInicio,$fechaFin])
-                    ->whereBetween('ventas.fecha',[$fechaInicio,$fechaFin])
+                    // ->whereBetween('compras.fecha',[$fechaInicio,$fechaFin])
+                    // ->whereBetween('ventas.fecha',[$fechaInicio,$fechaFin])
                     ->where('c1.id','=',$nivel1->id)
                     ->where('c2.id','=',$nivel2->id)
                     ->where('c3.id','=',$nivel3->id)
@@ -354,8 +357,8 @@ class CuentaController extends Controller
                         ->join('cuentas as c1','c2.idCuenta','=','c1.id')
                         ->join('compras','cuentas.id','=','compras.idProveedor')
                         ->join('ventas','cuentas.id','=','ventas.idCliente')
-                        ->whereBetween('compras.fecha',[$fechaInicio,$fechaFin])
-                        ->whereBetween('ventas.fecha',[$fechaInicio,$fechaFin])
+                        // ->whereBetween('compras.fecha',[$fechaInicio,$fechaFin])
+                        // ->whereBetween('ventas.fecha',[$fechaInicio,$fechaFin])
                         ->where('c1.id','=',$nivel1->id)
                         ->where('c2.id','=',$nivel2->id)
                         ->where('c3.id','=',$nivel3->id)
@@ -411,7 +414,7 @@ class CuentaController extends Controller
                                 ->where('c2.id','=',$nivel2->id)
                                 ->where('c3.id','=',$nivel3->id)
                                 ->where('c4.id','=',$nivel4->id)
-                                ->select('ventas.id','ventas.factura','ventas.registro','ventas.fecha',
+                                ->select('ventas.id','ventas.factura','ventas.registro','ventas.fecha','ventas.descripcion',
                                 'ventas.montoVenta as montoTotal','ventas.tipo')
                                 ->orderBy('ventas.id','desc')
                                 ->get();
@@ -427,7 +430,7 @@ class CuentaController extends Controller
                                 ->where('c2.id','=',$nivel2->id)
                                 ->where('c3.id','=',$nivel3->id)
                                 ->where('c4.id','=',$nivel4->id)
-                                ->select('compras.id','compras.factura','compras.registro','compras.fecha',
+                                ->select('compras.id','compras.factura','compras.registro','compras.fecha','compras.descripcion',
                                 'compras.montoCompra as montoTotal','compras.tipo')
                                 ->orderBy('compras.id','desc')
                                 ->get();
@@ -441,7 +444,9 @@ class CuentaController extends Controller
                                     }
                                     else{
                                         if(count($ventas)==0 && count($compras)>0)
+                                    {
                                         $nivel5->datos=$compras;
+                                    }
                                     }
                                 }
                                 // ksort($cuentas[$c1]->datos[$c2]->datos[$c3]->datos[$c4]->datos[$c5]->datos);

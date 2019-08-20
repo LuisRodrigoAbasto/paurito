@@ -36,7 +36,7 @@ class CompraController extends Controller
             }
             else{
                 $compras= Compra::join('cuentas','compras.idProveedor','=','cuentas.id')
-                ->select('compras.id','compras.factura','compras.registro','cuentas.nombre','compras.idProveedor','fecha','pago','cantidad','descripcion','montoVenta','compras.estado')
+                ->select('compras.id','compras.factura','compras.registro','cuentas.nombre','compras.idProveedor','fecha','pago','cantidad','descripcion','montoCompra','compras.estado')
                 ->where('cuentas.nombre', 'like', '%'. $buscar . '%')
                 ->orderBy('compras.estado','desc')
                 ->orderBy('compras.id','desc')->paginate(5);
@@ -61,13 +61,17 @@ class CompraController extends Controller
     {
         // if(!$request->ajax()) return redirect('/');
         $id = $request->id;
+        $compras=Compra::join('cuentas','compras.idProveedor','=','cuentas.id')
+        ->where('compras.id','=',$id)
+        ->select('compras.id','compras.factura','compras.registro','cuentas.nombre','compras.idProveedor','fecha','pago','cantidad','descripcion','montoCompra','compras.estado')
+        ->get();
+
         $detalles = DetalleCompra::join('compras','compras.id','detalle_compras.idCompra')
         ->join('productos','productos.id','detalle_compras.idProducto')
         ->where('detalle_compras.idCompra','=',$id)
-        ->where('detalle_compras.estado','=','1')
         ->select('productos.id as idProducto','productos.nombre as producto','detalle_compras.cantidad','productos.codigo','productos.unidad','productos.referencia','detalle_compras.precio')
         ->get();
-        return ['detalles'=>$detalles];
+        return ['compras'=>$compras,'detalles'=>$detalles];
     }
     public function store(Request $request)
     {   

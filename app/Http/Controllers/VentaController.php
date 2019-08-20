@@ -114,17 +114,22 @@ class VentaController extends Controller
     {
         // if(!$request->ajax()) return redirect('/');
         $id = $request->id;
-        $idFormula=$request->idFormula;
+        $ventas= Venta::join('cuentas','ventas.idCliente','=','cuentas.id')
+        ->where('ventas.id','=',$id)
+        ->select('ventas.id','ventas.factura','ventas.registro','idFormula','cuentas.nombre','ventas.idCliente','fecha','pago','cantidad','descripcion','montoVenta','ventas.estado')
+        ->get();
+
         $detalles = DetalleVenta::join('ventas','ventas.id','=','detalle_ventas.idVenta')
         ->join('productos','productos.id','=','detalle_ventas.idProducto')
         ->where('detalle_ventas.idVenta','=',$id)
         ->where('detalle_ventas.estado','=','1') 
         ->select('detalle_ventas.idProducto','productos.nombre as producto','detalle_ventas.cantidad','productos.codigo','productos.unidad','productos.referencia','detalle_ventas.precio','detalle_ventas.descripcionD')
         ->get();
-        $formula=Formula::where('estado','=','1')->where('id','=',$idFormula)
+
+        $formula=Formula::where('estado','=','1')->where('id','=',$ventas[0]->idFormula)
         ->get();
 
-        return ['detalles'=>$detalles,'formula'=>$formula];
+        return ['ventas'=>$ventas,'detalles'=>$detalles,'formula'=>$formula];
     }
     
     public function store(Request $request)
