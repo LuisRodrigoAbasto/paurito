@@ -23,6 +23,7 @@ class CreateComprasTable extends Migration
             $table->decimal('cantidad',11,2);
             $table->decimal('montoCompra',11,2);
             $table->string('descripcion',200)->nullable();
+            $table->string('tipo',20)->nullable();
             $table->boolean('estado')->default(1);
             $table->foreign('idProveedor')->references('id')->on('cuentas');
             $table->timestamps();

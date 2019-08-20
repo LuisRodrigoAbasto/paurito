@@ -154,6 +154,7 @@ class VentaController extends Controller
             $ventas->cantidad = $request->cantidad;
             $ventas->montoVenta = $request->montoVenta;
             $ventas->descripcion = $request->descripcion;
+            $ventas->tipo = 'Ventas';
             $ventas->estado = '1';
             $ventas->save();
 
@@ -200,6 +201,7 @@ class VentaController extends Controller
         $venta->cantidad = $request->cantidad;
         $venta->descripcion = $request->descripcion;
         $venta->montoVenta = $request->montoVenta;
+        $venta->tipo = 'Ventas';
         $venta->estado = '1';
         $venta->save();
 

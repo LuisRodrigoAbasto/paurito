@@ -24,6 +24,7 @@ class CreateVentasTable extends Migration
             $table->decimal('cantidad',11,2);
             $table->decimal('montoVenta',11,2);
             $table->string('descripcion',200)->nullable();
+            $table->string('tipo',20)->nullable();
             $table->boolean('estado')->default(1);
             $table->foreign('idCliente')->references('id')->on('cuentas');
             $table->timestamps();

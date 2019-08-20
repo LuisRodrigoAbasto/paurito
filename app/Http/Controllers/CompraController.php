@@ -94,6 +94,7 @@ class CompraController extends Controller
             $compras->pago = $request->pago;
             $compras->montoCompra = $request->montoCompra;
             $compras->descripcion = $request->descripcion;
+            $compras->tipo="Compras";
             $compras->estado = '1';
             $compras->save();
 
@@ -136,6 +137,7 @@ class CompraController extends Controller
         $compra->pago = $request->pago;
         $compra->montoCompra= $request->montoCompra;
         $compra->descripcion = $request->descripcion;
+        $compra->tipo="Compras";
         $compra->estado = '1';
         $compra->save();
         $detalle = DetalleCompra::where('idCompra','=',$compra->id)->update(['estado'=>'0']);

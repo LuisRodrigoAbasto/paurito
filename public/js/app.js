@@ -1958,6 +1958,63 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -1984,19 +2041,12 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       editar: false,
       tituloModal: "",
       tipoAccion: 0,
-      pagination: {
-        total: 0,
-        current_page: 0,
-        per_page: 0,
-        last_page: 0,
-        from: 0,
-        to: 0
-      },
       offset: 3,
       criterio: "nombre",
       buscar: "",
-      fechaInicio: new Date(),
-      fechaFin: new Date()
+      fecha: new Date(),
+      fechaInicio: "",
+      fechaFin: ""
     };
   },
   computed: {},
@@ -2013,6 +2063,29 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
     },
     cargarPdf: function cargarPdf() {
       window.open("http://localhost:8000/cuenta/listarPdf", "_blank");
+    },
+    cargarFecha: function cargarFecha() {
+      var year = this.fecha.getFullYear();
+      var mes = this.fecha.getMonth();
+      var dia = this.fecha.getDate();
+      mes++;
+
+      if (mes < 10) {
+        mes = "0" + mes;
+      }
+
+      if (dia < 10) {
+        dia = "0" + dia;
+      }
+
+      var mesI = mes - 1;
+
+      if (mesI < 10) {
+        mesI = "0" + mesI;
+      }
+
+      this.fechaInicio = year + "-" + mesI + "-" + dia;
+      this.fechaFin = year + "-" + mes + "-" + dia;
     },
     limpiarRegistro: function limpiarRegistro() {
       this.cuenta_id = 0;
@@ -2068,6 +2141,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
     }
   },
   mounted: function mounted() {
+    this.cargarFecha();
     this.listar(this.fechaInicio, this.fechaFin);
   }
 });
@@ -77622,7 +77696,7 @@ var render = function() {
             _c("div", { staticClass: "col-md-12" }, [
               _c("div", { staticClass: "input-group" }, [
                 _c("label", { attrs: { for: "" } }, [_vm._v("Fecha Inicio")]),
-                _vm._v("\n                 \n              "),
+                _vm._v("\n                \n              "),
                 _c("input", {
                   directives: [
                     {
@@ -77644,9 +77718,9 @@ var render = function() {
                     }
                   }
                 }),
-                _vm._v("\n                    \n              "),
+                _vm._v("\n                  \n              "),
                 _c("label", { attrs: { for: "" } }, [_vm._v("Fecha Fin")]),
-                _vm._v("\n                  \n              "),
+                _vm._v("\n                \n              "),
                 _c("input", {
                   directives: [
                     {
@@ -77752,6 +77826,7 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "td",
+                            { attrs: { colspan: "4" } },
                             [
                               _c(
                                 "font",
@@ -77768,9 +77843,7 @@ var render = function() {
                             1
                           ),
                           _vm._v(" "),
-                          _c("td", [
-                            _vm._v(_vm._s(data.montoVenta + data.montoCompra))
-                          ])
+                          _c("td", [_vm._v(_vm._s(data.montoTotal.toFixed(2)))])
                         ]),
                         _vm._v(" "),
                         data.estado
@@ -77779,6 +77852,9 @@ var render = function() {
                                 return [
                                   _c("tr", { key: data2.id }, [
                                     _c("td", [
+                                      _vm._v(
+                                        "\n                          \n                        "
+                                      ),
                                       data2.estado
                                         ? _c(
                                             "button",
@@ -77840,9 +77916,10 @@ var render = function() {
                                     _vm._v(" "),
                                     _c(
                                       "td",
+                                      { attrs: { colspan: "4" } },
                                       [
                                         _vm._v(
-                                          "\n                             \n                      "
+                                          "\n                               \n                        "
                                         ),
                                         _c(
                                           "font",
@@ -77863,9 +77940,7 @@ var render = function() {
                                     _vm._v(" "),
                                     _c("td", [
                                       _vm._v(
-                                        _vm._s(
-                                          data2.montoVenta + data2.montoCompra
-                                        )
+                                        _vm._s(data2.montoTotal.toFixed(2))
                                       )
                                     ])
                                   ]),
@@ -77879,6 +77954,9 @@ var render = function() {
                                           return [
                                             _c("tr", { key: data3.id }, [
                                               _c("td", [
+                                                _vm._v(
+                                                  "\n                                \n                            "
+                                                ),
                                                 data3.estado
                                                   ? _c(
                                                       "button",
@@ -77956,9 +78034,10 @@ var render = function() {
                                               _vm._v(" "),
                                               _c(
                                                 "td",
+                                                { attrs: { colspan: "4" } },
                                                 [
                                                   _vm._v(
-                                                    "\n                                       \n                        "
+                                                    "\n                                           \n                            "
                                                   ),
                                                   _c(
                                                     "font",
@@ -77983,8 +78062,7 @@ var render = function() {
                                               _c("td", [
                                                 _vm._v(
                                                   _vm._s(
-                                                    data3.montoVenta +
-                                                      data3.montoCompra
+                                                    data3.montoTotal.toFixed(2)
                                                   )
                                                 )
                                               ])
@@ -78002,6 +78080,9 @@ var render = function() {
                                                         { key: data4.id },
                                                         [
                                                           _c("td", [
+                                                            _vm._v(
+                                                              "\n                                      \n                                "
+                                                            ),
                                                             data4.estado
                                                               ? _c(
                                                                   "button",
@@ -78083,9 +78164,14 @@ var render = function() {
                                                           _vm._v(" "),
                                                           _c(
                                                             "td",
+                                                            {
+                                                              attrs: {
+                                                                colspan: "4"
+                                                              }
+                                                            },
                                                             [
                                                               _vm._v(
-                                                                "\n                                                 \n                          "
+                                                                "\n                                                       \n                                "
                                                               ),
                                                               _c(
                                                                 "font",
@@ -78110,8 +78196,9 @@ var render = function() {
                                                           _c("td", [
                                                             _vm._v(
                                                               _vm._s(
-                                                                data4.montoVenta +
-                                                                  data4.montoCompra
+                                                                data4.montoTotal.toFixed(
+                                                                  2
+                                                                )
                                                               )
                                                             )
                                                           ])
@@ -78135,6 +78222,9 @@ var render = function() {
                                                                     },
                                                                     [
                                                                       _c("td", [
+                                                                        _vm._v(
+                                                                          "\n                                            \n                                    "
+                                                                        ),
                                                                         data5.estado
                                                                           ? _c(
                                                                               "button",
@@ -78228,28 +78318,354 @@ var render = function() {
                                                                       _vm._v(
                                                                         " "
                                                                       ),
-                                                                      _c("td", [
-                                                                        _vm._v(
-                                                                          "\n                                                           \n                            " +
-                                                                            _vm._s(
-                                                                              data5.nombre
-                                                                            ) +
-                                                                            "\n                          "
-                                                                        )
-                                                                      ]),
+                                                                      _c(
+                                                                        "td",
+                                                                        {
+                                                                          attrs: {
+                                                                            colspan:
+                                                                              "4"
+                                                                          }
+                                                                        },
+                                                                        [
+                                                                          _vm._v(
+                                                                            "\n                                                                   \n                                    " +
+                                                                              _vm._s(
+                                                                                data5.nombre
+                                                                              ) +
+                                                                              "\n                                  "
+                                                                          )
+                                                                        ]
+                                                                      ),
                                                                       _vm._v(
                                                                         " "
                                                                       ),
                                                                       _c("td", [
                                                                         _vm._v(
                                                                           _vm._s(
-                                                                            data5.montoVenta +
-                                                                              data5.montoCompra
+                                                                            data5.montoTotal.toFixed(
+                                                                              2
+                                                                            )
                                                                           )
                                                                         )
                                                                       ])
                                                                     ]
-                                                                  )
+                                                                  ),
+                                                                  _vm._v(" "),
+                                                                  data5.estado
+                                                                    ? [
+                                                                        _c(
+                                                                          "tr",
+                                                                          {
+                                                                            key:
+                                                                              data5.id
+                                                                          },
+                                                                          [
+                                                                            _c(
+                                                                              "th"
+                                                                            ),
+                                                                            _vm._v(
+                                                                              " "
+                                                                            ),
+                                                                            _c(
+                                                                              "th",
+                                                                              [
+                                                                                _vm._v(
+                                                                                  "Factura"
+                                                                                )
+                                                                              ]
+                                                                            ),
+                                                                            _vm._v(
+                                                                              " "
+                                                                            ),
+                                                                            _c(
+                                                                              "th",
+                                                                              [
+                                                                                _vm._v(
+                                                                                  "Registro"
+                                                                                )
+                                                                              ]
+                                                                            ),
+                                                                            _vm._v(
+                                                                              " "
+                                                                            ),
+                                                                            _c(
+                                                                              "th",
+                                                                              [
+                                                                                _vm._v(
+                                                                                  "Fecha"
+                                                                                )
+                                                                              ]
+                                                                            ),
+                                                                            _vm._v(
+                                                                              " "
+                                                                            ),
+                                                                            _c(
+                                                                              "th",
+                                                                              [
+                                                                                _vm._v(
+                                                                                  "Monto Total"
+                                                                                )
+                                                                              ]
+                                                                            ),
+                                                                            _vm._v(
+                                                                              " "
+                                                                            ),
+                                                                            _c(
+                                                                              "th",
+                                                                              [
+                                                                                _vm._v(
+                                                                                  "Tipo"
+                                                                                )
+                                                                              ]
+                                                                            ),
+                                                                            _vm._v(
+                                                                              " "
+                                                                            ),
+                                                                            _c(
+                                                                              "th",
+                                                                              [
+                                                                                _vm._v(
+                                                                                  "Opciones"
+                                                                                )
+                                                                              ]
+                                                                            )
+                                                                          ]
+                                                                        ),
+                                                                        _vm._v(
+                                                                          " "
+                                                                        ),
+                                                                        _vm._l(
+                                                                          data5.datos,
+                                                                          function(
+                                                                            data6
+                                                                          ) {
+                                                                            return [
+                                                                              _c(
+                                                                                "tr",
+                                                                                {
+                                                                                  key:
+                                                                                    data6.id
+                                                                                },
+                                                                                [
+                                                                                  _c(
+                                                                                    "td"
+                                                                                  ),
+                                                                                  _vm._v(
+                                                                                    " "
+                                                                                  ),
+                                                                                  _c(
+                                                                                    "td",
+                                                                                    [
+                                                                                      _vm._v(
+                                                                                        _vm._s(
+                                                                                          data6.factura
+                                                                                        )
+                                                                                      )
+                                                                                    ]
+                                                                                  ),
+                                                                                  _vm._v(
+                                                                                    " "
+                                                                                  ),
+                                                                                  _c(
+                                                                                    "td",
+                                                                                    [
+                                                                                      _vm._v(
+                                                                                        _vm._s(
+                                                                                          data6.registro
+                                                                                        )
+                                                                                      )
+                                                                                    ]
+                                                                                  ),
+                                                                                  _vm._v(
+                                                                                    " "
+                                                                                  ),
+                                                                                  _c(
+                                                                                    "td",
+                                                                                    [
+                                                                                      _vm._v(
+                                                                                        _vm._s(
+                                                                                          data6.fecha
+                                                                                        )
+                                                                                      )
+                                                                                    ]
+                                                                                  ),
+                                                                                  _vm._v(
+                                                                                    " "
+                                                                                  ),
+                                                                                  _c(
+                                                                                    "td",
+                                                                                    [
+                                                                                      _vm._v(
+                                                                                        _vm._s(
+                                                                                          data6.montoTotal
+                                                                                        )
+                                                                                      )
+                                                                                    ]
+                                                                                  ),
+                                                                                  _vm._v(
+                                                                                    " "
+                                                                                  ),
+                                                                                  _c(
+                                                                                    "td",
+                                                                                    [
+                                                                                      _c(
+                                                                                        "span",
+                                                                                        {
+                                                                                          staticClass:
+                                                                                            "badge badge-success"
+                                                                                        },
+                                                                                        [
+                                                                                          _vm._v(
+                                                                                            _vm._s(
+                                                                                              data6.tipo
+                                                                                            )
+                                                                                          )
+                                                                                        ]
+                                                                                      )
+                                                                                    ]
+                                                                                  ),
+                                                                                  _vm._v(
+                                                                                    " "
+                                                                                  ),
+                                                                                  _c(
+                                                                                    "td",
+                                                                                    [
+                                                                                      _c(
+                                                                                        "button",
+                                                                                        {
+                                                                                          staticClass:
+                                                                                            "btn btn-warning btn-sm",
+                                                                                          attrs: {
+                                                                                            type:
+                                                                                              "button"
+                                                                                          },
+                                                                                          on: {
+                                                                                            click: function(
+                                                                                              $event
+                                                                                            ) {
+                                                                                              return _vm.verVenta(
+                                                                                                data6.id
+                                                                                              )
+                                                                                            }
+                                                                                          }
+                                                                                        },
+                                                                                        [
+                                                                                          _c(
+                                                                                            "i",
+                                                                                            {
+                                                                                              staticClass:
+                                                                                                "icon-eye"
+                                                                                            }
+                                                                                          )
+                                                                                        ]
+                                                                                      ),
+                                                                                      _vm._v(
+                                                                                        "  \n                                        "
+                                                                                      ),
+                                                                                      _c(
+                                                                                        "button",
+                                                                                        {
+                                                                                          staticClass:
+                                                                                            "btn btn-info btn-sm",
+                                                                                          attrs: {
+                                                                                            type:
+                                                                                              "button"
+                                                                                          },
+                                                                                          on: {
+                                                                                            click: function(
+                                                                                              $event
+                                                                                            ) {
+                                                                                              return _vm.pdfVenta(
+                                                                                                data6.id
+                                                                                              )
+                                                                                            }
+                                                                                          }
+                                                                                        },
+                                                                                        [
+                                                                                          _c(
+                                                                                            "i",
+                                                                                            {
+                                                                                              staticClass:
+                                                                                                "icon-doc"
+                                                                                            }
+                                                                                          )
+                                                                                        ]
+                                                                                      ),
+                                                                                      _vm._v(
+                                                                                        "  \n                                        "
+                                                                                      ),
+                                                                                      _c(
+                                                                                        "button",
+                                                                                        {
+                                                                                          staticClass:
+                                                                                            "btn btn-warning btn-sm",
+                                                                                          attrs: {
+                                                                                            type:
+                                                                                              "button"
+                                                                                          },
+                                                                                          on: {
+                                                                                            click: function(
+                                                                                              $event
+                                                                                            ) {
+                                                                                              return _vm.mostrarDetalle(
+                                                                                                "venta",
+                                                                                                "actualizar",
+                                                                                                data6
+                                                                                              )
+                                                                                            }
+                                                                                          }
+                                                                                        },
+                                                                                        [
+                                                                                          _c(
+                                                                                            "i",
+                                                                                            {
+                                                                                              staticClass:
+                                                                                                "icon-pencil"
+                                                                                            }
+                                                                                          )
+                                                                                        ]
+                                                                                      ),
+                                                                                      _vm._v(
+                                                                                        "\n                                         \n                                        "
+                                                                                      ),
+                                                                                      _c(
+                                                                                        "button",
+                                                                                        {
+                                                                                          staticClass:
+                                                                                            "btn btn-danger btn-sm",
+                                                                                          attrs: {
+                                                                                            type:
+                                                                                              "button"
+                                                                                          },
+                                                                                          on: {
+                                                                                            click: function(
+                                                                                              $event
+                                                                                            ) {
+                                                                                              return _vm.desactivar(
+                                                                                                data6.id
+                                                                                              )
+                                                                                            }
+                                                                                          }
+                                                                                        },
+                                                                                        [
+                                                                                          _c(
+                                                                                            "i",
+                                                                                            {
+                                                                                              staticClass:
+                                                                                                "icon-trash"
+                                                                                            }
+                                                                                          )
+                                                                                        ]
+                                                                                      )
+                                                                                    ]
+                                                                                  )
+                                                                                ]
+                                                                              )
+                                                                            ]
+                                                                          }
+                                                                        )
+                                                                      ]
+                                                                    : _vm._e()
                                                                 ]
                                                               }
                                                             )
@@ -78314,7 +78730,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Codigo")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Balance General")]),
+        _c("th", { attrs: { colspan: "4" } }, [_vm._v("Balance General")]),
         _vm._v(" "),
         _c("th", [_vm._v("Total")])
       ])
