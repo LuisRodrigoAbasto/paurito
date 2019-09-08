@@ -18,10 +18,6 @@ class BalanceGeneralController extends Controller
         ->join('cuentas as c3','c4.idCuenta','=','c3.id')
         ->join('cuentas as c2','c3.idCuenta','=','c2.id')
         ->join('cuentas as c1','c2.idCuenta','=','c1.id')
-        // ->join('compras','cuentas.id','=','compras.idProveedor')
-        // ->join('ventas','cuentas.id','=','ventas.idCliente')
-        // ->whereBetween('compras.fecha',[$fechaInicio,$fechaFin])
-        // ->whereBetween('ventas.fecha',[$fechaInicio,$fechaFin])
         ->where('c1.nivel','=','1')
         ->where('c1.tipo','<=','3')
         ->select('c1.id','c1.nombre','c1.nivel','c1.tipo','c1.estado')
@@ -49,7 +45,31 @@ class BalanceGeneralController extends Controller
             ->whereBetween('compras.fecha',[$fechaInicio,$fechaFin])
             ->where('c1.id','=',$nivel1->id)
             ->sum('compras.montoCompra');
-            $nivel1->montoTotal=$nivel1->montoVenta + $nivel1->montoCompra;
+
+            $nivel1->montoIngreso=Cuenta::join('cuentas as c4','cuentas.idCuenta','=','c4.id')
+            ->join('cuentas as c3','c4.idCuenta','=','c3.id')
+            ->join('cuentas as c2','c3.idCuenta','=','c2.id')
+            ->join('cuentas as c1','c2.idCuenta','=','c1.id')
+            ->join('detalle_ingresos','cuentas.id','=','detalle_ingresos.idCuenta')
+            ->join('ingresos','detalle_ingresos.idIngreso','=','ingresos.id')
+            ->whereBetween('ingresos.fecha',[$fechaInicio,$fechaFin])
+            ->where('ingresos.estado','=','1')
+            ->where('c1.id','=',$nivel1->id)
+            ->sum('detalle_ingresos.debe');
+            
+            $nivel1->montoEgreso=Cuenta::join('cuentas as c4','cuentas.idCuenta','=','c4.id')
+            ->join('cuentas as c3','c4.idCuenta','=','c3.id')
+            ->join('cuentas as c2','c3.idCuenta','=','c2.id')
+            ->join('cuentas as c1','c2.idCuenta','=','c1.id')
+            ->join('detalle_egresos','cuentas.id','=','detalle_egresos.idCuenta')
+            ->join('egresos','detalle_egresos.idEgreso','=','egresos.id')
+            ->whereBetween('egresos.fecha',[$fechaInicio,$fechaFin])
+            ->where('egresos.estado','=','1')
+            ->where('c1.id','=',$nivel1->id)
+            ->sum('detalle_egresos.debe');
+
+            $nivel1->montoTotal=$nivel1->montoVenta + $nivel1->montoCompra +
+            $nivel1->montoIngreso + $nivel1->montoEgreso;
 
             if($nivel1->montoTotal>0)
             {
@@ -57,11 +77,6 @@ class BalanceGeneralController extends Controller
                 ->join('cuentas as c3','c4.idCuenta','=','c3.id')
                 ->join('cuentas as c2','c3.idCuenta','=','c2.id')
                 ->join('cuentas as c1','c2.idCuenta','=','c1.id')
-                // ->join('compras','cuentas.id','=','compras.idProveedor')
-                // ->join('ventas','cuentas.id','=','ventas.idCliente')
-    
-                // ->whereBetween('compras.fecha',[$fechaInicio,$fechaFin])
-                // ->whereBetween('ventas.fecha',[$fechaInicio,$fechaFin])
                 ->where('c1.id','=',$nivel1->id)
                 ->select('c2.id','c2.nombre','c2.nivel','c2.tipo','c2.nivel1','c2.estado')
                 ->groupBy('c2.id','c2.nombre','c2.nivel','c2.tipo','c2.nivel1','c2.estado')
@@ -91,17 +106,40 @@ class BalanceGeneralController extends Controller
                 ->where('c1.id','=',$nivel1->id)
                 ->where('c2.id','=',$nivel2->id)
                 ->sum('compras.montoCompra');
-                $nivel2->montoTotal=$nivel2->montoVenta + $nivel2->montoCompra;
+
+                $nivel2->montoIngreso=Cuenta::join('cuentas as c4','cuentas.idCuenta','=','c4.id')
+                ->join('cuentas as c3','c4.idCuenta','=','c3.id')
+                ->join('cuentas as c2','c3.idCuenta','=','c2.id')
+                ->join('cuentas as c1','c2.idCuenta','=','c1.id')
+                ->join('detalle_ingresos','cuentas.id','=','detalle_ingresos.idCuenta')
+                ->join('ingresos','detalle_ingresos.idIngreso','=','ingresos.id')
+                ->whereBetween('ingresos.fecha',[$fechaInicio,$fechaFin])
+                ->where('ingresos.estado','=','1')
+                ->where('c1.id','=',$nivel1->id)
+                ->where('c2.id','=',$nivel2->id)
+                ->sum('detalle_ingresos.debe');
+                
+                $nivel2->montoEgreso=Cuenta::join('cuentas as c4','cuentas.idCuenta','=','c4.id')
+                ->join('cuentas as c3','c4.idCuenta','=','c3.id')
+                ->join('cuentas as c2','c3.idCuenta','=','c2.id')
+                ->join('cuentas as c1','c2.idCuenta','=','c1.id')
+                ->join('detalle_egresos','cuentas.id','=','detalle_egresos.idCuenta')
+                ->join('egresos','detalle_egresos.idEgreso','=','egresos.id')
+                ->whereBetween('egresos.fecha',[$fechaInicio,$fechaFin])
+                ->where('egresos.estado','=','1')
+                ->where('c1.id','=',$nivel1->id)
+                ->where('c2.id','=',$nivel2->id)
+                ->sum('detalle_egresos.debe');
+
+                $nivel2->montoTotal=$nivel2->montoVenta + $nivel2->montoCompra +
+                $nivel2->montoIngreso + $nivel2->montoEgreso;
+                
                 if($nivel2->montoTotal>0)
                 {
                 $nivel2->datos=Cuenta::join('cuentas as c4','cuentas.idCuenta','=','c4.id')
                 ->join('cuentas as c3','c4.idCuenta','=','c3.id')
                 ->join('cuentas as c2','c3.idCuenta','=','c2.id')
                 ->join('cuentas as c1','c2.idCuenta','=','c1.id')
-                // ->join('compras','cuentas.id','=','compras.idProveedor')
-                // ->join('ventas','cuentas.id','=','ventas.idCliente')
-                // ->whereBetween('compras.fecha',[$fechaInicio,$fechaFin])
-                // ->whereBetween('ventas.fecha',[$fechaInicio,$fechaFin])
                 ->where('c1.id','=',$nivel1->id)
                 ->where('c2.id','=',$nivel2->id)
                 ->select('c3.id','c3.nombre','c3.nivel','c3.tipo','c3.nivel1','c3.nivel2','c3.estado')
@@ -136,7 +174,35 @@ class BalanceGeneralController extends Controller
                     ->where('c2.id','=',$nivel2->id)
                     ->where('c3.id','=',$nivel3->id)
                     ->sum('compras.montoCompra');
-                    $nivel3->montoTotal=$nivel3->montoVenta + $nivel3->montoCompra;
+
+                    $nivel3->montoIngreso=Cuenta::join('cuentas as c4','cuentas.idCuenta','=','c4.id')
+                    ->join('cuentas as c3','c4.idCuenta','=','c3.id')
+                    ->join('cuentas as c2','c3.idCuenta','=','c2.id')
+                    ->join('cuentas as c1','c2.idCuenta','=','c1.id')
+                    ->join('detalle_ingresos','cuentas.id','=','detalle_ingresos.idCuenta')
+                    ->join('ingresos','detalle_ingresos.idIngreso','=','ingresos.id')
+                    ->whereBetween('ingresos.fecha',[$fechaInicio,$fechaFin])
+                    ->where('ingresos.estado','=','1')
+                    ->where('c1.id','=',$nivel1->id)
+                    ->where('c2.id','=',$nivel2->id)
+                    ->where('c3.id','=',$nivel3->id)
+                    ->sum('detalle_ingresos.debe');
+                    
+                    $nivel3->montoEgreso=Cuenta::join('cuentas as c4','cuentas.idCuenta','=','c4.id')
+                    ->join('cuentas as c3','c4.idCuenta','=','c3.id')
+                    ->join('cuentas as c2','c3.idCuenta','=','c2.id')
+                    ->join('cuentas as c1','c2.idCuenta','=','c1.id')
+                    ->join('detalle_egresos','cuentas.id','=','detalle_egresos.idCuenta')
+                    ->join('egresos','detalle_egresos.idEgreso','=','egresos.id')
+                    ->whereBetween('egresos.fecha',[$fechaInicio,$fechaFin])
+                    ->where('egresos.estado','=','1')
+                    ->where('c1.id','=',$nivel1->id)
+                    ->where('c2.id','=',$nivel2->id)
+                    ->where('c3.id','=',$nivel3->id)
+                    ->sum('detalle_egresos.debe');
+
+                    $nivel3->montoTotal=$nivel3->montoVenta + $nivel3->montoCompra +
+                    $nivel3->montoIngreso + $nivel3->montoEgreso;
 
                     if($nivel3->montoTotal>0)
                     {
@@ -144,10 +210,6 @@ class BalanceGeneralController extends Controller
                     ->join('cuentas as c3','c4.idCuenta','=','c3.id')
                     ->join('cuentas as c2','c3.idCuenta','=','c2.id')
                     ->join('cuentas as c1','c2.idCuenta','=','c1.id')
-                    // ->join('compras','cuentas.id','=','compras.idProveedor')
-                    // ->join('ventas','cuentas.id','=','ventas.idCliente')
-                    // ->whereBetween('compras.fecha',[$fechaInicio,$fechaFin])
-                    // ->whereBetween('ventas.fecha',[$fechaInicio,$fechaFin])
                     ->where('c1.id','=',$nivel1->id)
                     ->where('c2.id','=',$nivel2->id)
                     ->where('c3.id','=',$nivel3->id)
@@ -185,17 +247,45 @@ class BalanceGeneralController extends Controller
                         ->where('c3.id','=',$nivel3->id)
                         ->where('c4.id','=',$nivel4->id)
                         ->sum('compras.montoCompra');
-                        $nivel4->montoTotal=$nivel4->montoVenta + $nivel4->montoCompra;
+
+                        $nivel4->montoIngreso=Cuenta::join('cuentas as c4','cuentas.idCuenta','=','c4.id')
+                        ->join('cuentas as c3','c4.idCuenta','=','c3.id')
+                        ->join('cuentas as c2','c3.idCuenta','=','c2.id')
+                        ->join('cuentas as c1','c2.idCuenta','=','c1.id')
+                        ->join('detalle_ingresos','cuentas.id','=','detalle_ingresos.idCuenta')
+                        ->join('ingresos','detalle_ingresos.idIngreso','=','ingresos.id')
+                        ->whereBetween('ingresos.fecha',[$fechaInicio,$fechaFin])
+                        ->where('ingresos.estado','=','1')
+                        ->where('c1.id','=',$nivel1->id)
+                        ->where('c2.id','=',$nivel2->id)
+                        ->where('c3.id','=',$nivel3->id)
+                        ->where('c4.id','=',$nivel4->id)
+                        ->sum('detalle_ingresos.debe');
+                        
+                        $nivel4->montoEgreso=Cuenta::join('cuentas as c4','cuentas.idCuenta','=','c4.id')
+                        ->join('cuentas as c3','c4.idCuenta','=','c3.id')
+                        ->join('cuentas as c2','c3.idCuenta','=','c2.id')
+                        ->join('cuentas as c1','c2.idCuenta','=','c1.id')
+                        ->join('detalle_egresos','cuentas.id','=','detalle_egresos.idCuenta')
+                        ->join('egresos','detalle_egresos.idEgreso','=','egresos.id')
+                        ->whereBetween('egresos.fecha',[$fechaInicio,$fechaFin])
+                        ->where('egresos.estado','=','1')
+                        ->where('c1.id','=',$nivel1->id)
+                        ->where('c2.id','=',$nivel2->id)
+                        ->where('c3.id','=',$nivel3->id)
+                        ->where('c4.id','=',$nivel4->id)
+                        ->sum('detalle_egresos.debe');
+
+                        $nivel4->montoTotal=$nivel4->montoVenta + $nivel4->montoCompra +
+                        $nivel4->montoIngreso + $nivel4->montoEgreso;
+
+                        
                         if($nivel4->montoTotal>0)
                         {
                         $nivel4->datos=Cuenta::join('cuentas as c4','cuentas.idCuenta','=','c4.id')
                         ->join('cuentas as c3','c4.idCuenta','=','c3.id')
                         ->join('cuentas as c2','c3.idCuenta','=','c2.id')
                         ->join('cuentas as c1','c2.idCuenta','=','c1.id')
-                        // ->join('compras','cuentas.id','=','compras.idProveedor')
-                        // ->join('ventas','cuentas.id','=','ventas.idCliente')
-                        // ->whereBetween('compras.fecha',[$fechaInicio,$fechaFin])
-                        // ->whereBetween('ventas.fecha',[$fechaInicio,$fechaFin])
                         ->where('c1.id','=',$nivel1->id)
                         ->where('c2.id','=',$nivel2->id)
                         ->where('c3.id','=',$nivel3->id)
@@ -237,7 +327,40 @@ class BalanceGeneralController extends Controller
                             ->where('c4.id','=',$nivel4->id)
                             ->where('cuentas.id','=',$nivel5->id)
                             ->sum('compras.montoCompra');
-                            $nivel5->montoTotal=$nivel5->montoVenta + $nivel5->montoCompra;
+
+                            $nivel5->montoIngreso=Cuenta::join('cuentas as c4','cuentas.idCuenta','=','c4.id')
+                            ->join('cuentas as c3','c4.idCuenta','=','c3.id')
+                            ->join('cuentas as c2','c3.idCuenta','=','c2.id')
+                            ->join('cuentas as c1','c2.idCuenta','=','c1.id')
+                            ->join('detalle_ingresos','cuentas.id','=','detalle_ingresos.idCuenta')
+                            ->join('ingresos','detalle_ingresos.idIngreso','=','ingresos.id')
+                            ->whereBetween('ingresos.fecha',[$fechaInicio,$fechaFin])
+                            ->where('ingresos.estado','=','1')
+                            ->where('c1.id','=',$nivel1->id)
+                            ->where('c2.id','=',$nivel2->id)
+                            ->where('c3.id','=',$nivel3->id)
+                            ->where('c4.id','=',$nivel4->id)
+                            ->where('cuentas.id','=',$nivel5->id)
+                            ->sum('detalle_ingresos.debe');
+                            
+                            $nivel5->montoEgreso=Cuenta::join('cuentas as c4','cuentas.idCuenta','=','c4.id')
+                            ->join('cuentas as c3','c4.idCuenta','=','c3.id')
+                            ->join('cuentas as c2','c3.idCuenta','=','c2.id')
+                            ->join('cuentas as c1','c2.idCuenta','=','c1.id')
+                            ->join('detalle_egresos','cuentas.id','=','detalle_egresos.idCuenta')
+                            ->join('egresos','detalle_egresos.idEgreso','=','egresos.id')
+                            ->whereBetween('egresos.fecha',[$fechaInicio,$fechaFin])
+                            ->where('egresos.estado','=','1')
+                            ->where('c1.id','=',$nivel1->id)
+                            ->where('c2.id','=',$nivel2->id)
+                            ->where('c3.id','=',$nivel3->id)
+                            ->where('c4.id','=',$nivel4->id)
+                            ->where('cuentas.id','=',$nivel5->id)
+                            ->sum('detalle_egresos.debe');
+
+                            $nivel5->montoTotal=$nivel5->montoVenta + $nivel5->montoCompra +
+                            $nivel5->montoIngreso + $nivel5->montoEgreso;
+                            
 
                             if($nivel5->montoTotal>0)
                             {
@@ -252,6 +375,7 @@ class BalanceGeneralController extends Controller
                                 ->where('c2.id','=',$nivel2->id)
                                 ->where('c3.id','=',$nivel3->id)
                                 ->where('c4.id','=',$nivel4->id)
+                                // ->where('cuentas.id','=',$nivel5->id)
                                 ->select('ventas.id','ventas.factura','ventas.registro','ventas.fecha','ventas.descripcion',
                                 'ventas.montoVenta as montoTotal','ventas.tipo')
                                 ->orderBy('ventas.id','desc')
@@ -268,26 +392,99 @@ class BalanceGeneralController extends Controller
                                 ->where('c2.id','=',$nivel2->id)
                                 ->where('c3.id','=',$nivel3->id)
                                 ->where('c4.id','=',$nivel4->id)
+                                // ->where('cuentas.id','=',$nivel5->id)
                                 ->select('compras.id','compras.factura','compras.registro','compras.fecha','compras.descripcion',
                                 'compras.montoCompra as montoTotal','compras.tipo')
                                 ->orderBy('compras.id','desc')
                                 ->get();
+
+                                $ingresos=Cuenta::join('cuentas as c4','cuentas.idCuenta','=','c4.id')
+                                ->join('cuentas as c3','c4.idCuenta','=','c3.id')
+                                ->join('cuentas as c2','c3.idCuenta','=','c2.id')
+                                ->join('cuentas as c1','c2.idCuenta','=','c1.id')
+                                ->join('detalle_ingresos','cuentas.id','=','detalle_ingresos.idCuenta')
+                                ->join('ingresos','detalle_ingresos.idIngreso','=','ingresos.id')
+                                ->whereBetween('ingresos.fecha',[$fechaInicio,$fechaFin])
+                                ->where('ingresos.estado','=','1')
+                                ->where('c1.id','=',$nivel1->id)
+                                ->where('c2.id','=',$nivel2->id)
+                                ->where('c3.id','=',$nivel3->id)
+                                ->where('c4.id','=',$nivel4->id)
+                                // ->where('cuentas.id','=',$nivel5->id)
+                                ->select('ingresos.id','ingresos.factura','ingresos.registro','ingresos.fecha','ingresos.descripcion',
+                                'ingresos.monto as montoTotal','ingresos.tipo')
+                                ->orderBy('ingresos.id','desc')
+                                ->get();
                                 
-                                if(count($ventas)>0 && count($compras)>0){
-                                    $nivel5->datos=[$ventas[0],$compras[0]];
+                                $egresos=Cuenta::join('cuentas as c4','cuentas.idCuenta','=','c4.id')
+                                ->join('cuentas as c3','c4.idCuenta','=','c3.id')
+                                ->join('cuentas as c2','c3.idCuenta','=','c2.id')
+                                ->join('cuentas as c1','c2.idCuenta','=','c1.id')
+                                ->join('detalle_egresos','cuentas.id','=','detalle_egresos.idCuenta')
+                                ->join('egresos','detalle_egresos.idEgreso','=','egresos.id')
+                                ->whereBetween('egresos.fecha',[$fechaInicio,$fechaFin])
+                                ->where('egresos.estado','=','1')
+                                ->where('c1.id','=',$nivel1->id)
+                                ->where('c2.id','=',$nivel2->id)
+                                ->where('c3.id','=',$nivel3->id)
+                                ->where('c4.id','=',$nivel4->id)
+                                // ->where('cuentas.id','=',$nivel5->id)
+                                ->select('egresos.id','egresos.factura','egresos.registro','egresos.fecha','egresos.descripcion',
+                                'egresos.monto as montoTotal','egresos.tipo')
+                                ->orderBy('egresos.id','desc')
+                                ->get();
+                                
+                                if(count($ventas)>0)
+                                {
+                                    $nivel5->datos=[$ventas[0]];
                                 }
-                                else{
-                                    if(count($ventas)>0 && count($compras)==0)
+                                if(count($compras)>0)
+                                {
+                                    if(count($ventas)>0)
                                     {
-                                        $nivel5->datos=$ventas;
+                                    $nivel5->datos=[$nivel5->datos[0],$compras[0]];
                                     }
                                     else{
-                                        if(count($ventas)==0 && count($compras)>0)
-                                    {
-                                        $nivel5->datos=$compras;
-                                    }
+                                        $nivel5->datos=[$compras[0]];
                                     }
                                 }
+                                if(count($ingresos)>0)
+                                {
+                                    if(count($compras)>0 || count($ventas)>0)
+                                    {
+                                        $nivel5->datos=[$nivel5->datos[0],$ingresos[0]];
+                                    }
+                                    else{
+                                        $nivel5->datos=[$ingresos[0]];
+                                    }
+                                }
+
+                                if(count($egresos)>0)
+                                {
+                                    if(count($ingresos)>0 || count($compras)>0 || count($ventas)>0)
+                                    {
+                                        $nivel5->datos=[$nivel5->datos[0],$egresos[0]];
+                                    }
+                                    else{
+                                        $nivel5->datos=[$egresos[0]];
+                                    }
+                                }
+
+                                // if(count($ventas)>0 && count($compras)>0 && count($ingresos)>0 && count($egresos)>0){
+                                //     $nivel5->datos=[$ventas[0],$compras[0],$ingresos[0],$egresos[0]];
+                                // }
+                                // else{
+                                //     if(count($ventas)>0 && count($compras)>0 && count($ingresos)>0 && count($egresos)>0)
+                                //     {
+                                //         $nivel5->datos=$ventas;
+                                //     }
+                                //     else{
+                                //         if(count($ventas)==0 && count($compras)>0)
+                                //     {
+                                //         $nivel5->datos=$compras;
+                                //     }
+                                //     }
+                                // }
                                 // ksort($cuentas[$c1]->datos[$c2]->datos[$c3]->datos[$c4]->datos[$c5]->datos);
                                 // $c5++;
                             }

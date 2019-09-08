@@ -41,32 +41,15 @@ class IngresoController extends Controller
             ];
             
         }
-        public function obtenerVenta(Request $request)
+
+        public function listarIngreso(Request $request)
         {
-            if(!$request->ajax()) return redirect('/');
-    
+            // if(!$request->ajax()) return redirect('/');
             $id = $request->id;
-          
-                $ingreso= Ingreso::join('cuentas','ingresos.idCuenta','=','cuentas.id')
-                ->select('ingresos.id','idFormula',DB::raw("concat(cuentas.nombre,' ',cuentas.apellido) as cliente"),
-                'fecha','pago','cantidad','descripcion','montoVenta','ingresos.estado')
-                ->where('ingresos.id','=',$id)
-                ->orderBy('ingresos.id','desc')
-                ->take(1)
-                ->get();
-          
-            return ['ingreso' => $ingreso];
-            
-        }
-        public function obtenerDetalles(Request $request)
-        {
-            if(!$request->ajax()) return redirect('/');
-            $id = $request->id;
-            $detalles = DetalleVenta::join('ingresos','ingresos.id','=','detalle_ingresos.idVenta')
-            ->join('productos','productos.id','detalle_ingresos.idProducto')
-            ->select('productos.id as idProducto','productos.nombre as producto','detalle_ingresos.cantidad','productos.unidad','detalle_ingresos.precio','detalle_ingresos.descripcionD')
-            ->where('detalle_ingresos.idVenta','=',$id)
-            ->orderBy('detalle_ingresos.idProducto','desc')
+            $detalles = DetalleIngreso::join('cuentas','cuentas.id','detalle_ingresos.idCuenta')
+            ->where('detalle_ingresos.idIngreso','=',$id) 
+            ->where('detalle_ingresos.estado','=','1')
+            ->select('cuentas.id as idCuenta',DB::raw("concat(tipo,'.',nivel1,'.',nivel2,'.',nivel3,'.',nivel4)as codigo"),'cuentas.nombre as cuenta','debe','haber','orden','descripcionD')
             ->get();
             return ['detalles'=>$detalles];
         }
@@ -93,17 +76,7 @@ class IngresoController extends Controller
             return $pdf->download('venta_'.$numventa[0]->id.'.pdf');
     
         }
-        public function listarIngreso(Request $request)
-        {
-            if(!$request->ajax()) return redirect('/');
-            $id = $request->id;
-            $detalles = DetalleIngreso::join('cuentas','cuentas.id','detalle_ingresos.idCuenta')
-            ->where('detalle_ingresos.idIngreso','=',$id) 
-            ->where('detalle_ingresos.estado','=','1')
-            ->select('cuentas.id as idCuenta',DB::raw("concat(tipo,'.',nivel1,'.',nivel2,'.',nivel3,'.',nivel4)as codigo"),'cuentas.nombre as cuenta','debe','haber','orden','descripcionD')
-            ->get();
-            return ['detalles'=>$detalles];
-        }
+
         
         public function store(Request $request)
         {   
@@ -128,7 +101,7 @@ class IngresoController extends Controller
                 $ingresos->fecha = $mytime->toDateTimeString();
                 $ingresos->descripcion = $request->descripcion;
                 $ingresos->tipo ='Ingreso';
-                $ingresos->monto=1000;
+                $ingresos->monto=$request->monto;
                 $ingresos->estado = '1';
                 $ingresos->save();
     
@@ -164,6 +137,7 @@ class IngresoController extends Controller
             $ingreso->fecha = $mytime->toDateTimeString();
             $ingreso->descripcion = $request->descripcion;
             $ingreso->tipo ='Ingreso';
+            $ingreso->monto=$request->monto;
             $ingreso->estado = '1';
             $ingreso->save();
 

@@ -98,7 +98,6 @@ Route::group(['middleware'=>['auth']],function(){
    Route::put('/ingreso/actualizar', 'IngresoController@update');
    Route::put('/ingreso/desactivar', 'IngresoController@desactivar');
    Route::put('/ingreso/activar', 'IngresoController@activar');
-   Route::get('/ingreso/obtenerDetalles', 'IngresoController@obtenerDetalles');
    Route::get('/ingreso/listarIngreso', 'IngresoController@listarIngreso');
 
    Route::get('/egreso', 'EgresoController@index');
@@ -106,7 +105,6 @@ Route::group(['middleware'=>['auth']],function(){
    Route::put('/egreso/actualizar', 'EgresoController@update');
    Route::put('/egreso/desactivar', 'EgresoController@desactivar');
    Route::put('/egreso/activar', 'EgresoController@activar');
-   Route::get('/egreso/obtenerDetalles', 'EgresoController@obtenerDetalles');
    Route::get('/egreso/listarEgreso', 'EgresoController@listarEgreso');
 
    Route::get('/balanceGeneral', 'BalanceGeneralController@index');

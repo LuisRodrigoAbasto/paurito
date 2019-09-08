@@ -6020,33 +6020,6 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
         me.haberTotal = me.arrayDetalle[i].haber * 1 + me.haberTotal;
       }
     },
-    verEgreso: function verEgreso(id) {
-      var me = this;
-      me.listado = 2;
-      var arrayEgresoT = []; // var arrayDetalle = [];
-
-      var url = "/egreso/obtenerEgreso?id=" + id;
-      axios.get(url).then(function (response) {
-        var respuesta = response.data;
-        arrayEgresoT = respuesta.egreso;
-        me.egreso_id = arrayEgresoT[0]["id"];
-        me.cuenta = arrayEgresoT[0]["cliente"];
-        me.fecha = arrayEgresoT[0]["fecha"];
-        me.descripcion = arrayEgresoT[0]["descripcion"]; // me.haberTotal = arrayEgresoT[0]["monto"];
-        // me.debeTotal = arrayEgresoT[0]["monto"];
-      })["catch"](function (error) {
-        console.log(error);
-      }); //obtener los Datos de los Detalles
-
-      var urld = "/egreso/obtenerDetalles?id=" + id;
-      axios.get(urld).then(function (response) {
-        console.log(response);
-        var respuesta = response.data;
-        me.arrayDetalle = respuesta.detalles;
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
     cambiarPagina: function cambiarPagina(page, buscar, criterio) {
       var me = this; // actualizar la Pagina
 
@@ -6152,6 +6125,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       var me = this;
       axios.post("/egreso/registrar", {
         descripcion: this.descripcion,
+        monto: this.debeTotal,
         data: this.arrayDetalle
       }).then(function (response) {
         me.listado = 1;
@@ -6177,36 +6151,13 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       var me = this;
       axios.put("/egreso/actualizar", {
         descripcion: this.descripcion,
+        monto: this.debeTotal,
         data: this.arrayDetalle,
         id: this.egreso_id
       }).then(function (response) {
         me.listado = 1;
         me.listar(1, "", "nombre");
         me.limpiarRegistro();
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    eliminarDetalleVenta: function eliminarDetalleVenta() {
-      var me = this;
-      axios.put("/egreso/eliminarDetalle", {
-        idEgreso: this.egreso_id
-      });
-      /*  .then(function(response) {
-      
-        })
-        .catch(function(error) {
-          console.log(error);
-        });*/
-    },
-    insertarDetalle: function insertarDetalle() {
-      var me = this;
-      axios.post("/egreso/insertarDetalle", {
-        idEgreso: this.egreso_id,
-        data: this.arrayDetalle
-      }).then(function (response) {
-        me.listado = 2;
-        me.listar(1, "", "nombre");
       })["catch"](function (error) {
         console.log(error);
       });
@@ -6349,6 +6300,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
                   this.egreso_id = data["id"];
                   this.cuenta = data["cuenta"];
                   this.monto = data["monto"];
+                  this.debeTotal = data["monto"];
+                  this.haberTotal = data["monto"];
                   this.descripcion = data["descripcion"];
                   var me = this;
                   var url = "/egreso/listarEgreso?id=" + data["id"];
@@ -7969,6 +7922,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       var me = this;
       axios.post("/ingreso/registrar", {
         descripcion: this.descripcion,
+        monto: this.debeTotal,
         data: this.arrayDetalle
       }).then(function (response) {
         me.listado = 1;
@@ -7994,36 +7948,13 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       var me = this;
       axios.put("/ingreso/actualizar", {
         descripcion: this.descripcion,
+        monto: this.debeTotal,
         data: this.arrayDetalle,
         id: this.ingreso_id
       }).then(function (response) {
         me.listado = 1;
         me.listar(1, "", "nombre");
         me.limpiarRegistro();
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    eliminarDetalleVenta: function eliminarDetalleVenta() {
-      var me = this;
-      axios.put("/ingreso/eliminarDetalle", {
-        idIngreso: this.ingreso_id
-      });
-      /*  .then(function(response) {
-      
-        })
-        .catch(function(error) {
-          console.log(error);
-        });*/
-    },
-    insertarDetalle: function insertarDetalle() {
-      var me = this;
-      axios.post("/ingreso/insertarDetalle", {
-        idIngreso: this.ingreso_id,
-        data: this.arrayDetalle
-      }).then(function (response) {
-        me.listado = 2;
-        me.listar(1, "", "nombre");
       })["catch"](function (error) {
         console.log(error);
       });
@@ -8121,6 +8052,13 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
         return true;
       }
 
+      for (var i = 0; i < this.arrayDetalle.length; i++) {
+        if (!this.arrayDetalle[i].descripcionD) {
+          this.mensaje = "Le Falta la Descripcion de la Cuenta!!";
+          return true;
+        }
+      }
+
       return false;
     },
     limpiarRegistro: function limpiarRegistro() {
@@ -8157,6 +8095,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
                   this.ingreso_id = data["id"];
                   this.cuenta = data["cuenta"];
                   this.monto = data["monto"];
+                  this.haberTotal = data["monto"];
+                  this.debeTotal = data["monto"];
                   this.descripcion = data["descripcion"];
                   var me = this;
                   var url = "/ingreso/listarIngreso?id=" + data["id"];
@@ -104117,10 +104057,11 @@ Vue.component('venta', __webpack_require__(/*! ./components/Venta.vue */ "./reso
 Vue.component('compra', __webpack_require__(/*! ./components/Compra.vue */ "./resources/js/components/Compra.vue")["default"]);
 Vue.component('compra_detalle', __webpack_require__(/*! ./components/CompraDetalle.vue */ "./resources/js/components/CompraDetalle.vue")["default"]);
 Vue.component('plan_cuenta', __webpack_require__(/*! ./components/PlanCuenta.vue */ "./resources/js/components/PlanCuenta.vue")["default"]);
-Vue.component('balance_general', __webpack_require__(/*! ./components/BalanceGeneral.vue */ "./resources/js/components/BalanceGeneral.vue")["default"]);
 Vue.component('dashboard', __webpack_require__(/*! ./components/Dashboard.vue */ "./resources/js/components/Dashboard.vue")["default"]);
 Vue.component('ingreso', __webpack_require__(/*! ./components/Ingreso.vue */ "./resources/js/components/Ingreso.vue")["default"]);
-Vue.component('egreso', __webpack_require__(/*! ./components/Egreso.vue */ "./resources/js/components/Egreso.vue")["default"]); // Vue.component('notificaciones', require('./components/Notificaciones.vue').default);
+Vue.component('egreso', __webpack_require__(/*! ./components/Egreso.vue */ "./resources/js/components/Egreso.vue")["default"]);
+Vue.component('balance_general', __webpack_require__(/*! ./components/BalanceGeneral.vue */ "./resources/js/components/BalanceGeneral.vue")["default"]);
+Vue.component('estado_resultado', __webpack_require__(/*! ./components/EstadoResultado.vue */ "./resources/js/components/EstadoResultado.vue")["default"]); // Vue.component('notificaciones', require('./components/Notificaciones.vue').default);
 // Vue.component('configuraciones', require('./components/Configuraciones.vue').default);
 
 var app = new Vue({
@@ -104604,6 +104545,38 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Egreso_vue_vue_type_template_id_6e9ed51c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/components/EstadoResultado.vue":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/EstadoResultado.vue ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+var render, staticRenderFns
+var script = {}
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__["default"])(
+  script,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+component.options.__file = "resources/js/components/EstadoResultado.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 

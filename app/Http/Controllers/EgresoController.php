@@ -42,31 +42,19 @@ class EgresoController extends Controller
             ];
             
         }
-        public function obtenerEgreso(Request $request)
-        {
-            if(!$request->ajax()) return redirect('/');
-
-            $id = $request->id;
-            $egreso= Egreso::select('egresos.id','factura','registro','fecha','monto','descripcion','tipo','egresos.estado')
-            ->where('egresos.id','=',$id)
-            ->orderBy('egresos.id','desc')
-            ->get();
-          
-            return ['egreso' => $egreso];
-            
-        }
-        public function obtenerDetalles(Request $request)
+        public function listarEgreso(Request $request)
         {
             if(!$request->ajax()) return redirect('/');
             $id = $request->id;
-            $detalles = DetalleVenta::join('egresos','egresos.id','=','detalle_egresos.idEgreso')
-            ->join('cuentas','detalle_egresos.idCuenta','=','cuentas.id')
-            ->select('productos.id as idProducto','productos.nombre as producto','detalle_egresos.cantidad','productos.unidad','detalle_egresos.precio','detalle_egresos.descripcionD')
-            ->where('detalle_egresos.idVenta','=',$id)
-            ->orderBy('detalle_egresos.idProducto','desc')
+            $detalles = DetalleEgreso::join('cuentas','cuentas.id','detalle_egresos.idCuenta')
+            ->where('detalle_egresos.idEgreso','=',$id) 
+            ->where('detalle_egresos.estado','=','1')
+            ->select('cuentas.id as idCuenta',DB::raw("concat(tipo,'.',nivel1,'.',nivel2,'.',nivel3,'.',nivel4)as codigo"),'cuentas.nombre as cuenta','debe','haber','orden','descripcionD')
+            ->orderBy('orden','asc')
             ->get();
             return ['detalles'=>$detalles];
         }
+
         public function pdf(Request $request, $id)
         {
             $egreso= Egreso::join('cuentas','egresos.idCuenta','=','cuentas.id')
@@ -90,17 +78,7 @@ class EgresoController extends Controller
             return $pdf->download('venta_'.$numventa[0]->id.'.pdf');
     
         }
-        public function listarEgreso(Request $request)
-        {
-            if(!$request->ajax()) return redirect('/');
-            $id = $request->id;
-            $detalles = DetalleEgreso::join('cuentas','cuentas.id','detalle_egresos.idCuenta')
-            ->where('detalle_egresos.idEgreso','=',$id) 
-            ->where('detalle_egresos.estado','=','1')
-            ->select('cuentas.id as idCuenta',DB::raw("concat(tipo,'.',nivel1,'.',nivel2,'.',nivel3,'.',nivel4)as codigo"),'cuentas.nombre as cuenta','debe','haber','orden','descripcionD')
-            ->get();
-            return ['detalles'=>$detalles];
-        }
+
         
         public function store(Request $request)
         {   
@@ -124,7 +102,7 @@ class EgresoController extends Controller
                 $egresos->fecha = $mytime->toDateTimeString();
                 $egresos->descripcion = $request->descripcion;
                 $egresos->tipo ='Egresos';
-                $egresos->monto=1000;
+                $egresos->monto=$request->monto;
                 $egresos->estado = '1';
                 $egresos->save();
     
@@ -160,6 +138,7 @@ class EgresoController extends Controller
             $egreso->fecha = $mytime->toDateTimeString();
             $egreso->descripcion = $request->descripcion;
             $egreso->tipo ='Egresos';
+            $egreso->monto=$request->monto;
             $egreso->estado = '1';
             $egreso->save();
 
