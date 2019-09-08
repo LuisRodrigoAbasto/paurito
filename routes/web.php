@@ -54,6 +54,7 @@ Route::group(['middleware'=>['auth']],function(){
    Route::get('/producto/selectProducto', 'ProductoController@selectProducto');
    Route::get('/producto/listarProducto', 'ProductoController@listarProducto');
    Route::get('/producto/listarPdf', 'ProductoController@listarPdf')->name('productos_pdf');
+   Route::get('/producto/imprimir', 'ProductoController@listarImprimir')->name('productos_imprimir');
    Route::get('/producto/notificaciones', 'ProductoController@notificaciones');
    
    Route::get('/venta', 'VentaController@index');
@@ -65,6 +66,7 @@ Route::group(['middleware'=>['auth']],function(){
    Route::get('/venta/obtenerDetalles', 'VentaController@obtenerDetalles');
    Route::get('/venta/listarVentas', 'VentaController@listarVentas');
    Route::get('/venta/pdf/venta_{id}','VentaController@pdf')->name('venta_pdf');
+   Route::get('/venta/imprimir/venta_{id}','VentaController@imprimir')->name('venta_imprimir');
    
    Route::get('/compra', 'CompraController@index');
    Route::post('/compra/registrar', 'CompraController@store');
@@ -83,6 +85,7 @@ Route::group(['middleware'=>['auth']],function(){
    Route::get('/cuenta/buscarCuenta', 'CuentaController@buscarCuenta');
    Route::get('/cuenta/listarCuenta', 'CuentaController@listarCuenta');
    Route::get('/cuenta/listarPdf', 'CuentaController@listarPdf')->name('cuentas_pdf');
+   Route::get('/cuenta/imprimir', 'CuentaController@listarImprimir')->name('cuentas_imprimir');
 
    Route::get('/plancuenta', 'PlanCuentaController@index');
    Route::post('/plancuenta/registrar', 'PlanCuentaController@store');
@@ -106,7 +109,8 @@ Route::group(['middleware'=>['auth']],function(){
    Route::get('/egreso/obtenerDetalles', 'EgresoController@obtenerDetalles');
    Route::get('/egreso/listarEgreso', 'EgresoController@listarEgreso');
 
-   Route::get('/cuenta/balanceGeneral', 'CuentaController@balanceGeneral');
+   Route::get('/balanceGeneral', 'BalanceGeneralController@index');
+   Route::get('/lista', 'BalanceGeneralController@lista');
 
    });
    

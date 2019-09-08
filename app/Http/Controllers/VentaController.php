@@ -60,7 +60,7 @@ class VentaController extends Controller
     }
     public function obtenerVenta(Request $request)
     {
-        // if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
 
         $id = $request->id;
       
@@ -77,7 +77,7 @@ class VentaController extends Controller
     }
     public function obtenerDetalles(Request $request)
     {
-        // if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
         $id = $request->id;
         $detalles = DetalleVenta::join('ventas','ventas.id','=','detalle_ventas.idVenta')
         ->join('productos','productos.id','=','detalle_ventas.idProducto')
@@ -110,9 +110,30 @@ class VentaController extends Controller
         return $pdf->download('venta_'.$numventa[0]->id.'.pdf');
 
     }
+    public function imprimir(Request $request, $id)
+    {
+        $venta= Venta::join('cuentas','ventas.idCliente','=','cuentas.id')
+        ->select('ventas.id','idFormula','cuentas.nombre as cliente',
+        'fecha','pago','cantidad','descripcion','montoVenta','ventas.estado')
+        ->where('ventas.id','=',$id)
+        ->orderBy('ventas.id','desc')
+        ->take(1)
+        ->get();
+
+        $detalles = DetalleVenta::join('ventas','ventas.id','=','detalle_ventas.idVenta')
+        ->join('productos','productos.id','detalle_ventas.idProducto')
+        ->select('productos.id as idProducto','productos.nombre as producto','detalle_ventas.cantidad','productos.unidad','detalle_ventas.precio','detalle_ventas.descripcionD')
+        ->where('detalle_ventas.idVenta','=',$id)
+        ->orderBy('detalle_ventas.idProducto','desc')
+        ->get();
+
+        $numventa= Venta::select('ventas.id')->where('id',$id)->get();
+        
+        return view('imprimir.venta',['venta'=>$venta,'detalles'=>$detalles]);
+    }
     public function listarVentas(Request $request)
     {
-        // if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
         $id = $request->id;
         $ventas= Venta::join('cuentas','ventas.idCliente','=','cuentas.id')
         ->where('ventas.id','=',$id)

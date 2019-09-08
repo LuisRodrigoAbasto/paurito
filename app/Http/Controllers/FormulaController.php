@@ -49,7 +49,7 @@ class FormulaController extends Controller
     }
     public function listarFormula(Request $request)
     {
-        // if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
         $id = $request->id;
         $detalles = DetalleFormula::join('formulas','formulas.id','detalle_formulas.idFormula')
         ->join('productos','productos.id','detalle_formulas.idProducto')

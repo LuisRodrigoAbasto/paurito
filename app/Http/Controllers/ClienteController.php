@@ -34,7 +34,6 @@ class ClienteController extends Controller
             ],
             'personas' => $personas
         ];
-        
     }
     public function selectCliente(Request $request)
     {

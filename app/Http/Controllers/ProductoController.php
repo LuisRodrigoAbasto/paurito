@@ -16,7 +16,7 @@ class ProductoController extends Controller
      */
     public function index(Request $request)
     {
-       // if(!$request->ajax()) return redirect('/');
+       if(!$request->ajax()) return redirect('/');
 
         $buscar = $request->buscar;
         $criterio = $request->criterio;
@@ -45,7 +45,7 @@ class ProductoController extends Controller
     }
     public function notificaciones(Request $request)
     {
-       // if(!$request->ajax()) return redirect('/');
+       if(!$request->ajax()) return redirect('/');
 
         $productos=Producto::where('stock','<=','100')
         ->where('estado','=','1')
@@ -88,6 +88,20 @@ class ProductoController extends Controller
         $cont=Producto::where('estado','=','1')->count('id');
         $pdf = \PDF::loadView('pdf.productospdf',['productos'=>$productos,'cont'=>$cont]);
         return $pdf->download('productos.pdf');
+
+//         $pdf = App::make('dompdf.wrapper');
+// $pdf->loadHTML('<h1>Test</h1>');
+// return $pdf->stream();
+    }
+    public function listarImprimir(Request $request)
+    {
+        $productos=Producto::select('id','nombre','stock','unidad','codigo',
+        DB::raw("floor(stock) as total,truncate(((stock-floor(stock))*codigo),2) as decimales"),'referencia','estado')
+        ->where('estado','=','1')
+        ->orderBy('estado','desc')->orderBy('id','desc')->get();
+
+        $cont=Producto::where('estado','=','1')->count('id');
+        return view('imprimir.productos',['productos'=>$productos,'cont'=>$cont]);
 
 //         $pdf = App::make('dompdf.wrapper');
 // $pdf->loadHTML('<h1>Test</h1>');

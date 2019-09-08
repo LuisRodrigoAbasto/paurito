@@ -15,7 +15,7 @@ class EgresoController extends Controller
 {
    
     public function index(Request $request){
-        // if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
     
             $buscar = $request->buscar;
             $criterio = $request->criterio;
@@ -97,7 +97,7 @@ class EgresoController extends Controller
         }
         public function listarEgreso(Request $request)
         {
-            // if(!$request->ajax()) return redirect('/');
+            if(!$request->ajax()) return redirect('/');
             $id = $request->id;
             $detalles = DetalleEgreso::join('cuentas','cuentas.id','detalle_egresos.idCuenta')
             ->where('detalle_egresos.idEgreso','=',$id) 
@@ -140,7 +140,7 @@ class EgresoController extends Controller
                 {
                     $contar++;
                     $detalle = new DetalleEgreso();
-                    $detalle->idEgreso= $egreso->id;
+                    $detalle->idEgreso= $egresos->id;
                     $detalle->idCuenta = $det['idCuenta'];
                     $detalle->orden=$contar;
                     $detalle->debe = $det['debe'];   

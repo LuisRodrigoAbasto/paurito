@@ -14,7 +14,7 @@ use App\Egreso;
 class IngresoController extends Controller
 {
     public function index(Request $request){
-        // if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
     
             $buscar = $request->buscar;
             $criterio = $request->criterio;
@@ -96,7 +96,7 @@ class IngresoController extends Controller
         }
         public function listarIngreso(Request $request)
         {
-            // if(!$request->ajax()) return redirect('/');
+            if(!$request->ajax()) return redirect('/');
             $id = $request->id;
             $detalles = DetalleIngreso::join('cuentas','cuentas.id','detalle_ingresos.idCuenta')
             ->where('detalle_ingresos.idIngreso','=',$id) 
@@ -140,7 +140,7 @@ class IngresoController extends Controller
                 {
                     $contar++;
                     $detalle = new DetalleIngreso();
-                    $detalle->idIngreso= $ingreso->id;
+                    $detalle->idIngreso= $ingresos->id;
                     $detalle->idCuenta = $det['idCuenta'];
                     $detalle->orden=$contar;
                     $detalle->debe = $det['debe'];   
