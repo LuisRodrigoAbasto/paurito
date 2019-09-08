@@ -20,11 +20,10 @@ class IngresoController extends Controller
             $criterio = $request->criterio;
             if($buscar=='')
             {
-                $ingresos= Ingreso::where('tipo','=','1')->orderBy('estado','desc')->orderBy('id','desc')->paginate(5);
+                $ingresos= Ingreso::orderBy('estado','desc')->orderBy('id','desc')->paginate(5);
             }
             else{
-                    $ingresos= Ingreso::where('tipo','=','1')
-                    ->where('ingresos.'.$criterio, 'like', '%'. $buscar . '%')
+                    $ingresos= Ingreso::where('ingresos.'.$criterio, 'like', '%'. $buscar . '%')
                     ->orderBy('estado','desc')
                     >orderBy('id','desc')->paginate(5);
             }
@@ -128,7 +127,7 @@ class IngresoController extends Controller
                 $ingresos->registro=$registro+1;
                 $ingresos->fecha = $mytime->toDateTimeString();
                 $ingresos->descripcion = $request->descripcion;
-                $ingresos->tipo ='1';
+                $ingresos->tipo ='Ingreso';
                 $ingresos->monto=1000;
                 $ingresos->estado = '1';
                 $ingresos->save();
@@ -164,7 +163,7 @@ class IngresoController extends Controller
             $ingreso = Ingreso::findOrFail($request->id);
             $ingreso->fecha = $mytime->toDateTimeString();
             $ingreso->descripcion = $request->descripcion;
-            $ingreso->tipo ='1';
+            $ingreso->tipo ='Ingreso';
             $ingreso->estado = '1';
             $ingreso->save();
 

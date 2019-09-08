@@ -20,7 +20,7 @@ class CreateIngresosTable extends Migration
             $table->dateTime('fecha');
             $table->decimal('monto',11,2);
             $table->string('descripcion',200)->nullable();
-            $table->integer('tipo');
+            $table->string('tipo',10)->nullable();
             $table->boolean('estado')->default(1);
             $table->timestamps();
         });

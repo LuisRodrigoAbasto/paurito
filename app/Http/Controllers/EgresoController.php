@@ -21,11 +21,10 @@ class EgresoController extends Controller
             $criterio = $request->criterio;
             if($buscar=='')
             {
-                $egresos= Egreso::where('tipo','=','2')->orderBy('estado','desc')->orderBy('id','desc')->paginate(5);
+                $egresos= Egreso::orderBy('estado','desc')->orderBy('id','desc')->paginate(5);
             }
             else{
-                    $egresos= Egreso::where('tipo','=','2')
-                    ->where('egresos.'.$criterio, 'like', '%'. $buscar . '%')
+                    $egresos= Egreso::where('egresos.'.$criterio, 'like', '%'. $buscar . '%')
                     ->orderBy('estado','desc')
                     >orderBy('id','desc')->paginate(5);
             }
@@ -46,16 +45,12 @@ class EgresoController extends Controller
         public function obtenerEgreso(Request $request)
         {
             if(!$request->ajax()) return redirect('/');
-    
+
             $id = $request->id;
-          
-                $egreso= Egreso::join('cuentas','egresos.idCuenta','=','cuentas.id')
-                ->select('egresos.id','idFormula',DB::raw("concat(cuentas.nombre,' ',cuentas.apellido) as cliente"),
-                'fecha','pago','cantidad','descripcion','montoVenta','egresos.estado')
-                ->where('egresos.id','=',$id)
-                ->orderBy('egresos.id','desc')
-                ->take(1)
-                ->get();
+            $egreso= Egreso::select('egresos.id','factura','registro','fecha','monto','descripcion','tipo','egresos.estado')
+            ->where('egresos.id','=',$id)
+            ->orderBy('egresos.id','desc')
+            ->get();
           
             return ['egreso' => $egreso];
             
@@ -64,8 +59,8 @@ class EgresoController extends Controller
         {
             if(!$request->ajax()) return redirect('/');
             $id = $request->id;
-            $detalles = DetalleVenta::join('egresos','egresos.id','=','detalle_egresos.idVenta')
-            ->join('productos','productos.id','detalle_egresos.idProducto')
+            $detalles = DetalleVenta::join('egresos','egresos.id','=','detalle_egresos.idEgreso')
+            ->join('cuentas','detalle_egresos.idCuenta','=','cuentas.id')
             ->select('productos.id as idProducto','productos.nombre as producto','detalle_egresos.cantidad','productos.unidad','detalle_egresos.precio','detalle_egresos.descripcionD')
             ->where('detalle_egresos.idVenta','=',$id)
             ->orderBy('detalle_egresos.idProducto','desc')
@@ -128,7 +123,7 @@ class EgresoController extends Controller
                 $egresos->registro=$registro+1;
                 $egresos->fecha = $mytime->toDateTimeString();
                 $egresos->descripcion = $request->descripcion;
-                $egresos->tipo ='2';
+                $egresos->tipo ='Egresos';
                 $egresos->monto=1000;
                 $egresos->estado = '1';
                 $egresos->save();
@@ -164,7 +159,7 @@ class EgresoController extends Controller
             $egreso = Egreso::findOrFail($request->id);
             $egreso->fecha = $mytime->toDateTimeString();
             $egreso->descripcion = $request->descripcion;
-            $egreso->tipo ='2';
+            $egreso->tipo ='Egresos';
             $egreso->estado = '1';
             $egreso->save();
 
