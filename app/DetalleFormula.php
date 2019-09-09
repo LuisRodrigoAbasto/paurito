@@ -11,5 +11,12 @@ class DetalleFormula extends Model
   // public $incrementing = false;
     protected $fillable = ['idFormula','idProducto','orden','cantidad','estado'];
     
-  //  public $timestamps = false;
+    public function formula()
+    {
+        return $this->belongsTo('App\Formula', 'idFormula');
+    }
+    public function producto()
+    {
+        return $this->belongsTo('App\producto', 'idProducto');
+    }
 }

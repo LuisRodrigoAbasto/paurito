@@ -28,21 +28,11 @@ class VentaController extends Controller
             ->orderBy('ventas.estado','desc')->orderBy('ventas.id','desc')->paginate(5);
         }
         else{
-            if($criterio=='descripcion'){
-                $ventas= Venta::join('cuentas','ventas.idCliente','=','cuentas.id')
-                ->select('ventas.id','ventas.factura','ventas.registro','idFormula','cuentas.nombre','ventas.idCliente','fecha','pago','cantidad','descripcion','montoVenta','ventas.estado')
-                ->where('ventas.'.$criterio, 'like', '%'. $buscar . '%')
-                ->orderBy('ventas.estado','desc')
-                ->orderBy('ventas.id','desc')->paginate(5);
-            }
-            else{
-                $ventas= Venta::join('cuentas','ventas.idCliente','=','cuentas.id')
-                ->select('ventas.id','ventas.factura','ventas.registro','idFormula','cuentas.nombre','ventas.idCliente','fecha','pago','cantidad','descripcion','montoVenta','ventas.estado')
-                ->where('cuentas.'.$criterio, 'like', '%'. $buscar . '%')
-                ->orderBy('ventas.estado','desc')
-                ->orderBy('ventas.id','desc')->paginate(5);
-            }
-            
+            $ventas= Venta::join('cuentas','ventas.idCliente','=','cuentas.id')
+            ->select('ventas.id','ventas.factura','ventas.registro','idFormula','cuentas.nombre','ventas.idCliente','fecha','pago','cantidad','descripcion','montoVenta','ventas.estado')
+            ->where('ventas.'.$criterio, 'like', '%'. $buscar . '%')
+            ->orderBy('ventas.estado','desc')
+            ->orderBy('ventas.id','desc')->paginate(5);
         }
      
         return [
@@ -57,35 +47,6 @@ class VentaController extends Controller
             'ventas' => $ventas
         ];
         
-    }
-    public function obtenerVenta(Request $request)
-    {
-        if(!$request->ajax()) return redirect('/');
-
-        $id = $request->id;
-      
-            $venta= Venta::join('cuentas','ventas.idCliente','=','cuentas.id')
-            ->select('ventas.id','idFormula','cuentas.nombre as cliente',
-            'fecha','pago','cantidad','descripcion','montoVenta','ventas.estado')
-            ->where('ventas.id','=',$id)
-            ->orderBy('ventas.id','desc')
-            ->take(1)
-            ->get();
-      
-        return ['venta' => $venta];
-        
-    }
-    public function obtenerDetalles(Request $request)
-    {
-        if(!$request->ajax()) return redirect('/');
-        $id = $request->id;
-        $detalles = DetalleVenta::join('ventas','ventas.id','=','detalle_ventas.idVenta')
-        ->join('productos','productos.id','=','detalle_ventas.idProducto')
-        ->select('productos.id as idProducto','productos.nombre as producto','detalle_ventas.cantidad','productos.unidad','productos.referencia','detalle_ventas.precio','productos.codigo','detalle_ventas.descripcionD')
-        ->where('detalle_ventas.idVenta','=',$id)
-        ->where('detalle_ventas.estado','=','1') 
-        ->get();
-        return ['detalles'=>$detalles];
     }
     public function pdf(Request $request, $id)
     {
@@ -106,7 +67,7 @@ class VentaController extends Controller
 
         $numventa= Venta::select('ventas.id')->where('id',$id)->get();
         
-        $pdf = \PDF::loadView('pdf.venta',['venta'=>$venta,'detalles'=>$detalles]);
+        $pdf = \PDF::loadView('venta.pdf.index',['venta'=>$venta,'detalles'=>$detalles]);
         return $pdf->download('venta_'.$numventa[0]->id.'.pdf');
 
     }
@@ -129,7 +90,7 @@ class VentaController extends Controller
 
         $numventa= Venta::select('ventas.id')->where('id',$id)->get();
         
-        return view('imprimir.venta',['venta'=>$venta,'detalles'=>$detalles]);
+        return view('venta.imprimir.index',['venta'=>$venta,'detalles'=>$detalles]);
     }
     public function listarVentas(Request $request)
     {
@@ -145,6 +106,7 @@ class VentaController extends Controller
         ->where('detalle_ventas.idVenta','=',$id)
         ->where('detalle_ventas.estado','=','1') 
         ->select('detalle_ventas.idProducto','productos.nombre as producto','detalle_ventas.cantidad','productos.codigo','productos.unidad','productos.referencia','detalle_ventas.precio','detalle_ventas.descripcionD')
+        ->orderBy('detalle_ventas.orden','asc')
         ->get();
 
         $formula=Formula::where('estado','=','1')->where('id','=',$ventas[0]->idFormula)
@@ -166,11 +128,26 @@ class VentaController extends Controller
             $egreso=Egreso::max('registro');
             $compra=Compra::max('registro');
 
+            $max=0;
+            if($venta>$max)
+            {
+                $max=$venta;
+            }
+            if($compra>$max)
+            {
+                $max=$compra;
+            }
+            if($ingreso>$max)
+            {
+                $max=$ingreso;
+            }
+            if($egreso>$max){
+                $max=$ingreso;
+            }
+            $registro=$max;
+
             $mytime= Carbon::now('America/La_Paz');
             $ventas = new Venta();
-
-            $registro=$venta+$compra+$ingreso+$egreso;
-
             $ventas->factura=$factura+1;
             $ventas->registro=$registro+1;
             $ventas->idCliente = $request->idCliente;

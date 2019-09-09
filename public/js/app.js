@@ -2614,6 +2614,280 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2621,6 +2895,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      factura: 0,
+      registro: 0,
       cuenta: "",
       nivel: 1,
       idCuenta: 0,
@@ -2680,7 +2956,14 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       buscar: "",
       proveedor: "",
       selectedProveedor: null,
-      cantidadTotal: 0
+      cantidadTotal: 0,
+      formulario: "Balance General",
+      ingreso_id: 0,
+      haberTotal: 0,
+      debeTotal: 0,
+      arrayCuenta: [],
+      debe: 0,
+      haber: 0
     };
   },
   computed: {},
@@ -2714,6 +2997,45 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
     },
     imprimir: function imprimir(id) {
       window.open("venta/imprimir/venta_" + id + "," + "_blank");
+    },
+    selectCuenta: function selectCuenta(search, loading) {
+      var me = this;
+      loading(true);
+      var url = "cuenta/selectCuenta?filtro=" + search;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+
+        q: search;
+
+        me.arrayCuenta = respuesta.cuentas;
+        loading(false);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    getDatosCuenta: function getDatosCuenta(val1) {
+      var me = this;
+      me.loading = true;
+
+      try {
+        me.idCuenta = val1.id;
+        me.cuenta = val1.nombre;
+        me.codigo = val1.tipo + "." + val1.nivel1 + "." + val1.nivel2 + "." + val1.nivel3 + "." + val1.nivel4;
+      } catch (error) {
+        me.idCuenta = 0;
+        me.cuenta = "";
+        me.codigo = "";
+      }
+    },
+    sumarDebeHaber: function sumarDebeHaber() {
+      var me = this;
+      me.debeTotal = 0;
+      me.haberTotal = 0;
+
+      for (var i = 0; i < this.arrayDetalle.length; i++) {
+        me.debeTotal = me.arrayDetalle[i].debe * 1 + me.debeTotal;
+        me.haberTotal = me.arrayDetalle[i].haber * 1 + me.haberTotal;
+      }
     },
     selectProveedor: function selectProveedor(search, loading) {
       var me = this;
@@ -2851,6 +3173,17 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
 
       return sw;
     },
+    encuentraIE: function encuentraIE(id) {
+      var sw = false;
+
+      for (var i = 0; i < this.arrayDetalle.length && sw == false; i++) {
+        if (this.arrayDetalle[i].idCuenta == id) {
+          sw = true;
+        }
+      }
+
+      return sw;
+    },
     eliminarDetalle: function eliminarDetalle(index) {
       var me = this;
       me.arrayDetalle.splice(index, 1);
@@ -2892,6 +3225,63 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }
 
       this.montoVenta = this.montoVenta.toFixed(2);
+    },
+    agregarDetalleIE: function agregarDetalleIE() {
+      var me = this;
+
+      if (me.idCuenta == 0) {
+        Swal.fire({
+          position: "center",
+          title: "Error !!",
+          type: "error",
+          showConfirmButton: false,
+          timer: 1000
+        });
+      } else {
+        if (me.encuentraIE(me.idCuenta)) {
+          Swal.fire({
+            position: "center",
+            title: "Se Encuentra Agregado",
+            type: "error",
+            showConfirmButton: false,
+            timer: 1000
+          });
+        } else {
+          me.arrayDetalle.push({
+            idCuenta: me.idCuenta,
+            codigo: me.codigo,
+            cuenta: me.cuenta,
+            debe: me.debe,
+            haber: me.haber,
+            descripcionD: ""
+          });
+          this.debe = 0;
+          this.haber = 0;
+        }
+      }
+    },
+    agregarDetalleModalIE: function agregarDetalleModalIE() {
+      var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      var me = this;
+
+      if (me.encuentra(data["id"])) {
+        Swal.fire({
+          position: "center",
+          title: "Se Encuentra Agregado",
+          type: "error",
+          showConfirmButton: false,
+          timer: 1000
+        });
+      } else {
+        me.arrayDetalle.push({
+          idCuenta: data["id"],
+          cuenta: data["nombre"],
+          codigo: data["tipo"] + "." + data["nivel1"] + "." + data["nivel2"] + "." + data["nivel3"] + "." + data["nivel4"],
+          debe: 0,
+          haber: 0,
+          descripcionD: ""
+        });
+      }
     },
     agregarDetalle: function agregarDetalle() {
       var me = this;
@@ -2935,6 +3325,16 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       me.formula = "";
       me.producto = "";
       me.idFormula = 0, me.cantidad = 0;
+    },
+    listarCuenta: function listarCuenta(buscar) {
+      var me = this;
+      var url = "/cuenta/listarCuenta?filtro=" + buscar;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.arrayCuenta = respuesta.cuentas;
+      })["catch"](function (error) {
+        console.log(error);
+      });
     },
     agregarDetalleModal: function agregarDetalleModal() {
       var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
@@ -3001,6 +3401,71 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
 
       return false;
     },
+    validarIE: function validarIE() {
+      if (!this.descripcion) {
+        this.mensaje = "Describa El Concepto";
+        return true;
+      }
+
+      if (!this.arrayDetalle.length) {
+        this.mensaje = "No tiene Cuentas en Su Detalle";
+        return true;
+      }
+
+      if (this.haberTotal != this.debeTotal) {
+        this.mensaje = "El debe y el haber no coinciden";
+        return true;
+      }
+
+      if (this.haberTotal == 0 && this.debeTotal == 0) {
+        this.mensaje = "El Debe y el Haber no debe ser Cero";
+        return true;
+      }
+
+      for (var i = 0; i < this.arrayDetalle.length; i++) {
+        if (!this.arrayDetalle[i].descripcionD) {
+          this.mensaje = "Le Falta la Descripcion de la Cuenta!!";
+          return true;
+        }
+      }
+
+      return false;
+    },
+    actualizarIE: function actualizarIE() {
+      if (this.validarIE()) {
+        this.validaciones = "was-validated";
+        Swal.fire({
+          position: "center",
+          type: "error",
+          title: this.mensaje,
+          showConfirmButton: false,
+          timer: 1500
+        });
+        return;
+      }
+
+      var me = this;
+      var url = '';
+
+      if (me.formulario == "Ingresos") {
+        url = "ingreso/actualizar";
+      } else {
+        url = "egreso/actualizar";
+      }
+
+      axios.put(url, {
+        descripcion: me.descripcion,
+        monto: me.debeTotal,
+        data: me.arrayDetalle,
+        id: me.ingreso_id
+      }).then(function (response) {
+        me.ventana = 0;
+        me.listar(me.fechaInicio, me.fechaFin);
+        me.limpiarRegistro();
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
     actualizarCompra: function actualizarCompra() {
       if (this.validarCompra()) {
         this.validaciones = "was-validated";
@@ -3016,15 +3481,16 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
 
       var me = this;
       axios.put("compra/actualizar", {
-        idProveedor: this.idProveedor,
-        pago: this.pago,
-        montoCompra: this.montoCompra,
-        cantidad: this.cantidadTotal,
-        descripcion: this.descripcion,
-        id: this.compra_id,
-        data: this.arrayDetalle
+        idProveedor: me.idProveedor,
+        pago: me.pago,
+        montoCompra: me.montoCompra,
+        cantidad: me.cantidadTotal,
+        descripcion: me.descripcion,
+        id: me.compra_id,
+        data: me.arrayDetalle
       }).then(function (response) {
         me.ventana = 0;
+        me.listar(me.fechaInicio, me.fechaFin);
         me.limpiarRegistro();
       })["catch"](function (error) {
         console.log(error);
@@ -3104,6 +3570,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
         data: this.arrayDetalle
       }).then(function (response) {
         me.ventana = 0;
+        me.listar(me.fechaInicio, me.fechaFin);
         me.limpiarRegistro();
       })["catch"](function (error) {
         console.log(error);
@@ -3158,13 +3625,23 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
           if (opcion == "Ventas") {
             url = "venta/desactivar";
           } else {
-            url = "compra/desactivar";
+            if (opcion == "Compras") {
+              url = "compra/desactivar";
+            } else {
+              if (opcion == "Ingresos") {
+                url = "ingreso/desactivar";
+              } else {
+                if (opcion == "Egresos") {
+                  url = "egreso/desactivar";
+                }
+              }
+            }
           }
 
           axios.put(url, {
             id: id
           }).then(function (response) {
-            me.listar(this.fechaInicio, this.fechaFin);
+            me.listar(me.fechaInicio, me.fechaFin);
             Swal.fire({
               position: "center",
               type: "success",
@@ -3215,6 +3692,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       this.selectedCliente = null;
       this.mensaje = "";
       this.validaciones = "";
+      this.arrayCuenta = [];
+      this.formulario = "Balance General";
+      this.ingreso_id = 0;
     },
     cargarVenta: function cargarVenta(id) {
       var me = this;
@@ -3268,8 +3748,44 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
         console.log(error);
       });
     },
+    cargarIngresoEgreso: function cargarIngresoEgreso(id) {
+      var me = this;
+
+      if (me.formulario == "Ingresos") {
+        var url = "ingreso/listarIngreso?id=" + id;
+        axios.get(url).then(function (response) {
+          var respuesta = response.data;
+          me.arrayDetalle = respuesta.detalles;
+          me.ingreso_id = respuesta.ingresos[0].id;
+          me.factura = respuesta.ingresos[0].factura;
+          me.registro = respuesta.ingresos[0].registro; // me.fecha = respuesta.ingresos[0].pago;
+
+          me.haberTotal = respuesta.ingresos[0].monto;
+          me.debeTotal = respuesta.ingresos[0].monto;
+          me.descripcion = respuesta.ingresos[0].descripcion;
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      } else {
+        var url = "egreso/listarEgreso?id=" + id;
+        axios.get(url).then(function (response) {
+          var respuesta = response.data;
+          me.arrayDetalle = respuesta.detalles;
+          me.ingreso_id = respuesta.egresos[0].id;
+          me.factura = respuesta.egresos[0].factura;
+          me.registro = respuesta.egresos[0].registro;
+          me.fecha = respuesta.egresos[0].pago;
+          me.haberTotal = respuesta.egresos[0].monto;
+          me.debeTotal = respuesta.egresos[0].monto;
+          me.descripcion = respuesta.egresos[0].descripcion;
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      }
+    },
     mostrarDetalle: function mostrarDetalle(accion) {
       var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+      this.formulario = accion;
 
       switch (accion) {
         case "Ventas":
@@ -3283,6 +3799,20 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
           {
             this.cargarCompra(data["id"]);
             this.ventana = 2;
+            break;
+          }
+
+        case "Ingresos":
+          {
+            this.cargarIngresoEgreso(data["id"]);
+            this.ventana = 3;
+            break;
+          }
+
+        case "Egresos":
+          {
+            this.cargarIngresoEgreso(data["id"]);
+            this.ventana = 3;
             break;
           }
       }
@@ -3344,6 +3874,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-select/dist/vue-select.css */ "./node_modules/vue-select/dist/vue-select.css");
 /* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_2__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3902,6 +4442,12 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       })["catch"](function (error) {
         console.log(error);
       });
+    },
+    pdfCompra: function pdfCompra(id) {
+      window.open("compra/pdf/compra_" + id + "," + "_blank");
+    },
+    imprimir: function imprimir(id) {
+      window.open("compra/imprimir/compra_" + id + "," + "_blank");
     },
     selectProveedor: function selectProveedor(search, loading) {
       var me = this;
@@ -5884,10 +6430,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -5928,8 +6470,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       haber: 0,
       debeTotal: 0,
       haberTotal: 0,
-      validaciones: '',
-      mensaje: ''
+      validaciones: "",
+      mensaje: ""
     };
   },
   computed: {
@@ -5975,11 +6517,11 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
         console.log(error);
       });
     },
-    selected: function selected() {
-      selectCliente(cliente, loading);
+    imprimir: function imprimir(id) {
+      window.open("egreso/imprimir/egreso_" + id + "," + "_blank");
     },
     pdfEgreso: function pdfEgreso(id) {
-      window.open("http://localhost:8000/venta/pdf/venta_" + id + "," + "_blank");
+      window.open("venta/pdf/venta_" + id + "," + "_blank");
     },
     selectCuenta: function selectCuenta(search, loading) {
       var me = this;
@@ -6165,13 +6707,16 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
     desactivar: function desactivar(id) {
       var _this = this;
 
-      var swalWithBootstrapButtons = swal.mixin({
-        confirmButtonClass: "btn btn-success",
-        cancelButtonClass: "btn btn-danger",
+      var swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger"
+        },
         buttonsStyling: false
       });
-      swalWithBootstrapButtons({
-        title: "Estas Seguro de Desactivar la Venta?",
+      swalWithBootstrapButtons.fire({
+        title: "Estas Seguro de Desactivar el Registro?",
+        text: "Si Desactiva no estara en la Lista!",
         type: "warning",
         showCancelButton: true,
         confirmButtonText: "Si, Desactivar!",
@@ -6180,34 +6725,44 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }).then(function (result) {
         if (result.value) {
           var me = _this;
-          axios.put("/egreso/desactivar", {
+          axios.put("egreso/desactivar", {
             id: id
           }).then(function (response) {
             me.listar(1, "", "nombre");
-            swalWithBootstrapButtons("Desactivado!", "La Venta ha sido Desactivada.", "success");
-          })["catch"](function (error) {
-            console.log(error);
+            Swal.fire({
+              position: "center",
+              type: "success",
+              title: "El Registro ha sido Desactivado",
+              showConfirmButton: false,
+              timer: 1000
+            })["catch"](function (error) {
+              console.log(error);
+            });
           });
-        } else if ( // Read more about handling dismissals
-        result.dismiss === swal.DismissReason.cancel) {
-          /* swalWithBootstrapButtons(
-                    'Cancelado',
-                    'Su Producto Esta a Salvo',
-                    'error'
-                    )*/
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire({
+            position: "center",
+            type: "error",
+            title: "Cancelado",
+            showConfirmButton: false,
+            timer: 1000
+          });
         }
       });
     },
     activar: function activar(id) {
       var _this2 = this;
 
-      var swalWithBootstrapButtons = swal.mixin({
-        confirmButtonClass: "btn btn-success",
-        cancelButtonClass: "btn btn-danger",
+      var swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger"
+        },
         buttonsStyling: false
       });
-      swalWithBootstrapButtons({
-        title: "Estas Seguro de Activar La Venta?",
+      swalWithBootstrapButtons.fire({
+        title: "Estas Seguro de Activar el Registro?",
+        text: "Si Activa no estara en la Lista!",
         type: "warning",
         showCancelButton: true,
         confirmButtonText: "Si, Activar!",
@@ -6216,21 +6771,28 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }).then(function (result) {
         if (result.value) {
           var me = _this2;
-          axios.put("/egreso/activar", {
+          axios.put("egreso/activar", {
             id: id
           }).then(function (response) {
             me.listar(1, "", "nombre");
-            swalWithBootstrapButtons("Activado!", "La Venta ha sido Activado con exito.", "success");
-          })["catch"](function (error) {
-            console.log(error);
+            Swal.fire({
+              position: "center",
+              type: "success",
+              title: "El Registro ha sido Activado",
+              showConfirmButton: false,
+              timer: 1000
+            })["catch"](function (error) {
+              console.log(error);
+            });
           });
-        } else if ( // Read more about handling dismissals
-        result.dismiss === swal.DismissReason.cancel) {
-          /* swalWithBootstrapButtons(
-                    'Cancelado',
-                    'Su Producto Esta a Salvo',
-                    'error'
-                    )*/
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire({
+            position: "center",
+            type: "error",
+            title: "Cancelado",
+            showConfirmButton: false,
+            timer: 1000
+          });
         }
       });
     },
@@ -6275,8 +6837,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       this.debeTotal = 0;
       this.arrayCuenta = [];
       this.arrayDetalle = [];
-      this.validaciones = '';
-      this.mensaje = '';
+      this.validaciones = "";
+      this.mensaje = "";
     },
     mostrarDetalle: function mostrarDetalle(modelo, accion) {
       var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
@@ -6356,6 +6918,16 @@ var _methods;
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -6821,6 +7393,12 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       })["catch"](function (error) {
         console.log(error);
       });
+    },
+    pdfFormula: function pdfFormula(id) {
+      window.open("formula/pdf/formula_" + id + "," + "_blank");
+    },
+    imprimir: function imprimir(id) {
+      window.open("formula/imprimir/formula_" + id + "," + "_blank");
     },
     selectProducto: function selectProducto(search, loading) {
       var me = this;
@@ -7654,10 +8232,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -7745,11 +8319,11 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
         console.log(error);
       });
     },
-    selected: function selected() {
-      selectCliente(cliente, loading);
+    imprimir: function imprimir(id) {
+      window.open("ingreso/imprimir/ingreso_" + id + "," + "_blank");
     },
-    pdfVenta: function pdfVenta(id) {
-      window.open("http://localhost:8000/venta/pdf/venta_" + id + "," + "_blank");
+    pdfIngreso: function pdfIngreso(id) {
+      window.open("ingreso/pdf/ingreso_" + id + "," + "_blank");
     },
     selectCuenta: function selectCuenta(search, loading) {
       var me = this;
@@ -7962,13 +8536,16 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
     desactivar: function desactivar(id) {
       var _this = this;
 
-      var swalWithBootstrapButtons = swal.mixin({
-        confirmButtonClass: "btn btn-success",
-        cancelButtonClass: "btn btn-danger",
+      var swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger"
+        },
         buttonsStyling: false
       });
-      swalWithBootstrapButtons({
-        title: "Estas Seguro de Desactivar la Venta?",
+      swalWithBootstrapButtons.fire({
+        title: "Estas Seguro de Desactivar el Registro?",
+        text: "Si Desactiva no estara en la Lista!",
         type: "warning",
         showCancelButton: true,
         confirmButtonText: "Si, Desactivar!",
@@ -7977,34 +8554,44 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }).then(function (result) {
         if (result.value) {
           var me = _this;
-          axios.put("/ingreso/desactivar", {
+          axios.put("ingreso/desactivar", {
             id: id
           }).then(function (response) {
             me.listar(1, "", "nombre");
-            swalWithBootstrapButtons("Desactivado!", "La Venta ha sido Desactivada.", "success");
-          })["catch"](function (error) {
-            console.log(error);
+            Swal.fire({
+              position: "center",
+              type: "success",
+              title: "El Registro ha sido Desactivado",
+              showConfirmButton: false,
+              timer: 1000
+            })["catch"](function (error) {
+              console.log(error);
+            });
           });
-        } else if ( // Read more about handling dismissals
-        result.dismiss === swal.DismissReason.cancel) {
-          /* swalWithBootstrapButtons(
-                    'Cancelado',
-                    'Su Producto Esta a Salvo',
-                    'error'
-                    )*/
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire({
+            position: "center",
+            type: "error",
+            title: "Cancelado",
+            showConfirmButton: false,
+            timer: 1000
+          });
         }
       });
     },
     activar: function activar(id) {
       var _this2 = this;
 
-      var swalWithBootstrapButtons = swal.mixin({
-        confirmButtonClass: "btn btn-success",
-        cancelButtonClass: "btn btn-danger",
+      var swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger"
+        },
         buttonsStyling: false
       });
-      swalWithBootstrapButtons({
-        title: "Estas Seguro de Activar La Venta?",
+      swalWithBootstrapButtons.fire({
+        title: "Estas Seguro de Activar el Registro?",
+        text: "Si Activa no estara en la Lista!",
         type: "warning",
         showCancelButton: true,
         confirmButtonText: "Si, Activar!",
@@ -8017,17 +8604,24 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
             id: id
           }).then(function (response) {
             me.listar(1, "", "nombre");
-            swalWithBootstrapButtons("Activado!", "La Venta ha sido Activado con exito.", "success");
-          })["catch"](function (error) {
-            console.log(error);
+            Swal.fire({
+              position: "center",
+              type: "success",
+              title: "El Registro ha sido Activado",
+              showConfirmButton: false,
+              timer: 1000
+            })["catch"](function (error) {
+              console.log(error);
+            });
           });
-        } else if ( // Read more about handling dismissals
-        result.dismiss === swal.DismissReason.cancel) {
-          /* swalWithBootstrapButtons(
-                    'Cancelado',
-                    'Su Producto Esta a Salvo',
-                    'error'
-                    )*/
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire({
+            position: "center",
+            type: "error",
+            title: "Cancelado",
+            showConfirmButton: false,
+            timer: 1000
+          });
         }
       });
     },
@@ -10185,23 +10779,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -10302,10 +10879,10 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       });
     },
     pdfVenta: function pdfVenta(id) {
-      window.open("/venta/pdf/venta_" + id + "," + "_blank");
+      window.open("venta/pdf/venta_" + id + "," + "_blank");
     },
     imprimir: function imprimir(id) {
-      window.open("/venta/imprimir/venta_" + id + "," + "_blank");
+      window.open("venta/imprimir/venta_" + id + "," + "_blank");
     },
     selectCliente: function selectCliente(search, loading) {
       var me = this;
@@ -79481,25 +80058,21 @@ var render = function() {
         [
           _c("div", { staticClass: "card-header" }, [
             _c("i", { staticClass: "fa fa-align-justify" }),
-            _vm._v("Cuentas\n        "),
+            _vm._v(_vm._s(_vm.formulario) + "\n        "),
             _c(
               "button",
               {
                 staticClass: "btn btn-secondary",
-                attrs: {
-                  type: "button",
-                  "data-toggle": "modal",
-                  "data-target": "#ModalLong"
-                },
+                attrs: { type: "button" },
                 on: {
                   click: function($event) {
-                    return _vm.abrirModal("cuenta", "registrar")
+                    _vm.ventana = 0
                   }
                 }
               },
               [
-                _c("i", { staticClass: "icon-plus" }),
-                _vm._v(" Nuevo\n        ")
+                _c("i", { staticClass: "icon-home" }),
+                _vm._v(" Inicio\n        ")
               ]
             ),
             _vm._v(" "),
@@ -79613,1013 +80186,1030 @@ var render = function() {
                       [
                         _vm._m(2),
                         _vm._v(" "),
-                        _c(
-                          "tbody",
-                          [
-                            _vm._l(_vm.arrayData, function(data, index) {
-                              return [
-                                data.montoTotal > 0
-                                  ? _c("tr", { key: data.id }, [
-                                      _c("td", [
-                                        data.estado
-                                          ? _c(
-                                              "button",
-                                              {
-                                                staticClass:
-                                                  "btn btn-danger form-control-sm btn-sm",
-                                                attrs: { type: "button" },
-                                                on: {
-                                                  click: function($event) {
-                                                    return _vm.abrirNivel(
-                                                      0,
-                                                      "nivel1",
-                                                      index
-                                                    )
-                                                  }
-                                                }
-                                              },
-                                              [
-                                                _c("i", {
-                                                  staticClass: "icon-minus"
-                                                })
-                                              ]
-                                            )
-                                          : _c(
-                                              "button",
-                                              {
-                                                staticClass:
-                                                  "btn btn-success form-control-sm btn-sm",
-                                                attrs: { type: "button" },
-                                                on: {
-                                                  click: function($event) {
-                                                    return _vm.abrirNivel(
-                                                      1,
-                                                      "nivel1",
-                                                      index
-                                                    )
-                                                  }
-                                                }
-                                              },
-                                              [
-                                                _c("i", {
-                                                  staticClass: "icon-plus"
-                                                })
-                                              ]
-                                            )
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _c("u", [
-                                          _c("b", [_vm._v(_vm._s(data.tipo))])
-                                        ])
-                                      ]),
-                                      _vm._v(" "),
-                                      _c(
-                                        "td",
-                                        { attrs: { colspan: "5" } },
-                                        [
-                                          _c(
-                                            "font",
-                                            {
-                                              staticStyle: {
-                                                "text-transform": "uppercase"
-                                              }
-                                            },
-                                            [
-                                              _c("u", [
-                                                _c("b", [
-                                                  _vm._v(_vm._s(data.nombre))
-                                                ])
-                                              ])
-                                            ]
-                                          )
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _vm._v(
-                                          _vm._s(data.montoTotal.toFixed(2))
-                                        )
-                                      ])
-                                    ])
-                                  : _vm._e(),
-                                _vm._v(" "),
-                                data.estado
-                                  ? [
-                                      _vm._l(data.datos, function(
-                                        data2,
-                                        index2
-                                      ) {
-                                        return [
-                                          data2.montoTotal > 0
-                                            ? _c("tr", { key: data2.id }, [
-                                                _c("td", [
-                                                  _vm._v(
-                                                    "\n                            \n                          "
-                                                  ),
-                                                  data2.estado
-                                                    ? _c(
-                                                        "button",
-                                                        {
-                                                          staticClass:
-                                                            "btn btn-danger form-control-sm btn-sm",
-                                                          attrs: {
-                                                            type: "button"
-                                                          },
-                                                          on: {
-                                                            click: function(
-                                                              $event
-                                                            ) {
-                                                              return _vm.abrirNivel(
-                                                                0,
-                                                                "nivel2",
-                                                                index,
-                                                                index2
-                                                              )
-                                                            }
-                                                          }
-                                                        },
-                                                        [
-                                                          _c("i", {
-                                                            staticClass:
-                                                              "icon-minus"
-                                                          })
-                                                        ]
-                                                      )
-                                                    : _c(
-                                                        "button",
-                                                        {
-                                                          staticClass:
-                                                            "btn btn-success form-control-sm btn-sm",
-                                                          attrs: {
-                                                            type: "button"
-                                                          },
-                                                          on: {
-                                                            click: function(
-                                                              $event
-                                                            ) {
-                                                              return _vm.abrirNivel(
-                                                                1,
-                                                                "nivel2",
-                                                                index,
-                                                                index2
-                                                              )
-                                                            }
-                                                          }
-                                                        },
-                                                        [
-                                                          _c("i", {
-                                                            staticClass:
-                                                              "icon-plus"
-                                                          })
-                                                        ]
-                                                      )
-                                                ]),
-                                                _vm._v(" "),
-                                                _c("td", [
-                                                  _c("b", [
-                                                    _vm._v(
-                                                      _vm._s(
-                                                        data2.tipo +
-                                                          "." +
-                                                          data2.nivel1
-                                                      )
-                                                    )
-                                                  ])
-                                                ]),
-                                                _vm._v(" "),
-                                                _c(
-                                                  "td",
-                                                  { attrs: { colspan: "5" } },
+                        _vm.arrayData.length > 0
+                          ? _c(
+                              "tbody",
+                              [
+                                _vm._l(_vm.arrayData, function(data, index) {
+                                  return [
+                                    data.montoTotal > 0
+                                      ? _c("tr", { key: data.id }, [
+                                          _c("td", [
+                                            data.estado
+                                              ? _c(
+                                                  "button",
+                                                  {
+                                                    staticClass:
+                                                      "btn btn-danger form-control-sm btn-sm",
+                                                    attrs: { type: "button" },
+                                                    on: {
+                                                      click: function($event) {
+                                                        return _vm.abrirNivel(
+                                                          0,
+                                                          "nivel1",
+                                                          index
+                                                        )
+                                                      }
+                                                    }
+                                                  },
                                                   [
-                                                    _vm._v(
-                                                      "\n                                 \n                          "
-                                                    ),
+                                                    _c("i", {
+                                                      staticClass: "icon-minus"
+                                                    })
+                                                  ]
+                                                )
+                                              : _c(
+                                                  "button",
+                                                  {
+                                                    staticClass:
+                                                      "btn btn-success form-control-sm btn-sm",
+                                                    attrs: { type: "button" },
+                                                    on: {
+                                                      click: function($event) {
+                                                        return _vm.abrirNivel(
+                                                          1,
+                                                          "nivel1",
+                                                          index
+                                                        )
+                                                      }
+                                                    }
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass: "icon-plus"
+                                                    })
+                                                  ]
+                                                )
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("td", [
+                                            _c("u", [
+                                              _c("b", [
+                                                _vm._v(_vm._s(data.tipo))
+                                              ])
+                                            ])
+                                          ]),
+                                          _vm._v(" "),
+                                          _c(
+                                            "td",
+                                            { attrs: { colspan: "5" } },
+                                            [
+                                              _c(
+                                                "font",
+                                                {
+                                                  staticStyle: {
+                                                    "text-transform":
+                                                      "uppercase"
+                                                  }
+                                                },
+                                                [
+                                                  _c("u", [
+                                                    _c("b", [
+                                                      _vm._v(
+                                                        _vm._s(data.nombre)
+                                                      )
+                                                    ])
+                                                  ])
+                                                ]
+                                              )
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c("td", [
+                                            _vm._v(
+                                              _vm._s(data.montoTotal.toFixed(2))
+                                            )
+                                          ])
+                                        ])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    data.estado
+                                      ? [
+                                          _vm._l(data.datos, function(
+                                            data2,
+                                            index2
+                                          ) {
+                                            return [
+                                              data2.montoTotal > 0
+                                                ? _c("tr", { key: data2.id }, [
+                                                    _c("td", [
+                                                      _vm._v(
+                                                        "\n                            \n                          "
+                                                      ),
+                                                      data2.estado
+                                                        ? _c(
+                                                            "button",
+                                                            {
+                                                              staticClass:
+                                                                "btn btn-danger form-control-sm btn-sm",
+                                                              attrs: {
+                                                                type: "button"
+                                                              },
+                                                              on: {
+                                                                click: function(
+                                                                  $event
+                                                                ) {
+                                                                  return _vm.abrirNivel(
+                                                                    0,
+                                                                    "nivel2",
+                                                                    index,
+                                                                    index2
+                                                                  )
+                                                                }
+                                                              }
+                                                            },
+                                                            [
+                                                              _c("i", {
+                                                                staticClass:
+                                                                  "icon-minus"
+                                                              })
+                                                            ]
+                                                          )
+                                                        : _c(
+                                                            "button",
+                                                            {
+                                                              staticClass:
+                                                                "btn btn-success form-control-sm btn-sm",
+                                                              attrs: {
+                                                                type: "button"
+                                                              },
+                                                              on: {
+                                                                click: function(
+                                                                  $event
+                                                                ) {
+                                                                  return _vm.abrirNivel(
+                                                                    1,
+                                                                    "nivel2",
+                                                                    index,
+                                                                    index2
+                                                                  )
+                                                                }
+                                                              }
+                                                            },
+                                                            [
+                                                              _c("i", {
+                                                                staticClass:
+                                                                  "icon-plus"
+                                                              })
+                                                            ]
+                                                          )
+                                                    ]),
+                                                    _vm._v(" "),
+                                                    _c("td", [
+                                                      _c("b", [
+                                                        _vm._v(
+                                                          _vm._s(
+                                                            data2.tipo +
+                                                              "." +
+                                                              data2.nivel1
+                                                          )
+                                                        )
+                                                      ])
+                                                    ]),
+                                                    _vm._v(" "),
                                                     _c(
-                                                      "font",
+                                                      "td",
                                                       {
-                                                        staticStyle: {
-                                                          "text-transform":
-                                                            "uppercase"
-                                                        }
+                                                        attrs: { colspan: "5" }
                                                       },
                                                       [
-                                                        _c("b", [
-                                                          _vm._v(
-                                                            _vm._s(data2.nombre)
-                                                          )
-                                                        ])
-                                                      ]
-                                                    )
-                                                  ],
-                                                  1
-                                                ),
-                                                _vm._v(" "),
-                                                _c("td", [
-                                                  _vm._v(
-                                                    _vm._s(
-                                                      data2.montoTotal.toFixed(
-                                                        2
-                                                      )
-                                                    )
-                                                  )
-                                                ])
-                                              ])
-                                            : _vm._e(),
-                                          _vm._v(" "),
-                                          data2.estado
-                                            ? [
-                                                _vm._l(data2.datos, function(
-                                                  data3,
-                                                  index3
-                                                ) {
-                                                  return [
-                                                    data3.montoTotal > 0
-                                                      ? _c(
-                                                          "tr",
-                                                          { key: data3.id },
+                                                        _vm._v(
+                                                          "\n                                 \n                          "
+                                                        ),
+                                                        _c(
+                                                          "font",
+                                                          {
+                                                            staticStyle: {
+                                                              "text-transform":
+                                                                "uppercase"
+                                                            }
+                                                          },
                                                           [
-                                                            _c("td", [
-                                                              _vm._v(
-                                                                "\n                                  \n                              "
-                                                              ),
-                                                              data3.estado
-                                                                ? _c(
-                                                                    "button",
-                                                                    {
-                                                                      staticClass:
-                                                                        "btn btn-danger form-control-sm btn-sm",
-                                                                      attrs: {
-                                                                        type:
-                                                                          "button"
-                                                                      },
-                                                                      on: {
-                                                                        click: function(
-                                                                          $event
-                                                                        ) {
-                                                                          return _vm.abrirNivel(
-                                                                            0,
-                                                                            "nivel3",
-                                                                            index,
-                                                                            index2,
-                                                                            index3
-                                                                          )
-                                                                        }
-                                                                      }
-                                                                    },
-                                                                    [
-                                                                      _c("i", {
-                                                                        staticClass:
-                                                                          "icon-minus"
-                                                                      })
-                                                                    ]
-                                                                  )
-                                                                : _c(
-                                                                    "button",
-                                                                    {
-                                                                      staticClass:
-                                                                        "btn btn-success form-control-sm btn-sm",
-                                                                      attrs: {
-                                                                        type:
-                                                                          "button"
-                                                                      },
-                                                                      on: {
-                                                                        click: function(
-                                                                          $event
-                                                                        ) {
-                                                                          return _vm.abrirNivel(
-                                                                            1,
-                                                                            "nivel3",
-                                                                            index,
-                                                                            index2,
-                                                                            index3
-                                                                          )
-                                                                        }
-                                                                      }
-                                                                    },
-                                                                    [
-                                                                      _c("i", {
-                                                                        staticClass:
-                                                                          "icon-plus"
-                                                                      })
-                                                                    ]
-                                                                  )
-                                                            ]),
-                                                            _vm._v(" "),
-                                                            _c("td", [
-                                                              _c("u", [
-                                                                _vm._v(
-                                                                  _vm._s(
-                                                                    data3.tipo +
-                                                                      "." +
-                                                                      data3.nivel1 +
-                                                                      ".0" +
-                                                                      data3.nivel2
-                                                                  )
-                                                                )
-                                                              ])
-                                                            ]),
-                                                            _vm._v(" "),
-                                                            _c(
-                                                              "td",
-                                                              {
-                                                                attrs: {
-                                                                  colspan: "5"
-                                                                }
-                                                              },
-                                                              [
-                                                                _vm._v(
-                                                                  "\n                                             \n                              "
-                                                                ),
-                                                                _c(
-                                                                  "font",
-                                                                  {
-                                                                    staticStyle: {
-                                                                      "text-transform":
-                                                                        "uppercase"
-                                                                    }
-                                                                  },
-                                                                  [
-                                                                    _c("u", [
-                                                                      _vm._v(
-                                                                        _vm._s(
-                                                                          data3.nombre
-                                                                        )
-                                                                      )
-                                                                    ])
-                                                                  ]
-                                                                )
-                                                              ],
-                                                              1
-                                                            ),
-                                                            _vm._v(" "),
-                                                            _c("td", [
+                                                            _c("b", [
                                                               _vm._v(
                                                                 _vm._s(
-                                                                  data3.montoTotal
+                                                                  data2.nombre
                                                                 )
                                                               )
                                                             ])
                                                           ]
                                                         )
-                                                      : _vm._e(),
+                                                      ],
+                                                      1
+                                                    ),
                                                     _vm._v(" "),
-                                                    data3.estado
-                                                      ? [
-                                                          _vm._l(
-                                                            data3.datos,
-                                                            function(
-                                                              data4,
-                                                              index4
-                                                            ) {
-                                                              return [
-                                                                data4.montoTotal >
-                                                                0
-                                                                  ? _c(
-                                                                      "tr",
-                                                                      {
-                                                                        key:
-                                                                          data4.id
-                                                                      },
-                                                                      [
-                                                                        _c(
-                                                                          "td",
-                                                                          [
-                                                                            _vm._v(
-                                                                              "\n                                        \n                                  "
-                                                                            ),
-                                                                            data4.estado
-                                                                              ? _c(
-                                                                                  "button",
-                                                                                  {
-                                                                                    staticClass:
-                                                                                      "btn btn-danger form-control-sm btn-sm",
-                                                                                    attrs: {
-                                                                                      type:
-                                                                                        "button"
-                                                                                    },
-                                                                                    on: {
-                                                                                      click: function(
-                                                                                        $event
-                                                                                      ) {
-                                                                                        return _vm.abrirNivel(
-                                                                                          0,
-                                                                                          "nivel4",
-                                                                                          index,
-                                                                                          index2,
-                                                                                          index3,
-                                                                                          index4
-                                                                                        )
-                                                                                      }
-                                                                                    }
-                                                                                  },
-                                                                                  [
-                                                                                    _c(
-                                                                                      "i",
-                                                                                      {
-                                                                                        staticClass:
-                                                                                          "icon-minus"
-                                                                                      }
-                                                                                    )
-                                                                                  ]
-                                                                                )
-                                                                              : _c(
-                                                                                  "button",
-                                                                                  {
-                                                                                    staticClass:
-                                                                                      "btn btn-success form-control-sm btn-sm",
-                                                                                    attrs: {
-                                                                                      type:
-                                                                                        "button"
-                                                                                    },
-                                                                                    on: {
-                                                                                      click: function(
-                                                                                        $event
-                                                                                      ) {
-                                                                                        return _vm.abrirNivel(
-                                                                                          1,
-                                                                                          "nivel4",
-                                                                                          index,
-                                                                                          index2,
-                                                                                          index3,
-                                                                                          index4
-                                                                                        )
-                                                                                      }
-                                                                                    }
-                                                                                  },
-                                                                                  [
-                                                                                    _c(
-                                                                                      "i",
-                                                                                      {
-                                                                                        staticClass:
-                                                                                          "icon-plus"
-                                                                                      }
-                                                                                    )
-                                                                                  ]
-                                                                                )
-                                                                          ]
-                                                                        ),
-                                                                        _vm._v(
-                                                                          " "
-                                                                        ),
-                                                                        _c(
-                                                                          "td",
-                                                                          [
-                                                                            _vm._v(
-                                                                              _vm._s(
-                                                                                data4.tipo +
-                                                                                  "." +
-                                                                                  data4.nivel1 +
-                                                                                  ".0" +
-                                                                                  data4.nivel2 +
-                                                                                  ".0" +
-                                                                                  data4.nivel3
-                                                                              )
-                                                                            )
-                                                                          ]
-                                                                        ),
-                                                                        _vm._v(
-                                                                          " "
-                                                                        ),
-                                                                        _c(
-                                                                          "td",
+                                                    _c("td", [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          data2.montoTotal.toFixed(
+                                                            2
+                                                          )
+                                                        )
+                                                      )
+                                                    ])
+                                                  ])
+                                                : _vm._e(),
+                                              _vm._v(" "),
+                                              data2.estado
+                                                ? [
+                                                    _vm._l(
+                                                      data2.datos,
+                                                      function(data3, index3) {
+                                                        return [
+                                                          data3.montoTotal > 0
+                                                            ? _c(
+                                                                "tr",
+                                                                {
+                                                                  key: data3.id
+                                                                },
+                                                                [
+                                                                  _c("td", [
+                                                                    _vm._v(
+                                                                      "\n                                  \n                              "
+                                                                    ),
+                                                                    data3.estado
+                                                                      ? _c(
+                                                                          "button",
                                                                           {
+                                                                            staticClass:
+                                                                              "btn btn-danger form-control-sm btn-sm",
                                                                             attrs: {
-                                                                              colspan:
-                                                                                "5"
+                                                                              type:
+                                                                                "button"
+                                                                            },
+                                                                            on: {
+                                                                              click: function(
+                                                                                $event
+                                                                              ) {
+                                                                                return _vm.abrirNivel(
+                                                                                  0,
+                                                                                  "nivel3",
+                                                                                  index,
+                                                                                  index2,
+                                                                                  index3
+                                                                                )
+                                                                              }
                                                                             }
                                                                           },
                                                                           [
-                                                                            _vm._v(
-                                                                              "\n                                                         \n                                  "
-                                                                            ),
                                                                             _c(
-                                                                              "font",
+                                                                              "i",
                                                                               {
-                                                                                staticStyle: {
-                                                                                  "text-transform":
-                                                                                    "uppercase"
-                                                                                }
-                                                                              },
-                                                                              [
-                                                                                _vm._v(
-                                                                                  _vm._s(
-                                                                                    data4.nombre
-                                                                                  )
-                                                                                )
-                                                                              ]
-                                                                            )
-                                                                          ],
-                                                                          1
-                                                                        ),
-                                                                        _vm._v(
-                                                                          " "
-                                                                        ),
-                                                                        _c(
-                                                                          "td",
-                                                                          [
-                                                                            _vm._v(
-                                                                              _vm._s(
-                                                                                data4.montoTotal
-                                                                              )
+                                                                                staticClass:
+                                                                                  "icon-minus"
+                                                                              }
                                                                             )
                                                                           ]
                                                                         )
-                                                                      ]
-                                                                    )
-                                                                  : _vm._e(),
-                                                                _vm._v(" "),
-                                                                data4.estado
-                                                                  ? [
-                                                                      _vm._l(
-                                                                        data4.datos,
-                                                                        function(
-                                                                          data5,
-                                                                          index5
-                                                                        ) {
-                                                                          return [
-                                                                            data5.montoTotal >
-                                                                            0
-                                                                              ? _c(
-                                                                                  "tr",
-                                                                                  {
-                                                                                    key:
-                                                                                      data5.id
-                                                                                  },
-                                                                                  [
-                                                                                    _c(
-                                                                                      "td",
-                                                                                      [
-                                                                                        _vm._v(
-                                                                                          "\n                                              \n                                      "
-                                                                                        ),
-                                                                                        data5.estado
-                                                                                          ? _c(
-                                                                                              "button",
-                                                                                              {
-                                                                                                staticClass:
-                                                                                                  "btn btn-danger form-control-sm btn-sm",
-                                                                                                attrs: {
-                                                                                                  type:
-                                                                                                    "button"
-                                                                                                },
-                                                                                                on: {
-                                                                                                  click: function(
-                                                                                                    $event
-                                                                                                  ) {
-                                                                                                    return _vm.abrirNivel(
-                                                                                                      0,
-                                                                                                      "nivel5",
-                                                                                                      index,
-                                                                                                      index2,
-                                                                                                      index3,
-                                                                                                      index4,
-                                                                                                      index5
-                                                                                                    )
-                                                                                                  }
-                                                                                                }
-                                                                                              },
-                                                                                              [
-                                                                                                _c(
-                                                                                                  "i",
-                                                                                                  {
-                                                                                                    staticClass:
-                                                                                                      "icon-minus"
-                                                                                                  }
-                                                                                                )
-                                                                                              ]
-                                                                                            )
-                                                                                          : _c(
-                                                                                              "button",
-                                                                                              {
-                                                                                                staticClass:
-                                                                                                  "btn btn-success form-control-sm btn-sm",
-                                                                                                attrs: {
-                                                                                                  type:
-                                                                                                    "button"
-                                                                                                },
-                                                                                                on: {
-                                                                                                  click: function(
-                                                                                                    $event
-                                                                                                  ) {
-                                                                                                    return _vm.abrirNivel(
-                                                                                                      1,
-                                                                                                      "nivel5",
-                                                                                                      index,
-                                                                                                      index2,
-                                                                                                      index3,
-                                                                                                      index4,
-                                                                                                      index5
-                                                                                                    )
-                                                                                                  }
-                                                                                                }
-                                                                                              },
-                                                                                              [
-                                                                                                _c(
-                                                                                                  "i",
-                                                                                                  {
-                                                                                                    staticClass:
-                                                                                                      "icon-plus"
-                                                                                                  }
-                                                                                                )
-                                                                                              ]
-                                                                                            )
-                                                                                      ]
-                                                                                    ),
-                                                                                    _vm._v(
-                                                                                      " "
-                                                                                    ),
-                                                                                    _c(
-                                                                                      "td",
-                                                                                      [
-                                                                                        _vm._v(
-                                                                                          _vm._s(
-                                                                                            data5.tipo +
-                                                                                              "." +
-                                                                                              data5.nivel1 +
-                                                                                              ".0" +
-                                                                                              data5.nivel2 +
-                                                                                              ".0" +
-                                                                                              data5.nivel3 +
-                                                                                              ".0" +
-                                                                                              data5.nivel4
-                                                                                          )
-                                                                                        )
-                                                                                      ]
-                                                                                    ),
-                                                                                    _vm._v(
-                                                                                      " "
-                                                                                    ),
-                                                                                    _c(
-                                                                                      "td",
-                                                                                      {
-                                                                                        attrs: {
-                                                                                          colspan:
-                                                                                            "5"
-                                                                                        }
-                                                                                      },
-                                                                                      [
-                                                                                        _vm._v(
-                                                                                          "\n                                                                     \n                                      " +
-                                                                                            _vm._s(
-                                                                                              data5.nombre
-                                                                                            ) +
-                                                                                            "\n                                    "
-                                                                                        )
-                                                                                      ]
-                                                                                    ),
-                                                                                    _vm._v(
-                                                                                      " "
-                                                                                    ),
-                                                                                    _c(
-                                                                                      "td",
-                                                                                      [
-                                                                                        _vm._v(
-                                                                                          _vm._s(
-                                                                                            data5.montoTotal
-                                                                                          )
-                                                                                        )
-                                                                                      ]
-                                                                                    )
-                                                                                  ]
+                                                                      : _c(
+                                                                          "button",
+                                                                          {
+                                                                            staticClass:
+                                                                              "btn btn-success form-control-sm btn-sm",
+                                                                            attrs: {
+                                                                              type:
+                                                                                "button"
+                                                                            },
+                                                                            on: {
+                                                                              click: function(
+                                                                                $event
+                                                                              ) {
+                                                                                return _vm.abrirNivel(
+                                                                                  1,
+                                                                                  "nivel3",
+                                                                                  index,
+                                                                                  index2,
+                                                                                  index3
                                                                                 )
-                                                                              : _vm._e(),
-                                                                            _vm._v(
-                                                                              " "
-                                                                            ),
-                                                                            data5.estado &&
-                                                                            data5.montoTotal >
-                                                                              0
-                                                                              ? [
-                                                                                  _c(
-                                                                                    "tr",
-                                                                                    [
-                                                                                      _c(
-                                                                                        "th"
-                                                                                      ),
-                                                                                      _vm._v(
-                                                                                        " "
-                                                                                      ),
-                                                                                      _c(
-                                                                                        "th",
+                                                                              }
+                                                                            }
+                                                                          },
+                                                                          [
+                                                                            _c(
+                                                                              "i",
+                                                                              {
+                                                                                staticClass:
+                                                                                  "icon-plus"
+                                                                              }
+                                                                            )
+                                                                          ]
+                                                                        )
+                                                                  ]),
+                                                                  _vm._v(" "),
+                                                                  _c("td", [
+                                                                    _c("u", [
+                                                                      _vm._v(
+                                                                        _vm._s(
+                                                                          data3.tipo +
+                                                                            "." +
+                                                                            data3.nivel1 +
+                                                                            ".0" +
+                                                                            data3.nivel2
+                                                                        )
+                                                                      )
+                                                                    ])
+                                                                  ]),
+                                                                  _vm._v(" "),
+                                                                  _c(
+                                                                    "td",
+                                                                    {
+                                                                      attrs: {
+                                                                        colspan:
+                                                                          "5"
+                                                                      }
+                                                                    },
+                                                                    [
+                                                                      _vm._v(
+                                                                        "\n                                             \n                              "
+                                                                      ),
+                                                                      _c(
+                                                                        "font",
+                                                                        {
+                                                                          staticStyle: {
+                                                                            "text-transform":
+                                                                              "uppercase"
+                                                                          }
+                                                                        },
+                                                                        [
+                                                                          _c(
+                                                                            "u",
+                                                                            [
+                                                                              _vm._v(
+                                                                                _vm._s(
+                                                                                  data3.nombre
+                                                                                )
+                                                                              )
+                                                                            ]
+                                                                          )
+                                                                        ]
+                                                                      )
+                                                                    ],
+                                                                    1
+                                                                  ),
+                                                                  _vm._v(" "),
+                                                                  _c("td", [
+                                                                    _vm._v(
+                                                                      _vm._s(
+                                                                        data3.montoTotal
+                                                                      )
+                                                                    )
+                                                                  ])
+                                                                ]
+                                                              )
+                                                            : _vm._e(),
+                                                          _vm._v(" "),
+                                                          data3.estado
+                                                            ? [
+                                                                _vm._l(
+                                                                  data3.datos,
+                                                                  function(
+                                                                    data4,
+                                                                    index4
+                                                                  ) {
+                                                                    return [
+                                                                      data4.montoTotal >
+                                                                      0
+                                                                        ? _c(
+                                                                            "tr",
+                                                                            {
+                                                                              key:
+                                                                                data4.id
+                                                                            },
+                                                                            [
+                                                                              _c(
+                                                                                "td",
+                                                                                [
+                                                                                  _vm._v(
+                                                                                    "\n                                        \n                                  "
+                                                                                  ),
+                                                                                  data4.estado
+                                                                                    ? _c(
+                                                                                        "button",
+                                                                                        {
+                                                                                          staticClass:
+                                                                                            "btn btn-danger form-control-sm btn-sm",
+                                                                                          attrs: {
+                                                                                            type:
+                                                                                              "button"
+                                                                                          },
+                                                                                          on: {
+                                                                                            click: function(
+                                                                                              $event
+                                                                                            ) {
+                                                                                              return _vm.abrirNivel(
+                                                                                                0,
+                                                                                                "nivel4",
+                                                                                                index,
+                                                                                                index2,
+                                                                                                index3,
+                                                                                                index4
+                                                                                              )
+                                                                                            }
+                                                                                          }
+                                                                                        },
                                                                                         [
-                                                                                          _vm._v(
-                                                                                            "Factura"
-                                                                                          )
-                                                                                        ]
-                                                                                      ),
-                                                                                      _vm._v(
-                                                                                        " "
-                                                                                      ),
-                                                                                      _c(
-                                                                                        "th",
-                                                                                        [
-                                                                                          _vm._v(
-                                                                                            "Registro"
-                                                                                          )
-                                                                                        ]
-                                                                                      ),
-                                                                                      _vm._v(
-                                                                                        " "
-                                                                                      ),
-                                                                                      _c(
-                                                                                        "th",
-                                                                                        [
-                                                                                          _vm._v(
-                                                                                            "Fecha"
-                                                                                          )
-                                                                                        ]
-                                                                                      ),
-                                                                                      _vm._v(
-                                                                                        " "
-                                                                                      ),
-                                                                                      _c(
-                                                                                        "th",
-                                                                                        [
-                                                                                          _vm._v(
-                                                                                            "Descripcion"
-                                                                                          )
-                                                                                        ]
-                                                                                      ),
-                                                                                      _vm._v(
-                                                                                        " "
-                                                                                      ),
-                                                                                      _c(
-                                                                                        "th",
-                                                                                        [
-                                                                                          _vm._v(
-                                                                                            "Monto Total"
-                                                                                          )
-                                                                                        ]
-                                                                                      ),
-                                                                                      _vm._v(
-                                                                                        " "
-                                                                                      ),
-                                                                                      _c(
-                                                                                        "th",
-                                                                                        [
-                                                                                          _vm._v(
-                                                                                            "Tipo"
-                                                                                          )
-                                                                                        ]
-                                                                                      ),
-                                                                                      _vm._v(
-                                                                                        " "
-                                                                                      ),
-                                                                                      _c(
-                                                                                        "th",
-                                                                                        [
-                                                                                          _vm._v(
-                                                                                            "Opciones"
+                                                                                          _c(
+                                                                                            "i",
+                                                                                            {
+                                                                                              staticClass:
+                                                                                                "icon-minus"
+                                                                                            }
                                                                                           )
                                                                                         ]
                                                                                       )
-                                                                                    ]
+                                                                                    : _c(
+                                                                                        "button",
+                                                                                        {
+                                                                                          staticClass:
+                                                                                            "btn btn-success form-control-sm btn-sm",
+                                                                                          attrs: {
+                                                                                            type:
+                                                                                              "button"
+                                                                                          },
+                                                                                          on: {
+                                                                                            click: function(
+                                                                                              $event
+                                                                                            ) {
+                                                                                              return _vm.abrirNivel(
+                                                                                                1,
+                                                                                                "nivel4",
+                                                                                                index,
+                                                                                                index2,
+                                                                                                index3,
+                                                                                                index4
+                                                                                              )
+                                                                                            }
+                                                                                          }
+                                                                                        },
+                                                                                        [
+                                                                                          _c(
+                                                                                            "i",
+                                                                                            {
+                                                                                              staticClass:
+                                                                                                "icon-plus"
+                                                                                            }
+                                                                                          )
+                                                                                        ]
+                                                                                      )
+                                                                                ]
+                                                                              ),
+                                                                              _vm._v(
+                                                                                " "
+                                                                              ),
+                                                                              _c(
+                                                                                "td",
+                                                                                [
+                                                                                  _vm._v(
+                                                                                    _vm._s(
+                                                                                      data4.tipo +
+                                                                                        "." +
+                                                                                        data4.nivel1 +
+                                                                                        ".0" +
+                                                                                        data4.nivel2 +
+                                                                                        ".0" +
+                                                                                        data4.nivel3
+                                                                                    )
+                                                                                  )
+                                                                                ]
+                                                                              ),
+                                                                              _vm._v(
+                                                                                " "
+                                                                              ),
+                                                                              _c(
+                                                                                "td",
+                                                                                {
+                                                                                  attrs: {
+                                                                                    colspan:
+                                                                                      "5"
+                                                                                  }
+                                                                                },
+                                                                                [
+                                                                                  _vm._v(
+                                                                                    "\n                                                         \n                                  "
                                                                                   ),
+                                                                                  _c(
+                                                                                    "font",
+                                                                                    {
+                                                                                      staticStyle: {
+                                                                                        "text-transform":
+                                                                                          "uppercase"
+                                                                                      }
+                                                                                    },
+                                                                                    [
+                                                                                      _vm._v(
+                                                                                        _vm._s(
+                                                                                          data4.nombre
+                                                                                        )
+                                                                                      )
+                                                                                    ]
+                                                                                  )
+                                                                                ],
+                                                                                1
+                                                                              ),
+                                                                              _vm._v(
+                                                                                " "
+                                                                              ),
+                                                                              _c(
+                                                                                "td",
+                                                                                [
+                                                                                  _vm._v(
+                                                                                    _vm._s(
+                                                                                      data4.montoTotal
+                                                                                    )
+                                                                                  )
+                                                                                ]
+                                                                              )
+                                                                            ]
+                                                                          )
+                                                                        : _vm._e(),
+                                                                      _vm._v(
+                                                                        " "
+                                                                      ),
+                                                                      data4.estado
+                                                                        ? [
+                                                                            _vm._l(
+                                                                              data4.datos,
+                                                                              function(
+                                                                                data5,
+                                                                                index5
+                                                                              ) {
+                                                                                return [
+                                                                                  data5.montoTotal >
+                                                                                  0
+                                                                                    ? _c(
+                                                                                        "tr",
+                                                                                        [
+                                                                                          _c(
+                                                                                            "td",
+                                                                                            [
+                                                                                              _vm._v(
+                                                                                                "\n                                              \n                                      "
+                                                                                              ),
+                                                                                              data5.estado
+                                                                                                ? _c(
+                                                                                                    "button",
+                                                                                                    {
+                                                                                                      staticClass:
+                                                                                                        "btn btn-danger form-control-sm btn-sm",
+                                                                                                      attrs: {
+                                                                                                        type:
+                                                                                                          "button"
+                                                                                                      },
+                                                                                                      on: {
+                                                                                                        click: function(
+                                                                                                          $event
+                                                                                                        ) {
+                                                                                                          return _vm.abrirNivel(
+                                                                                                            0,
+                                                                                                            "nivel5",
+                                                                                                            index,
+                                                                                                            index2,
+                                                                                                            index3,
+                                                                                                            index4,
+                                                                                                            index5
+                                                                                                          )
+                                                                                                        }
+                                                                                                      }
+                                                                                                    },
+                                                                                                    [
+                                                                                                      _c(
+                                                                                                        "i",
+                                                                                                        {
+                                                                                                          staticClass:
+                                                                                                            "icon-minus"
+                                                                                                        }
+                                                                                                      )
+                                                                                                    ]
+                                                                                                  )
+                                                                                                : _c(
+                                                                                                    "button",
+                                                                                                    {
+                                                                                                      staticClass:
+                                                                                                        "btn btn-success form-control-sm btn-sm",
+                                                                                                      attrs: {
+                                                                                                        type:
+                                                                                                          "button"
+                                                                                                      },
+                                                                                                      on: {
+                                                                                                        click: function(
+                                                                                                          $event
+                                                                                                        ) {
+                                                                                                          return _vm.abrirNivel(
+                                                                                                            1,
+                                                                                                            "nivel5",
+                                                                                                            index,
+                                                                                                            index2,
+                                                                                                            index3,
+                                                                                                            index4,
+                                                                                                            index5
+                                                                                                          )
+                                                                                                        }
+                                                                                                      }
+                                                                                                    },
+                                                                                                    [
+                                                                                                      _c(
+                                                                                                        "i",
+                                                                                                        {
+                                                                                                          staticClass:
+                                                                                                            "icon-plus"
+                                                                                                        }
+                                                                                                      )
+                                                                                                    ]
+                                                                                                  )
+                                                                                            ]
+                                                                                          ),
+                                                                                          _vm._v(
+                                                                                            " "
+                                                                                          ),
+                                                                                          _c(
+                                                                                            "td",
+                                                                                            [
+                                                                                              _vm._v(
+                                                                                                _vm._s(
+                                                                                                  data5.tipo +
+                                                                                                    "." +
+                                                                                                    data5.nivel1 +
+                                                                                                    ".0" +
+                                                                                                    data5.nivel2 +
+                                                                                                    ".0" +
+                                                                                                    data5.nivel3 +
+                                                                                                    ".0" +
+                                                                                                    data5.nivel4
+                                                                                                )
+                                                                                              )
+                                                                                            ]
+                                                                                          ),
+                                                                                          _vm._v(
+                                                                                            " "
+                                                                                          ),
+                                                                                          _c(
+                                                                                            "td",
+                                                                                            {
+                                                                                              attrs: {
+                                                                                                colspan:
+                                                                                                  "5"
+                                                                                              }
+                                                                                            },
+                                                                                            [
+                                                                                              _vm._v(
+                                                                                                "\n                                                                     \n                                      " +
+                                                                                                  _vm._s(
+                                                                                                    data5.nombre
+                                                                                                  ) +
+                                                                                                  "\n                                    "
+                                                                                              )
+                                                                                            ]
+                                                                                          ),
+                                                                                          _vm._v(
+                                                                                            " "
+                                                                                          ),
+                                                                                          _c(
+                                                                                            "td",
+                                                                                            [
+                                                                                              _vm._v(
+                                                                                                _vm._s(
+                                                                                                  data5.montoTotal
+                                                                                                )
+                                                                                              )
+                                                                                            ]
+                                                                                          )
+                                                                                        ]
+                                                                                      )
+                                                                                    : _vm._e(),
                                                                                   _vm._v(
                                                                                     " "
                                                                                   ),
-                                                                                  _vm._l(
-                                                                                    data5.datos,
-                                                                                    function(
-                                                                                      data6
-                                                                                    ) {
-                                                                                      return [
-                                                                                        data6.montoTotal >
-                                                                                        0
-                                                                                          ? _c(
-                                                                                              "tr",
-                                                                                              {
-                                                                                                key:
-                                                                                                  data6.id
-                                                                                              },
+                                                                                  data5.estado &&
+                                                                                  data5.montoTotal >
+                                                                                    0
+                                                                                    ? [
+                                                                                        _c(
+                                                                                          "tr",
+                                                                                          [
+                                                                                            _c(
+                                                                                              "th"
+                                                                                            ),
+                                                                                            _vm._v(
+                                                                                              " "
+                                                                                            ),
+                                                                                            _c(
+                                                                                              "th",
                                                                                               [
-                                                                                                _c(
-                                                                                                  "td"
-                                                                                                ),
                                                                                                 _vm._v(
-                                                                                                  " "
-                                                                                                ),
-                                                                                                _c(
-                                                                                                  "td",
-                                                                                                  [
-                                                                                                    _vm._v(
-                                                                                                      _vm._s(
-                                                                                                        data6.factura
-                                                                                                      )
-                                                                                                    )
-                                                                                                  ]
-                                                                                                ),
+                                                                                                  "Factura"
+                                                                                                )
+                                                                                              ]
+                                                                                            ),
+                                                                                            _vm._v(
+                                                                                              " "
+                                                                                            ),
+                                                                                            _c(
+                                                                                              "th",
+                                                                                              [
                                                                                                 _vm._v(
-                                                                                                  " "
-                                                                                                ),
-                                                                                                _c(
-                                                                                                  "td",
-                                                                                                  [
-                                                                                                    _vm._v(
-                                                                                                      _vm._s(
-                                                                                                        data6.registro
-                                                                                                      )
-                                                                                                    )
-                                                                                                  ]
-                                                                                                ),
+                                                                                                  "Registro"
+                                                                                                )
+                                                                                              ]
+                                                                                            ),
+                                                                                            _vm._v(
+                                                                                              " "
+                                                                                            ),
+                                                                                            _c(
+                                                                                              "th",
+                                                                                              [
                                                                                                 _vm._v(
-                                                                                                  " "
-                                                                                                ),
-                                                                                                _c(
-                                                                                                  "td",
-                                                                                                  [
-                                                                                                    _vm._v(
-                                                                                                      _vm._s(
-                                                                                                        data6.fecha
-                                                                                                      )
-                                                                                                    )
-                                                                                                  ]
-                                                                                                ),
+                                                                                                  "Fecha"
+                                                                                                )
+                                                                                              ]
+                                                                                            ),
+                                                                                            _vm._v(
+                                                                                              " "
+                                                                                            ),
+                                                                                            _c(
+                                                                                              "th",
+                                                                                              [
                                                                                                 _vm._v(
-                                                                                                  " "
-                                                                                                ),
-                                                                                                _c(
-                                                                                                  "td",
-                                                                                                  [
-                                                                                                    _vm._v(
-                                                                                                      _vm._s(
-                                                                                                        data6.descripcion
-                                                                                                      )
-                                                                                                    )
-                                                                                                  ]
-                                                                                                ),
+                                                                                                  "Descripcion"
+                                                                                                )
+                                                                                              ]
+                                                                                            ),
+                                                                                            _vm._v(
+                                                                                              " "
+                                                                                            ),
+                                                                                            _c(
+                                                                                              "th",
+                                                                                              [
                                                                                                 _vm._v(
-                                                                                                  " "
-                                                                                                ),
-                                                                                                _c(
-                                                                                                  "td",
-                                                                                                  [
-                                                                                                    _vm._v(
-                                                                                                      _vm._s(
-                                                                                                        data6.montoTotal
-                                                                                                      )
-                                                                                                    )
-                                                                                                  ]
-                                                                                                ),
+                                                                                                  "Monto Total"
+                                                                                                )
+                                                                                              ]
+                                                                                            ),
+                                                                                            _vm._v(
+                                                                                              " "
+                                                                                            ),
+                                                                                            _c(
+                                                                                              "th",
+                                                                                              [
                                                                                                 _vm._v(
-                                                                                                  " "
-                                                                                                ),
-                                                                                                _c(
-                                                                                                  "td",
-                                                                                                  [
-                                                                                                    _c(
-                                                                                                      "span",
-                                                                                                      {
-                                                                                                        staticClass:
-                                                                                                          "badge badge-success"
-                                                                                                      },
-                                                                                                      [
-                                                                                                        _vm._v(
-                                                                                                          _vm._s(
-                                                                                                            data6.tipo
-                                                                                                          )
-                                                                                                        )
-                                                                                                      ]
-                                                                                                    )
-                                                                                                  ]
-                                                                                                ),
+                                                                                                  "Tipo"
+                                                                                                )
+                                                                                              ]
+                                                                                            ),
+                                                                                            _vm._v(
+                                                                                              " "
+                                                                                            ),
+                                                                                            _c(
+                                                                                              "th",
+                                                                                              [
                                                                                                 _vm._v(
-                                                                                                  " "
-                                                                                                ),
-                                                                                                _c(
-                                                                                                  "td",
-                                                                                                  [
-                                                                                                    _c(
-                                                                                                      "button",
-                                                                                                      {
-                                                                                                        staticClass:
-                                                                                                          "btn btn-info btn-sm",
-                                                                                                        attrs: {
-                                                                                                          type:
-                                                                                                            "button"
-                                                                                                        },
-                                                                                                        on: {
-                                                                                                          click: function(
-                                                                                                            $event
-                                                                                                          ) {
-                                                                                                            return _vm.pdf(
-                                                                                                              data6.tipo,
-                                                                                                              data6.id
-                                                                                                            )
-                                                                                                          }
-                                                                                                        }
-                                                                                                      },
-                                                                                                      [
-                                                                                                        _c(
-                                                                                                          "i",
-                                                                                                          {
-                                                                                                            staticClass:
-                                                                                                              "fa fa-file-pdf-o"
-                                                                                                          }
-                                                                                                        )
-                                                                                                      ]
-                                                                                                    ),
-                                                                                                    _vm._v(
-                                                                                                      "  \n                                          "
-                                                                                                    ),
-                                                                                                    _c(
-                                                                                                      "button",
-                                                                                                      {
-                                                                                                        staticClass:
-                                                                                                          "btn btn-warning btn-sm",
-                                                                                                        attrs: {
-                                                                                                          type:
-                                                                                                            "button"
-                                                                                                        },
-                                                                                                        on: {
-                                                                                                          click: function(
-                                                                                                            $event
-                                                                                                          ) {
-                                                                                                            return _vm.mostrarDetalle(
-                                                                                                              data6.tipo,
-                                                                                                              data6
-                                                                                                            )
-                                                                                                          }
-                                                                                                        }
-                                                                                                      },
-                                                                                                      [
-                                                                                                        _c(
-                                                                                                          "i",
-                                                                                                          {
-                                                                                                            staticClass:
-                                                                                                              "icon-pencil"
-                                                                                                          }
-                                                                                                        )
-                                                                                                      ]
-                                                                                                    ),
-                                                                                                    _vm._v(
-                                                                                                      "\n                                           \n                                          "
-                                                                                                    ),
-                                                                                                    _c(
-                                                                                                      "button",
-                                                                                                      {
-                                                                                                        staticClass:
-                                                                                                          "btn btn-danger btn-sm",
-                                                                                                        attrs: {
-                                                                                                          type:
-                                                                                                            "button"
-                                                                                                        },
-                                                                                                        on: {
-                                                                                                          click: function(
-                                                                                                            $event
-                                                                                                          ) {
-                                                                                                            return _vm.desactivar(
-                                                                                                              data6.id,
-                                                                                                              data6.tipo
-                                                                                                            )
-                                                                                                          }
-                                                                                                        }
-                                                                                                      },
-                                                                                                      [
-                                                                                                        _c(
-                                                                                                          "i",
-                                                                                                          {
-                                                                                                            staticClass:
-                                                                                                              "icon-trash"
-                                                                                                          }
-                                                                                                        )
-                                                                                                      ]
-                                                                                                    )
-                                                                                                  ]
+                                                                                                  "Opciones"
                                                                                                 )
                                                                                               ]
                                                                                             )
-                                                                                          : _vm._e()
+                                                                                          ]
+                                                                                        ),
+                                                                                        _vm._v(
+                                                                                          " "
+                                                                                        ),
+                                                                                        _vm._l(
+                                                                                          data5.datos,
+                                                                                          function(
+                                                                                            data6
+                                                                                          ) {
+                                                                                            return [
+                                                                                              data6.montoTotal >
+                                                                                              0
+                                                                                                ? _c(
+                                                                                                    "tr",
+                                                                                                    [
+                                                                                                      _c(
+                                                                                                        "td"
+                                                                                                      ),
+                                                                                                      _vm._v(
+                                                                                                        " "
+                                                                                                      ),
+                                                                                                      _c(
+                                                                                                        "td",
+                                                                                                        [
+                                                                                                          _vm._v(
+                                                                                                            _vm._s(
+                                                                                                              data6.factura
+                                                                                                            )
+                                                                                                          )
+                                                                                                        ]
+                                                                                                      ),
+                                                                                                      _vm._v(
+                                                                                                        " "
+                                                                                                      ),
+                                                                                                      _c(
+                                                                                                        "td",
+                                                                                                        [
+                                                                                                          _vm._v(
+                                                                                                            _vm._s(
+                                                                                                              data6.registro
+                                                                                                            )
+                                                                                                          )
+                                                                                                        ]
+                                                                                                      ),
+                                                                                                      _vm._v(
+                                                                                                        " "
+                                                                                                      ),
+                                                                                                      _c(
+                                                                                                        "td",
+                                                                                                        [
+                                                                                                          _vm._v(
+                                                                                                            _vm._s(
+                                                                                                              data6.fecha
+                                                                                                            )
+                                                                                                          )
+                                                                                                        ]
+                                                                                                      ),
+                                                                                                      _vm._v(
+                                                                                                        " "
+                                                                                                      ),
+                                                                                                      _c(
+                                                                                                        "td",
+                                                                                                        [
+                                                                                                          _vm._v(
+                                                                                                            _vm._s(
+                                                                                                              data6.descripcion
+                                                                                                            )
+                                                                                                          )
+                                                                                                        ]
+                                                                                                      ),
+                                                                                                      _vm._v(
+                                                                                                        " "
+                                                                                                      ),
+                                                                                                      _c(
+                                                                                                        "td",
+                                                                                                        [
+                                                                                                          _vm._v(
+                                                                                                            _vm._s(
+                                                                                                              data6.montoTotal
+                                                                                                            )
+                                                                                                          )
+                                                                                                        ]
+                                                                                                      ),
+                                                                                                      _vm._v(
+                                                                                                        " "
+                                                                                                      ),
+                                                                                                      _c(
+                                                                                                        "td",
+                                                                                                        [
+                                                                                                          _c(
+                                                                                                            "span",
+                                                                                                            {
+                                                                                                              staticClass:
+                                                                                                                "badge badge-success"
+                                                                                                            },
+                                                                                                            [
+                                                                                                              _vm._v(
+                                                                                                                _vm._s(
+                                                                                                                  data6.tipo
+                                                                                                                )
+                                                                                                              )
+                                                                                                            ]
+                                                                                                          )
+                                                                                                        ]
+                                                                                                      ),
+                                                                                                      _vm._v(
+                                                                                                        " "
+                                                                                                      ),
+                                                                                                      _c(
+                                                                                                        "td",
+                                                                                                        [
+                                                                                                          _c(
+                                                                                                            "button",
+                                                                                                            {
+                                                                                                              staticClass:
+                                                                                                                "btn btn-info btn-sm",
+                                                                                                              attrs: {
+                                                                                                                type:
+                                                                                                                  "button"
+                                                                                                              },
+                                                                                                              on: {
+                                                                                                                click: function(
+                                                                                                                  $event
+                                                                                                                ) {
+                                                                                                                  return _vm.pdf(
+                                                                                                                    data6.tipo,
+                                                                                                                    data6.id
+                                                                                                                  )
+                                                                                                                }
+                                                                                                              }
+                                                                                                            },
+                                                                                                            [
+                                                                                                              _c(
+                                                                                                                "i",
+                                                                                                                {
+                                                                                                                  staticClass:
+                                                                                                                    "fa fa-file-pdf-o"
+                                                                                                                }
+                                                                                                              )
+                                                                                                            ]
+                                                                                                          ),
+                                                                                                          _vm._v(
+                                                                                                            "  \n                                          "
+                                                                                                          ),
+                                                                                                          _c(
+                                                                                                            "button",
+                                                                                                            {
+                                                                                                              staticClass:
+                                                                                                                "btn btn-warning btn-sm",
+                                                                                                              attrs: {
+                                                                                                                type:
+                                                                                                                  "button"
+                                                                                                              },
+                                                                                                              on: {
+                                                                                                                click: function(
+                                                                                                                  $event
+                                                                                                                ) {
+                                                                                                                  return _vm.mostrarDetalle(
+                                                                                                                    data6.tipo,
+                                                                                                                    data6
+                                                                                                                  )
+                                                                                                                }
+                                                                                                              }
+                                                                                                            },
+                                                                                                            [
+                                                                                                              _c(
+                                                                                                                "i",
+                                                                                                                {
+                                                                                                                  staticClass:
+                                                                                                                    "icon-pencil"
+                                                                                                                }
+                                                                                                              )
+                                                                                                            ]
+                                                                                                          ),
+                                                                                                          _vm._v(
+                                                                                                            "\n                                           \n                                          "
+                                                                                                          ),
+                                                                                                          _c(
+                                                                                                            "button",
+                                                                                                            {
+                                                                                                              staticClass:
+                                                                                                                "btn btn-danger btn-sm",
+                                                                                                              attrs: {
+                                                                                                                type:
+                                                                                                                  "button"
+                                                                                                              },
+                                                                                                              on: {
+                                                                                                                click: function(
+                                                                                                                  $event
+                                                                                                                ) {
+                                                                                                                  return _vm.desactivar(
+                                                                                                                    data6.id,
+                                                                                                                    data6.tipo
+                                                                                                                  )
+                                                                                                                }
+                                                                                                              }
+                                                                                                            },
+                                                                                                            [
+                                                                                                              _c(
+                                                                                                                "i",
+                                                                                                                {
+                                                                                                                  staticClass:
+                                                                                                                    "icon-trash"
+                                                                                                                }
+                                                                                                              )
+                                                                                                            ]
+                                                                                                          )
+                                                                                                        ]
+                                                                                                      )
+                                                                                                    ]
+                                                                                                  )
+                                                                                                : _vm._e()
+                                                                                            ]
+                                                                                          }
+                                                                                        )
                                                                                       ]
-                                                                                    }
-                                                                                  )
+                                                                                    : _vm._e()
                                                                                 ]
-                                                                              : _vm._e()
+                                                                              }
+                                                                            )
                                                                           ]
-                                                                        }
-                                                                      )
+                                                                        : _vm._e()
                                                                     ]
-                                                                  : _vm._e()
+                                                                  }
+                                                                )
                                                               ]
-                                                            }
-                                                          )
+                                                            : _vm._e()
                                                         ]
-                                                      : _vm._e()
+                                                      }
+                                                    )
                                                   ]
-                                                })
-                                              ]
-                                            : _vm._e()
+                                                : _vm._e()
+                                            ]
+                                          })
                                         ]
-                                      })
-                                    ]
-                                  : _vm._e()
-                              ]
-                            })
-                          ],
-                          2
-                        )
+                                      : _vm._e()
+                                  ]
+                                })
+                              ],
+                              2
+                            )
+                          : _vm._e()
                       ]
                     )
                   ])
@@ -81565,7 +82155,7 @@ var render = function() {
                               }
                             }
                           },
-                          [_vm._v("Actualizar")]
+                          [_vm._v("Actualizar " + _vm._s(_vm.formulario))]
                         )
                       ])
                     ])
@@ -82095,7 +82685,513 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v("Actualizar")]
+                        [_vm._v("Actualizar " + _vm._s(_vm.formulario))]
+                      )
+                    ])
+                  ])
+                ])
+              ]
+            : _vm.ventana == 3
+            ? [
+                _c("div", { class: "card-body " + _vm.validaciones }, [
+                  _c("div", { staticClass: "form-group row border" }, [
+                    _c("div", { staticClass: "col-md-12" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _vm._m(13),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.descripcion,
+                              expression: "descripcion"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "text",
+                            required: "",
+                            placeholder: "Descripcion...."
+                          },
+                          domProps: { value: _vm.descripcion },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.descripcion = $event.target.value
+                            }
+                          }
+                        })
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row border" }, [
+                    _c("div", { staticClass: "col-md-4" }, [
+                      _c(
+                        "div",
+                        { staticClass: "form-group" },
+                        [
+                          _c("label", [_vm._v("Cuenta")]),
+                          _vm._v(" "),
+                          _c("v-select", {
+                            attrs: {
+                              label: "nombre",
+                              options: _vm.arrayCuenta,
+                              placeholder: "Buscar Cuenta..."
+                            },
+                            on: {
+                              search: _vm.selectCuenta,
+                              input: _vm.getDatosCuenta
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-0" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              "btn btn-success form-control btnagregar",
+                            attrs: {
+                              "data-toggle": "modal",
+                              "data-target": "#ModalIngresoEgreso"
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.abrirModal()
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "icon-plus" }),
+                            _vm._v(" "),
+                            _c("i", { staticClass: "icon-plus" }),
+                            _vm._v(" "),
+                            _c("i", { staticClass: "icon-plus" })
+                          ]
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-2" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "" } }, [_vm._v("Debe")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.debe,
+                              expression: "debe"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "number", min: "0" },
+                          domProps: { value: _vm.debe },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.debe = $event.target.value
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-2" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "" } }, [_vm._v("Haber")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.haber,
+                              expression: "haber"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "number", min: "0" },
+                          domProps: { value: _vm.haber },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.haber = $event.target.value
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-2" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              "btn btn-success form-control btnagregar",
+                            on: {
+                              click: function($event) {
+                                return _vm.agregarDetalle()
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "icon-plus" }, [
+                              _vm._v("Agregar")
+                            ])
+                          ]
+                        )
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row border" }, [
+                    _c("div", { staticClass: "table-responsive col-md-12" }, [
+                      _c(
+                        "table",
+                        {
+                          staticClass:
+                            "table table-bordered table-striped table-sm"
+                        },
+                        [
+                          _vm._m(14),
+                          _vm._v(" "),
+                          _vm.arrayDetalle.length
+                            ? _c(
+                                "tbody",
+                                [
+                                  _vm._l(_vm.arrayDetalle, function(
+                                    detalle,
+                                    index
+                                  ) {
+                                    return _c("tr", { key: detalle.idCuenta }, [
+                                      _c("td", [
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "btn btn-danger btn-sm",
+                                            attrs: { type: "button" },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.eliminarDetalle(
+                                                  index
+                                                )
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "icon-close"
+                                            })
+                                          ]
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("span", {
+                                          staticClass: "badge badge-success",
+                                          domProps: {
+                                            textContent: _vm._s(detalle.codigo)
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", {
+                                        domProps: {
+                                          textContent: _vm._s(detalle.cuenta)
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: detalle.debe,
+                                              expression: "detalle.debe"
+                                            }
+                                          ],
+                                          staticClass: "form-control",
+                                          attrs: {
+                                            type: "number",
+                                            min: "0",
+                                            step: "any"
+                                          },
+                                          domProps: { value: detalle.debe },
+                                          on: {
+                                            input: [
+                                              function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  detalle,
+                                                  "debe",
+                                                  $event.target.value
+                                                )
+                                              },
+                                              function($event) {
+                                                return _vm.sumarDebeHaber()
+                                              }
+                                            ]
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: detalle.haber,
+                                              expression: "detalle.haber"
+                                            }
+                                          ],
+                                          staticClass: "form-control",
+                                          attrs: {
+                                            type: "number",
+                                            min: "0",
+                                            step: "any"
+                                          },
+                                          domProps: { value: detalle.haber },
+                                          on: {
+                                            input: [
+                                              function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  detalle,
+                                                  "haber",
+                                                  $event.target.value
+                                                )
+                                              },
+                                              function($event) {
+                                                return _vm.sumarDebeHaber()
+                                              }
+                                            ]
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: detalle.descripcionD,
+                                              expression: "detalle.descripcionD"
+                                            }
+                                          ],
+                                          staticClass: "form-control",
+                                          attrs: {
+                                            type: "text",
+                                            required: "",
+                                            placeholder: "Descripcion"
+                                          },
+                                          domProps: {
+                                            value: detalle.descripcionD
+                                          },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                detalle,
+                                                "descripcionD",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        detalle.debe - detalle.haber ==
+                                          detalle.debe ||
+                                        detalle.haber - detalle.debe ==
+                                          detalle.haber
+                                          ? _c("div", [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "badge badge-success"
+                                                },
+                                                [_vm._v("OK")]
+                                              )
+                                            ])
+                                          : _c("div", [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "badge badge-danger"
+                                                },
+                                                [_vm._v("ERROR")]
+                                              )
+                                            ])
+                                      ])
+                                    ])
+                                  }),
+                                  _vm._v(" "),
+                                  _c("tr", [
+                                    _c("td", { attrs: { colspan: "3" } }, [
+                                      _vm._v("Total")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("td", [
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.debeTotal,
+                                            expression: "debeTotal"
+                                          }
+                                        ],
+                                        staticClass: "form-control",
+                                        attrs: { readonly: "", type: "number" },
+                                        domProps: { value: _vm.debeTotal },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.debeTotal = $event.target.value
+                                          }
+                                        }
+                                      })
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("td", [
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.haberTotal,
+                                            expression: "haberTotal"
+                                          }
+                                        ],
+                                        staticClass: "form-control",
+                                        attrs: { readonly: "", type: "number" },
+                                        domProps: { value: _vm.haberTotal },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.haberTotal = $event.target.value
+                                          }
+                                        }
+                                      })
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("td", [
+                                      _vm.debeTotal - _vm.haberTotal == 0
+                                        ? _c("div", [
+                                            _c(
+                                              "span",
+                                              {
+                                                staticClass:
+                                                  "badge badge-success"
+                                              },
+                                              [_vm._v("Asiento Correcto")]
+                                            )
+                                          ])
+                                        : _c("div", [
+                                            _c(
+                                              "span",
+                                              {
+                                                staticClass:
+                                                  "badge badge-danger"
+                                              },
+                                              [_vm._v("Asiento Incorrecto")]
+                                            )
+                                          ])
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("td", [
+                                      _vm.debeTotal - _vm.haberTotal == 0
+                                        ? _c("div", [
+                                            _c(
+                                              "span",
+                                              {
+                                                staticClass:
+                                                  "badge badge-success"
+                                              },
+                                              [_vm._v("OK")]
+                                            )
+                                          ])
+                                        : _c("div", [
+                                            _c(
+                                              "span",
+                                              {
+                                                staticClass:
+                                                  "badge badge-danger"
+                                              },
+                                              [_vm._v("ERROR")]
+                                            )
+                                          ])
+                                    ])
+                                  ])
+                                ],
+                                2
+                              )
+                            : _c("tbody", [_vm._m(15)])
+                        ]
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("div", { staticClass: "col-md-12" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-secondary",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              return _vm.ocultarDetalle()
+                            }
+                          }
+                        },
+                        [_vm._v("Cerrar")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              return _vm.actualizarIE()
+                            }
+                          }
+                        },
+                        [_vm._v("Actualizar " + _vm._s(_vm.formulario))]
                       )
                     ])
                   ])
@@ -82135,27 +83231,7 @@ var render = function() {
                   domProps: { textContent: _vm._s(_vm.tituloModal) }
                 }),
                 _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "close",
-                    attrs: {
-                      type: "button",
-                      "data-dismiss": "modal",
-                      "aria-label": "Close"
-                    },
-                    on: {
-                      click: function($event) {
-                        return _vm.cerrarModal()
-                      }
-                    }
-                  },
-                  [
-                    _c("span", { attrs: { "aria-hidden": "true" } }, [
-                      _vm._v("×")
-                    ])
-                  ]
-                )
+                _vm._m(16)
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "modal-body" }, [
@@ -82269,7 +83345,7 @@ var render = function() {
                       "table table-responsive-sm table-bordered table-striped table-sm"
                   },
                   [
-                    _vm._m(13),
+                    _vm._m(17),
                     _vm._v(" "),
                     _c(
                       "tbody",
@@ -82334,21 +83410,219 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-secondary",
-                    attrs: { type: "button", "data-dismiss": "modal" },
-                    on: {
-                      click: function($event) {
-                        return _vm.cerrarModal()
-                      }
-                    }
-                  },
-                  [_vm._v("Cerrar")]
-                )
-              ])
+              _vm._m(18)
+            ])
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade bd-example-modal-lg",
+        attrs: {
+          tabindex: "-1",
+          id: "ModalIngresoEgreso",
+          role: "dialog",
+          "aria-labelledby": "myModalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-primary modal-lg",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c("h4", {
+                  staticClass: "modal-title",
+                  domProps: { textContent: _vm._s(_vm.tituloModal) }
+                }),
+                _vm._v(" "),
+                _vm._m(19)
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("div", { staticClass: "form-group row" }, [
+                  _c("div", { staticClass: "col-md-8" }, [
+                    _c("div", { staticClass: "input-group" }, [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.criterioP,
+                              expression: "criterioP"
+                            }
+                          ],
+                          staticClass: "form-control col-md-4",
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.criterioP = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { value: "nombre" } }, [
+                            _vm._v("Nombre")
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.buscarP,
+                            expression: "buscarP"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", placeholder: "Buscar Producto" },
+                        domProps: { value: _vm.buscarP },
+                        on: {
+                          keyup: function($event) {
+                            if (
+                              !$event.type.indexOf("key") &&
+                              _vm._k(
+                                $event.keyCode,
+                                "enter",
+                                13,
+                                $event.key,
+                                "Enter"
+                              )
+                            ) {
+                              return null
+                            }
+                            return _vm.listarCuenta(_vm.buscarP)
+                          },
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.buscarP = $event.target.value
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "input-group-append" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: { type: "submit" },
+                            on: {
+                              click: function($event) {
+                                return _vm.listarCuenta(_vm.buscarP)
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "fa fa-search" }),
+                            _vm._v(" Buscar\n                ")
+                          ]
+                        )
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "table-responsive" }, [
+                  _c(
+                    "table",
+                    {
+                      staticClass: "table table-bordered table-striped table-sm"
+                    },
+                    [
+                      _vm._m(20),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.arrayCuenta, function(data) {
+                          return _c("tr", { key: data.id }, [
+                            _c("td", [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-success btn-sm",
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.agregarDetalleModal(data)
+                                    }
+                                  }
+                                },
+                                [_c("i", { staticClass: "icon-check" })]
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", {
+                              domProps: { textContent: _vm._s(data.nombre) }
+                            }),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(
+                                  data.tipo +
+                                    "." +
+                                    data.nivel1 +
+                                    "." +
+                                    data.nivel2 +
+                                    "." +
+                                    data.nivel3 +
+                                    "." +
+                                    data.nivel4
+                                )
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(data.nivel))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              data.estado
+                                ? _c("div", [
+                                    _c(
+                                      "span",
+                                      { staticClass: "badge badge-success" },
+                                      [_vm._v("Activo")]
+                                    )
+                                  ])
+                                : _c("div", [
+                                    _c(
+                                      "span",
+                                      { staticClass: "badge badge-danger" },
+                                      [_vm._v("Desactivado")]
+                                    )
+                                  ])
+                            ])
+                          ])
+                        }),
+                        0
+                      )
+                    ]
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _vm._m(21)
             ])
           ]
         )
@@ -82543,6 +83817,64 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "" } }, [
+      _vm._v("\n                  Por Concepto De\n                  "),
+      _c("br")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Quitar")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Codigo")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Cuenta")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Debe")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Haber")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Descripcion")]),
+        _vm._v(" "),
+        _c("th")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { attrs: { colspan: "6" } }, [
+        _vm._v("No hay Cuentas Agregadas")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
         _c("th", [_vm._v("Opciones")]),
@@ -82555,6 +83887,71 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Estado")])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Cerrar")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Opciones")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Nombre")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Codigo")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Nivel")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Estado")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Cerrar")]
+      )
     ])
   }
 ]
@@ -82796,6 +84193,38 @@ var render = function() {
                             _c(
                               "td",
                               [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-info btn-sm",
+                                    attrs: { type: "button" },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.imprimir(data.id)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass: "fa fa-print fa-lg"
+                                    })
+                                  ]
+                                ),
+                                _vm._v(" \n                  "),
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-danger btn-sm",
+                                    attrs: { type: "button" },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.pdfCompra(data.id)
+                                      }
+                                    }
+                                  },
+                                  [_c("i", { staticClass: "fa fa-file-pdf-o" })]
+                                ),
+                                _vm._v("  \n                  "),
                                 _c(
                                   "button",
                                   {
@@ -84752,21 +86181,25 @@ var render = function() {
                                   _c(
                                     "button",
                                     {
-                                      staticClass: "btn btn-warning btn-sm",
+                                      staticClass: "btn btn-info btn-sm",
                                       attrs: { type: "button" },
                                       on: {
                                         click: function($event) {
-                                          return _vm.verEgreso(data.id)
+                                          return _vm.imprimir(data.id)
                                         }
                                       }
                                     },
-                                    [_c("i", { staticClass: "icon-eye" })]
+                                    [
+                                      _c("i", {
+                                        staticClass: "fa fa-print fa-lg"
+                                      })
+                                    ]
                                   ),
-                                  _vm._v("  \n                    "),
+                                  _vm._v(" \n                    "),
                                   _c(
                                     "button",
                                     {
-                                      staticClass: "btn btn-info btn-sm",
+                                      staticClass: "btn btn-danger btn-sm",
                                       attrs: { type: "button" },
                                       on: {
                                         click: function($event) {
@@ -84774,7 +86207,11 @@ var render = function() {
                                         }
                                       }
                                     },
-                                    [_c("i", { staticClass: "icon-doc" })]
+                                    [
+                                      _c("i", {
+                                        staticClass: "fa fa-file-pdf-o"
+                                      })
+                                    ]
                                   ),
                                   _vm._v("  \n                    "),
                                   _c(
@@ -85600,7 +87037,7 @@ var render = function() {
                           },
                           [
                             _c("i", { staticClass: "fa fa-search" }),
-                            _vm._v(" Buscar\n                ")
+                            _vm._v(" Buscar\n                  ")
                           ]
                         )
                       ])
@@ -85775,7 +87212,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("tr", [
       _c("td", { attrs: { colspan: "6" } }, [
-        _vm._v("No hay Productos Agregados")
+        _vm._v("No hay Cuentas Agregadas")
       ])
     ])
   },
@@ -85998,6 +87435,42 @@ var render = function() {
                               _c(
                                 "td",
                                 [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-info btn-sm",
+                                      attrs: { type: "button" },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.imprimir(_vm.data.id)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("i", {
+                                        staticClass: "fa fa-print fa-lg"
+                                      })
+                                    ]
+                                  ),
+                                  _vm._v(" \n                    "),
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-danger btn-sm",
+                                      attrs: { type: "button" },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.pdfFormula(_vm.data.id)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("i", {
+                                        staticClass: "fa fa-file-pdf-o"
+                                      })
+                                    ]
+                                  ),
+                                  _vm._v("  \n                    "),
                                   _c(
                                     "button",
                                     {
@@ -87040,21 +88513,25 @@ var render = function() {
                                   _c(
                                     "button",
                                     {
-                                      staticClass: "btn btn-warning btn-sm",
+                                      staticClass: "btn btn-info btn-sm",
                                       attrs: { type: "button" },
                                       on: {
                                         click: function($event) {
-                                          return _vm.verIngreso(data.id)
+                                          return _vm.imprimir(data.id)
                                         }
                                       }
                                     },
-                                    [_c("i", { staticClass: "icon-eye" })]
+                                    [
+                                      _c("i", {
+                                        staticClass: "fa fa-print fa-lg"
+                                      })
+                                    ]
                                   ),
-                                  _vm._v("  \n                    "),
+                                  _vm._v(" \n                    "),
                                   _c(
                                     "button",
                                     {
-                                      staticClass: "btn btn-info btn-sm",
+                                      staticClass: "btn btn-danger btn-sm",
                                       attrs: { type: "button" },
                                       on: {
                                         click: function($event) {
@@ -87062,7 +88539,11 @@ var render = function() {
                                         }
                                       }
                                     },
-                                    [_c("i", { staticClass: "icon-doc" })]
+                                    [
+                                      _c("i", {
+                                        staticClass: "fa fa-file-pdf-o"
+                                      })
+                                    ]
                                   ),
                                   _vm._v("  \n                    "),
                                   _c(
@@ -88063,7 +89544,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("tr", [
       _c("td", { attrs: { colspan: "6" } }, [
-        _vm._v("No hay Productos Agregados")
+        _vm._v("No hay Cuentas Agregadas")
       ])
     ])
   },
@@ -90273,9 +91754,7 @@ var render = function() {
                                   },
                                   [_c("i", { staticClass: "fa fa-file-pdf-o" })]
                                 ),
-                                _vm._v(
-                                  "  \n                  \n                  "
-                                ),
+                                _vm._v("  \n                  "),
                                 _c(
                                   "button",
                                   {
@@ -90431,11 +91910,7 @@ var render = function() {
                           "div",
                           { staticClass: "form-group" },
                           [
-                            _c("label", [
-                              _vm._v(
-                                "\n                  Cliente\n                "
-                              )
-                            ]),
+                            _c("label", [_vm._v("Cliente")]),
                             _vm._v(" "),
                             _c("v-select", {
                               attrs: {
@@ -90462,9 +91937,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "col-md-3" }, [
                         _c("div", { staticClass: "form-group" }, [
-                          _c("label", { attrs: { for: "" } }, [
-                            _vm._v("\n                  Pago\n                ")
-                          ]),
+                          _c("label", { attrs: { for: "" } }, [_vm._v("Pago")]),
                           _vm._v(" "),
                           _c(
                             "select",
@@ -91199,7 +92672,7 @@ var render = function() {
                                             _vm._v(" "),
                                             _c("td", [
                                               _vm._v(
-                                                "\n                        " +
+                                                "\n                    " +
                                                   _vm._s(
                                                     Math.floor(
                                                       (detalle.cantidad *
@@ -91209,7 +92682,7 @@ var render = function() {
                                                   ) +
                                                   " " +
                                                   _vm._s(detalle.unidad) +
-                                                  " +\n                        " +
+                                                  " +\n                    " +
                                                   _vm._s(
                                                     (
                                                       ((detalle.cantidad *
@@ -91225,7 +92698,7 @@ var render = function() {
                                                   ) +
                                                   " " +
                                                   _vm._s(detalle.referencia) +
-                                                  "\n                      "
+                                                  "\n                  "
                                               )
                                             ]),
                                             _vm._v(" "),

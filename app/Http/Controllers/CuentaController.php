@@ -122,7 +122,7 @@ class CuentaController extends Controller
         // $pdf = App::make('dompdf.wrapper');
 
         $cont=Cuenta::count();
-        $pdf = \PDF::loadView('pdf.cuentaspdf',['cuentas'=>$cuentas,'cont'=>$cont]);
+        $pdf = \PDF::loadView('cuenta.pdf.index',['cuentas'=>$cuentas,'cont'=>$cont]);
         return $pdf->download('cuentas.pdf');
         // return $pdf->stream();
     }
@@ -141,7 +141,7 @@ class CuentaController extends Controller
         // $pdf = App::make('dompdf.wrapper');
 
         $cont=Cuenta::count();
-        return view('imprimir.cuenta',['cuentas'=>$cuentas,'cont'=>$cont]);
+        return view('cuenta.imprimir.index',['cuentas'=>$cuentas,'cont'=>$cont]);
     }
     
     public function cuenta(Request $request)

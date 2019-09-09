@@ -46,13 +46,16 @@ class EgresoController extends Controller
         {
             if(!$request->ajax()) return redirect('/');
             $id = $request->id;
+            $egresos= Egreso::where('egresos.id','=',$id)
+            ->get();
+
             $detalles = DetalleEgreso::join('cuentas','cuentas.id','detalle_egresos.idCuenta')
             ->where('detalle_egresos.idEgreso','=',$id) 
             ->where('detalle_egresos.estado','=','1')
             ->select('cuentas.id as idCuenta',DB::raw("concat(tipo,'.',nivel1,'.',nivel2,'.',nivel3,'.',nivel4)as codigo"),'cuentas.nombre as cuenta','debe','haber','orden','descripcionD')
             ->orderBy('orden','asc')
             ->get();
-            return ['detalles'=>$detalles];
+            return ['detalles'=>$detalles,'egresos'=>$egresos];
         }
 
         public function pdf(Request $request, $id)
@@ -92,8 +95,23 @@ class EgresoController extends Controller
                 $ingreso=Ingreso::max('registro');
                 $egreso=Egreso::max('registro');
                 $compra=Compra::max('registro');
-    
-                $registro=$venta+$compra+$ingreso+$egreso;
+                $max=0;
+                if($venta>$max)
+                {
+                    $max=$venta;
+                }
+                if($compra>$max)
+                {
+                    $max=$compra;
+                }
+                if($ingreso>$max)
+                {
+                    $max=$ingreso;
+                }
+                if($egreso>$max){
+                    $max=$ingreso;
+                }
+                $registro=$max;
     
                 $mytime= Carbon::now('America/La_Paz');
                 $egresos = new Egreso();

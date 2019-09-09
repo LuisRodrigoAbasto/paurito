@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Cuenta;
+use App\Venta;
+use App\DetalleVenta;
+use App\Producto;
 
 class BalanceGeneralController extends Controller
 {
@@ -375,7 +378,7 @@ class BalanceGeneralController extends Controller
                                 ->where('c2.id','=',$nivel2->id)
                                 ->where('c3.id','=',$nivel3->id)
                                 ->where('c4.id','=',$nivel4->id)
-                                // ->where('cuentas.id','=',$nivel5->id)
+                                ->where('cuentas.id','=',$nivel5->id)
                                 ->select('ventas.id','ventas.factura','ventas.registro','ventas.fecha','ventas.descripcion',
                                 'ventas.montoVenta as montoTotal','ventas.tipo')
                                 ->orderBy('ventas.id','desc')
@@ -392,7 +395,7 @@ class BalanceGeneralController extends Controller
                                 ->where('c2.id','=',$nivel2->id)
                                 ->where('c3.id','=',$nivel3->id)
                                 ->where('c4.id','=',$nivel4->id)
-                                // ->where('cuentas.id','=',$nivel5->id)
+                                ->where('cuentas.id','=',$nivel5->id)
                                 ->select('compras.id','compras.factura','compras.registro','compras.fecha','compras.descripcion',
                                 'compras.montoCompra as montoTotal','compras.tipo')
                                 ->orderBy('compras.id','desc')
@@ -410,9 +413,11 @@ class BalanceGeneralController extends Controller
                                 ->where('c2.id','=',$nivel2->id)
                                 ->where('c3.id','=',$nivel3->id)
                                 ->where('c4.id','=',$nivel4->id)
-                                // ->where('cuentas.id','=',$nivel5->id)
+                                ->where('cuentas.id','=',$nivel5->id)
                                 ->select('ingresos.id','ingresos.factura','ingresos.registro','ingresos.fecha','ingresos.descripcion',
                                 'ingresos.monto as montoTotal','ingresos.tipo')
+                                ->groupBy('ingresos.id','ingresos.factura','ingresos.registro','ingresos.fecha','ingresos.descripcion',
+                                'ingresos.monto','ingresos.tipo')
                                 ->orderBy('ingresos.id','desc')
                                 ->get();
                                 
@@ -428,47 +433,70 @@ class BalanceGeneralController extends Controller
                                 ->where('c2.id','=',$nivel2->id)
                                 ->where('c3.id','=',$nivel3->id)
                                 ->where('c4.id','=',$nivel4->id)
-                                // ->where('cuentas.id','=',$nivel5->id)
+                                ->where('cuentas.id','=',$nivel5->id)
                                 ->select('egresos.id','egresos.factura','egresos.registro','egresos.fecha','egresos.descripcion',
                                 'egresos.monto as montoTotal','egresos.tipo')
+                                ->groupBy('egresos.id','egresos.factura','egresos.registro','egresos.fecha','egresos.descripcion',
+                                'egresos.monto','egresos.tipo')
                                 ->orderBy('egresos.id','desc')
                                 ->get();
-                                
+
+                                $data=array();
                                 if(count($ventas)>0)
                                 {
-                                    $nivel5->datos=[$ventas[0]];
+                                    foreach ($ventas as $value) {
+                                        array_push($data,$value);
+                                    }
+                                    // $data=$ventas;
                                 }
                                 if(count($compras)>0)
-                                {
-                                    if(count($ventas)>0)
-                                    {
-                                    $nivel5->datos=[$nivel5->datos[0],$compras[0]];
-                                    }
-                                    else{
-                                        $nivel5->datos=[$compras[0]];
-                                    }
+                                {                                   
+                                    // if(count($data)>0)
+                                    // {
+                                        foreach ($compras as $value1)
+                                        { 
+                                            array_push($data,$value1);
+                                        }
+                                        // array_push($data,$compras);
+                                    // }
+                                    // else{
+                                    //     $data=$compras;
+                                    // }
                                 }
                                 if(count($ingresos)>0)
                                 {
-                                    if(count($compras)>0 || count($ventas)>0)
-                                    {
-                                        $nivel5->datos=[$nivel5->datos[0],$ingresos[0]];
-                                    }
-                                    else{
-                                        $nivel5->datos=[$ingresos[0]];
-                                    }
+                                    // if(count($data)>0)
+                                    // {
+                                        foreach ($ingresos as $value2)
+                                        { 
+                                            array_push($data,$value2);
+                                        }
+                                        // $data=array($data,$ingresos);
+                                    // }
+                                    // else{
+                                    //     $data=array($ingresos);
+                                    // }
                                 }
 
                                 if(count($egresos)>0)
                                 {
-                                    if(count($ingresos)>0 || count($compras)>0 || count($ventas)>0)
-                                    {
-                                        $nivel5->datos=[$nivel5->datos[0],$egresos[0]];
-                                    }
-                                    else{
-                                        $nivel5->datos=[$egresos[0]];
-                                    }
+                                    // if(count($data)>0)
+                                    // {
+                                        foreach ($egresos as $value3)
+                                        { 
+                                        array_push($data,$value3);
+                                        }
+                                    // }
+                                    // else{
+                                    //     $data=$egresos;
+                                    // }
                                 }
+                                // return $data;
+                                
+                                usort($data, object_sorter('registro','DESC'));
+
+                                // return $data;
+                                $nivel5->datos=$data;
 
                                 // if(count($ventas)>0 && count($compras)>0 && count($ingresos)>0 && count($egresos)>0){
                                 //     $nivel5->datos=[$ventas[0],$compras[0],$ingresos[0],$egresos[0]];
@@ -520,10 +548,24 @@ class BalanceGeneralController extends Controller
      }
         return ['cuentas'=>$cuentas];
     }
+
+    
     public function lista(Request $request)
     {
-        $cuentas=Cuenta::with('cuenta')->get();
-        return ['cuentas'=>$cuentas];
+        // $cuentas=Cuenta::with('cuenta')->get();
+        // return ['cuentas'=>$cuentas];
+        $id = 2;
+        $ventas= Venta:: where('ventas.id','=',$id)
+        ->with('cuenta')
+        // ->with('producto')
+        ->get();
+        return ['ventas'=>$ventas];
     }
 
+}
+function object_sorter($clave,$orden=null) {
+    return function ($a, $b) use ($clave,$orden) {
+          $result=  ($orden=="DESC") ? strnatcmp($b->$clave, $a->$clave) :  strnatcmp($a->$clave, $b->$clave);
+          return $result;
+    };
 }

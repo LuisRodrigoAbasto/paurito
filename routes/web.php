@@ -23,13 +23,6 @@ Route::group(['middleware'=>['auth']],function(){
     Route::get('/', 'HomeController@index')->name('home');
 
    Route::get('/dashboard','DashboardController');
-
-   Route::get('/cliente', 'ClienteController@index');
-   Route::post('/cliente/registrar', 'ClienteController@store');
-   Route::put('/cliente/actualizar', 'ClienteController@update');
-   Route::put('/cliente/desactivar', 'ClienteController@desactivar');
-   Route::put('/cliente/activar', 'ClienteController@activar');
-   Route::get('/cliente/selectCliente', 'ClienteController@selectCliente');
    
    Route::get('/proveedor', 'ProveedorController@index');
    Route::post('/proveedor/registrar', 'ProveedorController@store');
@@ -62,8 +55,6 @@ Route::group(['middleware'=>['auth']],function(){
    Route::put('/venta/actualizar', 'VentaController@update');
    Route::put('/venta/desactivar', 'VentaController@desactivar');
    Route::put('/venta/activar', 'VentaController@activar');
-   Route::get('/venta/obtenerVenta', 'VentaController@obtenerVenta');
-   Route::get('/venta/obtenerDetalles', 'VentaController@obtenerDetalles');
    Route::get('/venta/listarVentas', 'VentaController@listarVentas');
    Route::get('/venta/pdf/venta_{id}','VentaController@pdf')->name('venta_pdf');
    Route::get('/venta/imprimir/venta_{id}','VentaController@imprimir')->name('venta_imprimir');
@@ -74,6 +65,8 @@ Route::group(['middleware'=>['auth']],function(){
    Route::put('/compra/desactivar', 'CompraController@desactivar');
    Route::put('/compra/activar', 'CompraController@activar');
    Route::get('/compra/listarCompras', 'CompraController@listarCompras');
+   Route::get('/compra/pdf/compra_{id}','CompraController@pdf')->name('compra_pdf');
+   Route::get('/compra/imprimir/compra_{id}','CompraController@imprimir')->name('compra_imprimir');
    
    Route::get('/cuenta', 'CuentaController@index');
    Route::post('/cuenta/registrar', 'CuentaController@store');

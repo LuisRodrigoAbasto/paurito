@@ -13,12 +13,10 @@ class DetalleVenta extends Model
     // protected $guarded = ['idVenta','idProducto'];
     protected $fillable = ['idVenta','idProducto','orden','cantidad','precio','descripcionD','estado'];
     
-   // public $timestamps = false;
-//    public function venta(){
-//     return $this->belongsTo('App\Venta'); 
-//     }  
-
-//     public function producto(){
-//         return $this->belongsTo('App\Producto');    
-//     }
+    public function producto()
+    {
+        return $this->belongsToMany('App\producto', 'idProducto');
+        // return $this->belongsTo('App\producto', 'idProducto');
+    }
+    
 }

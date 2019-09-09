@@ -57,6 +57,34 @@ class CompraController extends Controller
         ];
         
     }
+    public function pdf(Request $request, $id)
+    {
+        $compra= Compra::where('compras.id','=',$id)
+        ->with('cuenta')
+        ->get();
+
+        $detalles = DetalleCompra::where('detalle_compras.idCompra','=',$id)
+        ->orderBy('detalle_compras.orden','asc')
+        ->with('producto')
+        ->get();
+        
+        $pdf = \PDF::loadView('compra.pdf.index',['compra'=>$compra,'detalles'=>$detalles]);
+        return $pdf->download('compra_'.$compra[0]->id.'.pdf');
+
+    }
+    public function imprimir(Request $request, $id)
+    {
+        $compra= Compra::where('compras.id','=',$id)
+        ->with('cuenta')
+        ->get();
+
+        $detalles = DetalleCompra::where('detalle_compras.idCompra','=',$id)
+        ->orderBy('detalle_compras.orden','asc')
+        ->with('producto')
+        ->get();
+
+        return view('compra.imprimir.index',['compra'=>$compra,'detalles'=>$detalles]);
+    }
     public function listarCompras(Request $request)
     {
         // if(!$request->ajax()) return redirect('/');
@@ -86,7 +114,23 @@ class CompraController extends Controller
             $egreso=Egreso::max('registro');
             $compra=Compra::max('registro');
 
-            $registro=$venta+$compra+$ingreso+$egreso;
+            $max=0;
+            if($venta>$max)
+            {
+                $max=$venta;
+            }
+            if($compra>$max)
+            {
+                $max=$compra;
+            }
+            if($ingreso>$max)
+            {
+                $max=$ingreso;
+            }
+            if($egreso>$max){
+                $max=$ingreso;
+            }
+            $registro=$max;
 
             $mytime= Carbon::now('America/La_Paz');
             $compras = new Compra();

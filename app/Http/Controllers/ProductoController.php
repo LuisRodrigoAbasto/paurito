@@ -86,7 +86,7 @@ class ProductoController extends Controller
         ->orderBy('estado','desc')->orderBy('id','desc')->get();
 
         $cont=Producto::where('estado','=','1')->count('id');
-        $pdf = \PDF::loadView('pdf.productospdf',['productos'=>$productos,'cont'=>$cont]);
+        $pdf = \PDF::loadView('producto.pdf.index',['productos'=>$productos,'cont'=>$cont]);
         return $pdf->download('productos.pdf');
 
 //         $pdf = App::make('dompdf.wrapper');
@@ -101,7 +101,7 @@ class ProductoController extends Controller
         ->orderBy('estado','desc')->orderBy('id','desc')->get();
 
         $cont=Producto::where('estado','=','1')->count('id');
-        return view('imprimir.productos',['productos'=>$productos,'cont'=>$cont]);
+        return view('producto.imprimir.index',['productos'=>$productos,'cont'=>$cont]);
 
 //         $pdf = App::make('dompdf.wrapper');
 // $pdf->loadHTML('<h1>Test</h1>');
