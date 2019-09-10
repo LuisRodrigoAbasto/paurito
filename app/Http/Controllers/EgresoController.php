@@ -53,7 +53,7 @@ class EgresoController extends Controller
             ->where('detalle_egresos.idEgreso','=',$id) 
             ->where('detalle_egresos.estado','=','1')
             ->select('cuentas.id as idCuenta',DB::raw("concat(tipo,'.',nivel1,'.',nivel2,'.',nivel3,'.',nivel4)as codigo"),'cuentas.nombre as cuenta','debe','haber','orden','descripcionD')
-            ->orderBy('orden','asc')
+            ->orderBy('detalle_egresos.orden','asc')
             ->get();
             return ['detalles'=>$detalles,'egresos'=>$egresos];
         }
@@ -64,7 +64,6 @@ class EgresoController extends Controller
             ->select('egresos.id','idFormula',DB::raw("concat(cuentas.nombre,' ',cuentas.apellido) as cliente"),
             'fecha','pago','cantidad','descripcion','montoVenta','egresos.estado')
             ->where('egresos.id','=',$id)
-            ->orderBy('egresos.id','desc')
             ->take(1)
             ->get();
     
@@ -72,7 +71,7 @@ class EgresoController extends Controller
             ->join('productos','productos.id','detalle_egresos.idProducto')
             ->select('productos.id as idProducto','productos.nombre as producto','detalle_egresos.cantidad','productos.unidad','detalle_egresos.precio','detalle_egresos.descripcionD')
             ->where('detalle_egresos.idVenta','=',$id)
-            ->orderBy('detalle_egresos.idProducto','desc')
+            ->orderBy('detalle_egresos.id','asc')
             ->get();
     
             $numventa= Egreso::select('egresos.id')->where('id',$id)->get();
@@ -126,14 +125,14 @@ class EgresoController extends Controller
     
                 $detalles = $request->data;//Array de detalles
                 //Recorro todos los elementos
-               $contar=0;
+                $i=0;
                 foreach($detalles as $ep=>$det)
                 {
-                    $contar++;
+                    $i++;
                     $detalle = new DetalleEgreso();
                     $detalle->idEgreso= $egresos->id;
                     $detalle->idCuenta = $det['idCuenta'];
-                    $detalle->orden=$contar;
+                    $detalle->orden=$i;
                     $detalle->debe = $det['debe'];   
                     $detalle->haber = $det['haber']; 
                     $detalle->descripcionD = $det['descripcionD'];
@@ -163,12 +162,12 @@ class EgresoController extends Controller
             $detalles = $request->data;//Array de detalles
             $detalle = DetalleEgreso::where('idEgreso','=',$egreso->id)->update(['estado'=>'0']);
                  //Recorro todos los elementos
-                 $contar=0;
+            $i=0;
             foreach($detalles as $ep=>$det)
-            {         
-            $contar++;              
+            {
+            $i++;                 
             $detalleED=DetalleEgreso::updateOrInsert(['idEgreso' =>$egreso->id,'idCuenta'=>$det['idCuenta']],
-            ['orden'=>$contar,'debe'=>$det['debe'],'haber'=>$det['haber'],'descripcionD'=>$det['descripcionD'],'estado'=>'1']);
+            ['orden'=>$i,'debe'=>$det['debe'],'haber'=>$det['haber'],'descripcionD'=>$det['descripcionD'],'estado'=>'1']);
             }          
 
             DB::commit();

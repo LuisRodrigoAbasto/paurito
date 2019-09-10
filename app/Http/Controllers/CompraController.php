@@ -80,6 +80,7 @@ class CompraController extends Controller
 
         $detalles = DetalleCompra::where('detalle_compras.idCompra','=',$id)
         ->orderBy('detalle_compras.orden','asc')
+        ->where('detalle_compras.estado','=','1')
         ->with('producto')
         ->get();
 
@@ -91,13 +92,16 @@ class CompraController extends Controller
         $id = $request->id;
         $compras=Compra::join('cuentas','compras.idProveedor','=','cuentas.id')
         ->where('compras.id','=',$id)
+        ->where('compras.estado','=','1')
         ->select('compras.id','compras.factura','compras.registro','cuentas.nombre','compras.idProveedor','fecha','pago','cantidad','descripcion','montoCompra','compras.estado')
         ->get();
 
         $detalles = DetalleCompra::join('compras','compras.id','detalle_compras.idCompra')
         ->join('productos','productos.id','detalle_compras.idProducto')
         ->where('detalle_compras.idCompra','=',$id)
+        ->where('detalle_compras.estado','=','1')
         ->select('productos.id as idProducto','productos.nombre as producto','detalle_compras.cantidad','productos.codigo','productos.unidad','productos.referencia','detalle_compras.precio')
+        ->orderBy('detalle_compras.orden','asc')
         ->get();
         return ['compras'=>$compras,'detalles'=>$detalles];
     }
@@ -148,16 +152,16 @@ class CompraController extends Controller
 
             $detalles = $request->data;//Array de detalles
             //Recorro todos los elementos
-            $contar=0;
+            $i=0;
             foreach($detalles as $ep=>$det)
             {
-                $contar++;
+                $i++;
                 $detalle = new DetalleCompra();
                 $detalle->idCompra= $compras->id;
                 $detalle->idProducto= $det['idProducto'];
-                $detalle->orden=$contar;
                 $detalle->cantidad = $det['cantidad'];   
                 $detalle->precio = $det['precio']; 
+                $detalle->orden=$i;
                 $detalle->save();
 
                 $producto = Producto::find($det['idProducto']);
@@ -192,12 +196,12 @@ class CompraController extends Controller
 
         $detalles = $request->data;//Array de detalles
             //Recorro todos los elementos
-           $contar=0;
+            $i=0;
             foreach($detalles as $ep=>$det)
-            {        
-                $contar++;                
+            {
+                $i++;                 
                 $detalleED=DetalleCompra::updateOrInsert(['idCompra' =>$compra->id,'idProducto'=>$det['idProducto']]
-                ,['orden'=>$contar,'cantidad'=>$det['cantidad'],'precio'=>$det['precio'],'estado'=>'1']);
+                ,['orden'=>$i,'cantidad'=>$det['cantidad'],'precio'=>$det['precio'],'estado'=>'1']);
             }          
         DB::commit();    
     }

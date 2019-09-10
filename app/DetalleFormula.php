@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Producto;
 
 class DetalleFormula extends Model
 {
@@ -10,13 +11,9 @@ class DetalleFormula extends Model
   // protected $primaryKey =['idFormula','idProducto'];    
   // public $incrementing = false;
     protected $fillable = ['idFormula','idProducto','orden','cantidad','estado'];
-    
-    public function formula()
-    {
-        return $this->belongsTo('App\Formula', 'idFormula');
-    }
+
     public function producto()
     {
-        return $this->belongsTo('App\producto', 'idProducto');
+        return $this->belongsTo('App\Producto', 'idProducto');
     }
 }

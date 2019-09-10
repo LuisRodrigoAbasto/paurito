@@ -46,7 +46,8 @@ class IngresoController extends Controller
             $ingreso= Ingreso::where('ingresos.id','=',$id)
             ->get();
     
-            $detalles = DetalleIngreso::where('detalle_ingresos.idVIngreso','=',$id)
+            $detalles = DetalleIngreso::where('detalle_ingresos.idIngreso','=',$id)
+            ->where('detalle_ingresos.estado','=','1')
             ->orderBy('detalle_ingresos.orden','asc')
             ->get();
     
@@ -85,6 +86,7 @@ class IngresoController extends Controller
             ->where('detalle_ingresos.idIngreso','=',$id) 
             ->where('detalle_ingresos.estado','=','1')
             ->select('cuentas.id as idCuenta',DB::raw("concat(tipo,'.',nivel1,'.',nivel2,'.',nivel3,'.',nivel4)as codigo"),'cuentas.nombre as cuenta','debe','haber','orden','descripcionD')
+            ->orderBy('detalle_ingresos.orden','asc')
             ->get();
             return ['detalles'=>$detalles,'ingresos'=>$ingresos];
         }        
@@ -133,14 +135,14 @@ class IngresoController extends Controller
     
                 $detalles = $request->data;//Array de detalles
                 //Recorro todos los elementos
-               $contar=0;
+                $i=0;
                 foreach($detalles as $ep=>$det)
                 {
-                    $contar++;
+                    $i++;
                     $detalle = new DetalleIngreso();
                     $detalle->idIngreso= $ingresos->id;
                     $detalle->idCuenta = $det['idCuenta'];
-                    $detalle->orden=$contar;
+                    $detalle->orden=$i;
                     $detalle->debe = $det['debe'];   
                     $detalle->haber = $det['haber']; 
                     $detalle->descripcionD = $det['descripcionD'];
@@ -170,12 +172,12 @@ class IngresoController extends Controller
             $detalles = $request->data;//Array de detalles
             $detalle = DetalleIngreso::where('idIngreso','=',$ingreso->id)->update(['estado'=>'0']);
                  //Recorro todos los elementos
-                 $contar=0;
+            $i=0;
             foreach($detalles as $ep=>$det)
-            {         
-            $contar++;              
+            {
+            $i++;               
             $detalleED=DetalleIngreso::updateOrInsert(['idIngreso' =>$ingreso->id,'idCuenta'=>$det['idCuenta']],
-            ['orden'=>$contar,'debe'=>$det['debe'],'haber'=>$det['haber'],'descripcionD'=>$det['descripcionD'],'estado'=>'1']);
+            ['orden'=>$i,'debe'=>$det['debe'],'haber'=>$det['haber'],'descripcionD'=>$det['descripcionD'],'estado'=>'1']);
             }          
 
             DB::commit();

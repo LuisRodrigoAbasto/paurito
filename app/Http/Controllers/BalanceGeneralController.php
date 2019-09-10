@@ -57,6 +57,7 @@ class BalanceGeneralController extends Controller
             ->join('ingresos','detalle_ingresos.idIngreso','=','ingresos.id')
             ->whereBetween('ingresos.fecha',[$fechaInicio,$fechaFin])
             ->where('ingresos.estado','=','1')
+            ->where('detalle_ingresos.estado','=','1')
             ->where('c1.id','=',$nivel1->id)
             ->sum('detalle_ingresos.debe');
             
@@ -68,6 +69,7 @@ class BalanceGeneralController extends Controller
             ->join('egresos','detalle_egresos.idEgreso','=','egresos.id')
             ->whereBetween('egresos.fecha',[$fechaInicio,$fechaFin])
             ->where('egresos.estado','=','1')
+            ->where('detalle_egresos.estado','=','1')
             ->where('c1.id','=',$nivel1->id)
             ->sum('detalle_egresos.debe');
 
@@ -118,6 +120,7 @@ class BalanceGeneralController extends Controller
                 ->join('ingresos','detalle_ingresos.idIngreso','=','ingresos.id')
                 ->whereBetween('ingresos.fecha',[$fechaInicio,$fechaFin])
                 ->where('ingresos.estado','=','1')
+                ->where('detalle_ingresos.estado','=','1')
                 ->where('c1.id','=',$nivel1->id)
                 ->where('c2.id','=',$nivel2->id)
                 ->sum('detalle_ingresos.debe');
@@ -130,6 +133,7 @@ class BalanceGeneralController extends Controller
                 ->join('egresos','detalle_egresos.idEgreso','=','egresos.id')
                 ->whereBetween('egresos.fecha',[$fechaInicio,$fechaFin])
                 ->where('egresos.estado','=','1')
+                ->where('detalle_egresos.estado','=','1')
                 ->where('c1.id','=',$nivel1->id)
                 ->where('c2.id','=',$nivel2->id)
                 ->sum('detalle_egresos.debe');
@@ -186,6 +190,7 @@ class BalanceGeneralController extends Controller
                     ->join('ingresos','detalle_ingresos.idIngreso','=','ingresos.id')
                     ->whereBetween('ingresos.fecha',[$fechaInicio,$fechaFin])
                     ->where('ingresos.estado','=','1')
+                    ->where('detalle_ingresos.estado','=','1')
                     ->where('c1.id','=',$nivel1->id)
                     ->where('c2.id','=',$nivel2->id)
                     ->where('c3.id','=',$nivel3->id)
@@ -199,6 +204,7 @@ class BalanceGeneralController extends Controller
                     ->join('egresos','detalle_egresos.idEgreso','=','egresos.id')
                     ->whereBetween('egresos.fecha',[$fechaInicio,$fechaFin])
                     ->where('egresos.estado','=','1')
+                    ->where('detalle_egresos.estado','=','1')
                     ->where('c1.id','=',$nivel1->id)
                     ->where('c2.id','=',$nivel2->id)
                     ->where('c3.id','=',$nivel3->id)
@@ -259,6 +265,7 @@ class BalanceGeneralController extends Controller
                         ->join('ingresos','detalle_ingresos.idIngreso','=','ingresos.id')
                         ->whereBetween('ingresos.fecha',[$fechaInicio,$fechaFin])
                         ->where('ingresos.estado','=','1')
+                        ->where('detalle_ingresos.estado','=','1')
                         ->where('c1.id','=',$nivel1->id)
                         ->where('c2.id','=',$nivel2->id)
                         ->where('c3.id','=',$nivel3->id)
@@ -273,6 +280,7 @@ class BalanceGeneralController extends Controller
                         ->join('egresos','detalle_egresos.idEgreso','=','egresos.id')
                         ->whereBetween('egresos.fecha',[$fechaInicio,$fechaFin])
                         ->where('egresos.estado','=','1')
+                        ->where('detalle_egresos.estado','=','1')
                         ->where('c1.id','=',$nivel1->id)
                         ->where('c2.id','=',$nivel2->id)
                         ->where('c3.id','=',$nivel3->id)
@@ -339,6 +347,7 @@ class BalanceGeneralController extends Controller
                             ->join('ingresos','detalle_ingresos.idIngreso','=','ingresos.id')
                             ->whereBetween('ingresos.fecha',[$fechaInicio,$fechaFin])
                             ->where('ingresos.estado','=','1')
+                            ->where('detalle_ingresos.estado','=','1')
                             ->where('c1.id','=',$nivel1->id)
                             ->where('c2.id','=',$nivel2->id)
                             ->where('c3.id','=',$nivel3->id)
@@ -354,6 +363,7 @@ class BalanceGeneralController extends Controller
                             ->join('egresos','detalle_egresos.idEgreso','=','egresos.id')
                             ->whereBetween('egresos.fecha',[$fechaInicio,$fechaFin])
                             ->where('egresos.estado','=','1')
+                            ->where('detalle_egresos.estado','=','1')
                             ->where('c1.id','=',$nivel1->id)
                             ->where('c2.id','=',$nivel2->id)
                             ->where('c3.id','=',$nivel3->id)

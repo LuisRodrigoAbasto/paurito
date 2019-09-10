@@ -75,6 +75,8 @@ Route::group(['middleware'=>['auth']],function(){
    Route::put('/formula/activar', 'FormulaController@activar');
    Route::get('/formula/selectFormula', 'FormulaController@selectFormula');
    Route::get('/formula/listarFormula', 'FormulaController@listarFormula');
+   Route::get('/formula/pdf/formula_{id}','FormulaController@pdf')->name('formula_pdf');
+   Route::get('/formula/imprimir/formula_{id}','FormulaController@imprimir')->name('formula_imprimir');
    
    Route::get('/producto', 'ProductoController@index');
    Route::post('/producto/registrar', 'ProductoController@store');

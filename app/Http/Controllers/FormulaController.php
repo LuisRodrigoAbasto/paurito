@@ -56,9 +56,37 @@ class FormulaController extends Controller
         ->where('detalle_formulas.idFormula','=',$id) 
         ->where('detalle_formulas.estado','=','1')
         ->select('detalle_formulas.idProducto','productos.nombre as producto','detalle_formulas.cantidad','productos.unidad','productos.referencia','productos.codigo')
-        ->orderBy('detalle_formulas.created_at','asc')
+        ->orderBy('detalle_formulas.orden','asc')
         ->get();
         return ['detalles'=>$detalles];
+    }
+    public function pdf(Request $request, $id)
+    {
+        $formula=Formula::where('id','=',$id)
+        ->get();
+
+        $detalles =DetalleFormula::where('idFormula','=',$id)
+        ->where('detalle_formulas.estado','=','1')
+        ->orderBy('detalle_formulas.orden','asc')
+        ->with('productos')
+        ->get();
+
+        $pdf = \PDF::loadView('formula.pdf.index',['venta'=>$formula,'detalles'=>$detalles]);
+        return $pdf->download('formula_'.$formula[0]->id.'.pdf');
+
+    }
+    public function imprimir(Request $request, $id)
+    {
+        $formula=Formula::where('id','=',$id)
+        ->get();
+
+        $detalles =DetalleFormula::where('idFormula','=',$id)
+        ->where('detalle_formulas.estado','=','1')
+        ->orderBy('detalle_formulas.orden','asc')
+        ->with('producto')
+        ->get();
+
+        return view('formula.imprimir.index',['formula'=>$formula,'detalles'=>$detalles]);
     }
     public function store(Request $request)
     {   
@@ -74,14 +102,14 @@ class FormulaController extends Controller
 
             $detalles = $request->data;//Array de detalles
             //Recorro todos los elementos
-            $contar=0;
+            $i=0;
             foreach($detalles as $ep=>$det)
             {
-                $contar++;
+                $i++;
                 $detalle = new DetalleFormula();
                 $detalle->idFormula= $formula->id;
+                $detalle->orden=$i;
                 $detalle->idProducto= $det['idProducto'];
-                $detalle->orden=$contar;
                 $detalle->cantidad = $det['cantidad'];   
                 $detalle->save();
             }          
@@ -106,11 +134,12 @@ class FormulaController extends Controller
         
        $detalles = $request->data;//Array de detalles
        //Recorro todos los elementos
-      $contar=0;
+       $i=0;
        foreach($detalles as $ep=>$det)
-       {        
-           $contar++;              
-           $detalleED=DetalleFormula::updateOrInsert(['idFormula' =>$formula->id,'idProducto'=>$det['idProducto']],['orden'=>$contar,'cantidad'=>$det['cantidad'],'estado'=>'1']);
+       {
+           $i++;                   
+           $detalleED=DetalleFormula::updateOrInsert(['idFormula' =>$formula->id,
+           'idProducto'=>$det['idProducto']],['orden'=>$i,'cantidad'=>$det['cantidad'],'estado'=>'1']);
        }          
         DB::commit();
     } catch (Exception $e){
