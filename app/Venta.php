@@ -15,4 +15,8 @@ class Venta extends Model
     {
         return $this->belongsTo('App\Cuenta', 'idCliente');
     }
+    public function detalle_venta()
+    {
+        return $this->hasMany('App\DetalleVenta', 'idVenta');
+    }
 }

@@ -17,10 +17,47 @@
 
 
 Route::group(['middleware'=>['auth']],function(){
-    // Route::get('/',function(){
-    //     return view('contenido/contenido');
-    // })->name('main');
-    Route::get('/', 'HomeController@index')->name('home');
+    // Route::get('/inicio',function(){
+    //     return view('dashboard/index');
+    // })->name('home');
+    
+    Route::get('/formulas',function(){
+        return view('formula/index');
+    })->name('formulas');
+
+    Route::get('/productos',function(){
+        return view('producto/index');
+    })->name('productos');
+
+    Route::get('/ventas',function(){
+        return view('venta/index');
+    })->name('ventas');
+
+    Route::get('/compras',function(){
+        return view('compra/index');
+    })->name('compras');
+
+    Route::get('/ingresos',function(){
+        return view('ingreso/index');
+    })->name('ingresos');
+
+    Route::get('/egresos',function(){
+        return view('egreso/index');
+    })->name('egresos');
+
+    Route::get('/cuentas',function(){
+        return view('cuenta/index');
+    })->name('cuentas');
+
+    Route::get('/balance_general',function(){
+        return view('balance_general/index');
+    })->name('balance_general');
+
+    Route::get('/estado_resultado',function(){
+        return view('estado_resultado/index');
+    })->name('estado_resultado');
+
+   Route::get('/', 'HomeController@index')->name('home');
 
    Route::get('/dashboard','DashboardController');
    
@@ -104,7 +141,6 @@ Route::group(['middleware'=>['auth']],function(){
    Route::get('/lista', 'BalanceGeneralController@lista');
 
    });
-   
 Auth::routes();
 
 

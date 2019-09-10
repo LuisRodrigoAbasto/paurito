@@ -557,6 +557,7 @@ class BalanceGeneralController extends Controller
         $id = 2;
         $ventas= Venta:: where('ventas.id','=',$id)
         ->with('cuenta')
+        ->with('detalle_venta')
         // ->with('producto')
         ->get();
         return ['ventas'=>$ventas];
