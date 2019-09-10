@@ -14,7 +14,7 @@ class CreateFormulasTable extends Migration
     public function up()
     {
         Schema::create('formulas', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('nombre',100);
             $table->decimal('cantidad',11,2);
             $table->boolean('estado')->default(1);

@@ -43,38 +43,29 @@ class IngresoController extends Controller
         }
         public function pdf(Request $request, $id)
         {
-            $ingreso= Ingreso::where('ingresos.id','=',$id)
+            $ingreso=Ingreso::where('ingresos.id','=',$id)
             ->get();
     
             $detalles = DetalleIngreso::where('detalle_ingresos.idIngreso','=',$id)
             ->where('detalle_ingresos.estado','=','1')
             ->orderBy('detalle_ingresos.orden','asc')
-            ->get();
-    
-            $numventa= Venta::select('ventas.id')->where('id',$id)->get();
-            
-            $pdf = \PDF::loadView('venta.pdf.index',['venta'=>$ingreso,'detalles'=>$detalles]);
-            return $pdf->download('venta_'.$numventa[0]->id.'.pdf');
-    
+            ->with('cuenta')
+            ->get(); 
+            $pdf = \PDF::loadView('ingreso.pdf.index',['ingreso'=>$ingreso,'detalles'=>$detalles]);
+            return $pdf->download('ingreso_'.$id.'.pdf');
         }
         public function imprimir(Request $request, $id)
         {
-            $venta= Venta::join('cuentas','ventas.idCliente','=','cuentas.id')
-            ->select('ventas.id','idFormula','cuentas.nombre as cliente',
-            'fecha','pago','cantidad','descripcion','montoVenta','ventas.estado')
-            ->where('ventas.id','=',$id)
+            $ingreso=Ingreso::where('ingresos.id','=',$id)
             ->get();
     
-            $detalles = DetalleVenta::join('ventas','ventas.id','=','detalle_ventas.idVenta')
-            ->join('productos','productos.id','detalle_ventas.idProducto')
-            ->select('productos.id as idProducto','productos.nombre as producto','detalle_ventas.cantidad','productos.unidad','detalle_ventas.precio','detalle_ventas.descripcionD')
-            ->where('detalle_ventas.idVenta','=',$id)
-            ->orderBy('detalle_ventas.orden','desc')
-            ->get();
-    
-            $numventa= Venta::select('ventas.id')->where('id',$id)->get();
-            
-            return view('venta.imprimir.index',['venta'=>$venta,'detalles'=>$detalles]);
+            $detalles = DetalleIngreso::where('detalle_ingresos.idIngreso','=',$id)
+            ->where('detalle_ingresos.estado','=','1')
+            ->orderBy('detalle_ingresos.orden','asc')
+            ->with('cuenta')
+            ->get();       
+                
+            return view('ingreso.imprimir.index',['ingreso'=>$ingreso,'detalles'=>$detalles]);
         }
         public function listarIngreso(Request $request)
         {

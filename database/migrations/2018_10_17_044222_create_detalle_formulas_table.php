@@ -14,9 +14,9 @@ class CreateDetalleFormulasTable extends Migration
     public function up()
     {
         Schema::create('detalle_formulas', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('idFormula')->unsigned();
-            $table->integer('idProducto')->unsigned();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('idFormula');
+            $table->unsignedBigInteger('idProducto');
             $table->integer('orden');
             $table->decimal('cantidad',11,2);
             $table->boolean('estado')->default(1);

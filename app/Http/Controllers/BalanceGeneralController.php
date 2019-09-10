@@ -14,7 +14,7 @@ class BalanceGeneralController extends Controller
 {
     public function index(Request $request)
     {
-        // if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
         $fechaInicio=$request->fechaInicio;
         $fechaFin=$request->fechaFin;
         $cuentas=Cuenta::join('cuentas as c4','cuentas.idCuenta','=','c4.id')

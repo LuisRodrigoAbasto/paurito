@@ -14,9 +14,9 @@ class CreateDetalleEgresosTable extends Migration
     public function up()
     {
         Schema::create('detalle_egresos', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('idEgreso')->unsigned();
-            $table->integer('idCuenta')->unsigned();
+            $table->bigIncrements('id');
+           $table->unsignedBigInteger('idEgreso');
+           $table->unsignedBigInteger('idCuenta');
             $table->integer('orden');
             $table->decimal('debe',11,2)->nullable();
             $table->decimal('haber',11,2)->nullable();

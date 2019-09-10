@@ -50,44 +50,31 @@ class VentaController extends Controller
     }
     public function pdf(Request $request, $id)
     {
-        $venta= Venta::join('cuentas','ventas.idCliente','=','cuentas.id')
-        ->select('ventas.id','idFormula','cuentas.nombre as cliente',
-        'fecha','pago','cantidad','descripcion','montoVenta','ventas.estado')
-        ->where('ventas.id','=',$id)
+        $venta= Venta::where('ventas.id','=',$id)
+        ->with('cuenta')
         ->get();
 
-        $detalles = DetalleVenta::join('ventas','ventas.id','=','detalle_ventas.idVenta')
-        ->join('productos','productos.id','detalle_ventas.idProducto')
-        ->select('productos.id as idProducto','productos.nombre as producto','detalle_ventas.cantidad','productos.unidad','detalle_ventas.precio','detalle_ventas.descripcionD')
-        ->where('detalle_ventas.idVenta','=',$id)
+        $detalles = DetalleVenta::where('detalle_ventas.idVenta','=',$id)
         ->where('detalle_ventas.estado','=','1')
+        // ->with('producto')
         ->orderBy('detalle_ventas.orden','asc')
         ->get();
 
-        $numventa= Venta::select('ventas.id')->where('id',$id)->get();
-        
         $pdf = \PDF::loadView('venta.pdf.index',['venta'=>$venta,'detalles'=>$detalles]);
-        return $pdf->download('venta_'.$numventa[0]->id.'.pdf');
+        return $pdf->download('venta_'.$id.'.pdf');
 
     }
     public function imprimir(Request $request, $id)
-    {
-        $venta= Venta::join('cuentas','ventas.idCliente','=','cuentas.id')
-        ->select('ventas.id','idFormula','cuentas.nombre as cliente',
-        'fecha','pago','cantidad','descripcion','montoVenta','ventas.estado')
-        ->where('ventas.id','=',$id)
-        ->take(1)
+    {   
+        $venta= Venta::where('ventas.id','=',$id)
+        ->with('cuenta')
         ->get();
 
-        $detalles = DetalleVenta::join('ventas','ventas.id','=','detalle_ventas.idVenta')
-        ->join('productos','productos.id','detalle_ventas.idProducto')
-        ->select('productos.id as idProducto','productos.nombre as producto','detalle_ventas.cantidad','productos.unidad','detalle_ventas.precio','detalle_ventas.descripcionD')
-        ->where('detalle_ventas.idVenta','=',$id)
+        $detalles = DetalleVenta::where('detalle_ventas.idVenta','=',$id)
         ->where('detalle_ventas.estado','=','1')
+        ->with('producto')
         ->orderBy('detalle_ventas.orden','asc')
         ->get();
-
-        $numventa= Venta::select('ventas.id')->where('id',$id)->get();
         
         return view('venta.imprimir.index',['venta'=>$venta,'detalles'=>$detalles]);
     }

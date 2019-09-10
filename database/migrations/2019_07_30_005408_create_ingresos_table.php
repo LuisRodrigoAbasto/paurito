@@ -14,7 +14,7 @@ class CreateIngresosTable extends Migration
     public function up()
     {
         Schema::create('ingresos', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->integer('factura');
             $table->integer('registro');
             $table->dateTime('fecha');

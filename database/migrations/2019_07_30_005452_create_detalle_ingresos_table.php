@@ -14,9 +14,9 @@ class CreateDetalleIngresosTable extends Migration
     public function up()
     {
         Schema::create('detalle_ingresos', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('idIngreso')->unsigned();
-            $table->integer('idCuenta')->unsigned();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('idIngreso');
+            $table->unsignedBigInteger('idCuenta');
             $table->integer('orden');
             $table->decimal('debe',11,2)->nullable();
             $table->decimal('haber',11,2)->nullable();

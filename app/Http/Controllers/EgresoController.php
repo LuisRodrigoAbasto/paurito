@@ -60,27 +60,31 @@ class EgresoController extends Controller
 
         public function pdf(Request $request, $id)
         {
-            $egreso= Egreso::join('cuentas','egresos.idCuenta','=','cuentas.id')
-            ->select('egresos.id','idFormula',DB::raw("concat(cuentas.nombre,' ',cuentas.apellido) as cliente"),
-            'fecha','pago','cantidad','descripcion','montoVenta','egresos.estado')
-            ->where('egresos.id','=',$id)
-            ->take(1)
+            $egreso= Egreso::where('egresos.id','=',$id)
             ->get();
     
-            $detalles = DetalleVenta::join('egresos','egresos.id','=','detalle_egresos.idVenta')
-            ->join('productos','productos.id','detalle_egresos.idProducto')
-            ->select('productos.id as idProducto','productos.nombre as producto','detalle_egresos.cantidad','productos.unidad','detalle_egresos.precio','detalle_egresos.descripcionD')
-            ->where('detalle_egresos.idVenta','=',$id)
-            ->orderBy('detalle_egresos.id','asc')
-            ->get();
-    
-            $numventa= Egreso::select('egresos.id')->where('id',$id)->get();
-            
-            $pdf = \PDF::loadView('pdf.venta',['venta'=>$egreso,'detalles'=>$detalles]);
-            return $pdf->download('venta_'.$numventa[0]->id.'.pdf');
+            $detalles = DetalleEgreso::where('detalle_egresos.idEgreso','=',$id)
+            ->where('detalle_egresos.estado','=','1')
+            ->orderBy('detalle_egresos.orden','asc')
+            ->with('cuenta')
+            ->get();            
+            $pdf = \PDF::loadView('egreso.pdf.egreso',['egreso'=>$egreso,'detalles'=>$detalles]);
+            return $pdf->download('egreso_'.$id.'.pdf');
     
         }
-
+        public function imprimir(Request $request, $id)
+        {
+            $egreso= Egreso::where('egresos.id','=',$id)
+            ->get();
+    
+            $detalles = DetalleEgreso::where('detalle_egresos.idEgreso','=',$id)
+            ->where('detalle_egresos.estado','=','1')
+            ->orderBy('detalle_egresos.orden','asc')
+            ->with('cuenta')
+            ->get();       
+    
+            return view('egreso.imprimir.index',['egreso'=>$egreso,'detalles'=>$detalles]);
+        }
         
         public function store(Request $request)
         {   

@@ -9,7 +9,7 @@ class DashboardController extends Controller
 {
    public function __invoke(Request $request)
    {
-    // if(!$request->ajax()) return redirect('/');
+    if(!$request->ajax()) return redirect('/');
      $year=date('Y');
      $compras=DB::table('compras')
      ->select(DB::raw('MONTH(compras.fecha) as mes'),

@@ -15,8 +15,7 @@ class DetalleVenta extends Model
     
     public function producto()
     {
-        return $this->belongsToMany('App\producto', 'idProducto');
-        // return $this->belongsTo('App\producto', 'idProducto');
+        return $this->belongsTo('App\producto', 'idProducto');
     }
     
 }

@@ -14,8 +14,8 @@ class CreateCuentasTable extends Migration
     public function up()
     {
         Schema::create('cuentas', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedinteger('idCuenta')->nullable();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('idCuenta')->nullable();
             $table->string('nombre',200);
             $table->string('telefono',20)->nullable();
             $table->string('empresa',100)->nullable();

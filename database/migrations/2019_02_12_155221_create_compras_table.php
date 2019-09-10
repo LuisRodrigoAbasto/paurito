@@ -14,10 +14,10 @@ class CreateComprasTable extends Migration
     public function up()
     {
         Schema::create('compras', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->integer('factura');
             $table->integer('registro');
-            $table->integer('idProveedor')->unsigned();
+            $table->unsignedBigInteger('idProveedor');
             $table->dateTime('fecha');
             $table->integer('pago');
             $table->decimal('cantidad',11,2);

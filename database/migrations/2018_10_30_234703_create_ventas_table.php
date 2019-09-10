@@ -14,11 +14,11 @@ class CreateVentasTable extends Migration
     public function up()
     {
         Schema::create('ventas', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->integer('factura');
             $table->integer('registro');
-            $table->integer('idCliente')->unsigned();
-            $table->integer('idFormula');
+            $table->unsignedBigInteger('idCliente');
+            $table->Biginteger('idFormula');
             $table->dateTime('fecha');
             $table->integer('pago');
             $table->decimal('cantidad',11,2);

@@ -10,11 +10,6 @@ class DetalleCompra extends Model
     public $incrementing = false;
     protected $fillable = ['idCompra','idProducto','cantidad','precio','estado'];
     
-  //  public $timestamps = false;
-    public function compra()
-    {
-        return $this->belongsTo('App\Compra', 'idCompra');
-    }
     public function producto()
     {
         return $this->belongsTo('App\producto', 'idProducto');

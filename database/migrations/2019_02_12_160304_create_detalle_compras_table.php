@@ -14,9 +14,9 @@ class CreateDetalleComprasTable extends Migration
     public function up()
     {
         Schema::create('detalle_compras', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('idCompra')->unsigned();
-            $table->integer('idProducto')->unsigned();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('idCompra');
+            $table->unsignedBigInteger('idProducto');
             $table->integer('orden');
             $table->decimal('cantidad',11,2);
             $table->decimal('precio',11,2);

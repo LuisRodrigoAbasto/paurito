@@ -11,9 +11,7 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+
 
 
 Route::group(['middleware'=>['auth']],function(){
@@ -21,6 +19,9 @@ Route::group(['middleware'=>['auth']],function(){
     //     return view('dashboard/index');
     // })->name('home');
     
+    Route::get('/', function () {
+        return view('dashboard/index');
+    });
     Route::get('/formulas',function(){
         return view('formula/index');
     })->name('formulas');
@@ -57,7 +58,7 @@ Route::group(['middleware'=>['auth']],function(){
         return view('estado_resultado/index');
     })->name('estado_resultado');
 
-   Route::get('/', 'HomeController@index')->name('home');
+   Route::get('/home', 'HomeController@index')->name('home');
 
    Route::get('/dashboard','DashboardController');
    
@@ -131,6 +132,8 @@ Route::group(['middleware'=>['auth']],function(){
    Route::put('/ingreso/desactivar', 'IngresoController@desactivar');
    Route::put('/ingreso/activar', 'IngresoController@activar');
    Route::get('/ingreso/listarIngreso', 'IngresoController@listarIngreso');
+   Route::get('/ingreso/pdf/ingreso_{id}','IngresoController@pdf')->name('ingreso_pdf');
+   Route::get('/ingreso/imprimir/ingreso_{id}','IngresoController@imprimir')->name('ingreso_imprimir');
 
    Route::get('/egreso', 'EgresoController@index');
    Route::post('/egreso/registrar', 'EgresoController@store');
@@ -138,6 +141,8 @@ Route::group(['middleware'=>['auth']],function(){
    Route::put('/egreso/desactivar', 'EgresoController@desactivar');
    Route::put('/egreso/activar', 'EgresoController@activar');
    Route::get('/egreso/listarEgreso', 'EgresoController@listarEgreso');
+   Route::get('/egreso/pdf/egreso_{id}','EgresoController@pdf')->name('egreso_pdf');
+   Route::get('/egreso/imprimir/egreso_{id}','EgresoController@imprimir')->name('egreso_imprimir');
 
    Route::get('/balanceGeneral', 'BalanceGeneralController@index');
    Route::get('/lista', 'BalanceGeneralController@lista');

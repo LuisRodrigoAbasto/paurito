@@ -65,11 +65,12 @@ class CompraController extends Controller
 
         $detalles = DetalleCompra::where('detalle_compras.idCompra','=',$id)
         ->orderBy('detalle_compras.orden','asc')
+        ->where('detalle_compras.estado','=','1')
         ->with('producto')
         ->get();
         
         $pdf = \PDF::loadView('compra.pdf.index',['compra'=>$compra,'detalles'=>$detalles]);
-        return $pdf->download('compra_'.$compra[0]->id.'.pdf');
+        return $pdf->download('compra_'.$id.'.pdf');
 
     }
     public function imprimir(Request $request, $id)
@@ -88,7 +89,7 @@ class CompraController extends Controller
     }
     public function listarCompras(Request $request)
     {
-        // if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
         $id = $request->id;
         $compras=Compra::join('cuentas','compras.idProveedor','=','cuentas.id')
         ->where('compras.id','=',$id)

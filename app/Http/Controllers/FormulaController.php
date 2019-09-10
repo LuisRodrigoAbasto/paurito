@@ -85,7 +85,6 @@ class FormulaController extends Controller
         ->orderBy('detalle_formulas.orden','asc')
         ->with('producto')
         ->get();
-
         return view('formula.imprimir.index',['formula'=>$formula,'detalles'=>$detalles]);
     }
     public function store(Request $request)

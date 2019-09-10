@@ -14,7 +14,7 @@ class CreateEgresosTable extends Migration
     public function up()
     {
         Schema::create('egresos', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->integer('factura');
             $table->integer('registro');
             $table->dateTime('fecha');
