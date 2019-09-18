@@ -19,15 +19,14 @@ class ProductoController extends Controller
        if(!$request->ajax()) return redirect('/');
 
         $buscar = $request->buscar;
-        $pagina = $request->pagina;
         if($buscar=='')
         {
             $productos=Producto::select('id','nombre','stock','unidad','codigo',DB::raw("floor(stock) as total,truncate(((stock-floor(stock))*codigo),2) as decimales"),'referencia','estado')
-            ->orderBy('id','desc')->paginate($pagina);
+            ->orderBy('id','desc')->paginate(10);
         }
         else{
             $productos = Producto::where('nombre', 'like','%'.$buscar.'%')->select('id','nombre','stock','unidad','codigo',DB::raw("floor(stock) as total,truncate(((stock-floor(stock))*codigo),2) as decimales"),'referencia','estado')
-            ->orderBy('id','desc')->paginate($pagina);
+            ->orderBy('id','desc')->paginate(10);
         }
         
         return [

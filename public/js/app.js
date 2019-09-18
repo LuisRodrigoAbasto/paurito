@@ -2883,9 +2883,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 
 
@@ -2977,24 +2974,24 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       });
     },
     cargarPdf: function cargarPdf() {
-      window.open("cuenta/listarPdf", "_blank");
+      window.open("cuenta/listarPdf");
     },
     pdf: function pdf(accion, id) {
       switch (accion) {
         case "Ventas":
           {
-            window.open("venta/pdf/venta_" + id + "," + "_blank");
+            window.open("venta/pdf/venta_" + id);
             break;
           }
 
         case "Compras":
           {
-            window.open("compra/pdf/compra_" + id + "," + "_blank");
+            window.open("compra/pdf/compra_" + id);
           }
       }
     },
     imprimir: function imprimir(id) {
-      window.open("venta/imprimir/venta_" + id + "," + "_blank");
+      window.open("venta/imprimir/venta_" + id);
     },
     selectCuenta: function selectCuenta(search, loading) {
       var me = this;
@@ -4444,10 +4441,10 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       });
     },
     pdfCompra: function pdfCompra(id) {
-      window.open("compra/pdf/compra_" + id + "," + "_blank");
+      window.open("compra/pdf/compra_" + id);
     },
     imprimir: function imprimir(id) {
-      window.open("compra/imprimir/compra_" + id + "," + "_blank");
+      window.open("compra/imprimir/compra_" + id);
     },
     selectProveedor: function selectProveedor(search, loading) {
       var me = this;
@@ -6436,8 +6433,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 
@@ -6526,10 +6521,10 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       });
     },
     imprimir: function imprimir(id) {
-      window.open("egreso/imprimir/egreso_" + id + "," + "_blank");
+      window.open("egreso/imprimir/egreso_" + id);
     },
     pdfEgreso: function pdfEgreso(id) {
-      window.open("venta/pdf/venta_" + id + "," + "_blank");
+      window.open("egreso/pdf/egreso_" + id);
     },
     selectCuenta: function selectCuenta(search, loading) {
       var me = this;
@@ -8196,24 +8191,24 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       });
     },
     cargarPdf: function cargarPdf() {
-      window.open("cuenta/listarPdf", "_blank");
+      window.open("cuenta/listarPdf");
     },
     pdf: function pdf(accion, id) {
       switch (accion) {
         case "Ventas":
           {
-            window.open("venta/pdf/venta_" + id + "," + "_blank");
+            window.open("venta/pdf/venta_" + id);
             break;
           }
 
         case "Compras":
           {
-            window.open("compra/pdf/compra_" + id + "," + "_blank");
+            window.open("compra/pdf/compra_" + id);
           }
       }
     },
     imprimir: function imprimir(id) {
-      window.open("venta/imprimir/venta_" + id + "," + "_blank");
+      window.open("venta/imprimir/venta_" + id);
     },
     selectCuenta: function selectCuenta(search, loading) {
       var me = this;
@@ -9567,10 +9562,10 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       });
     },
     pdfFormula: function pdfFormula(id) {
-      window.open("formula/pdf/formula_" + id + "," + "_blank");
+      window.open("formula/pdf/formula_" + id);
     },
     imprimir: function imprimir(id) {
-      window.open("formula/imprimir/formula_" + id + "," + "_blank");
+      window.open("formula/imprimir/formula_" + id);
     },
     selectProducto: function selectProducto(search, loading) {
       var me = this;
@@ -10409,9 +10404,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 
 
@@ -10500,10 +10492,10 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       });
     },
     imprimir: function imprimir(id) {
-      window.open("ingreso/imprimir/ingreso_" + id + "," + "_blank");
+      window.open("ingreso/imprimir/ingreso_" + id);
     },
     pdfIngreso: function pdfIngreso(id) {
-      window.open("ingreso/pdf/ingreso_" + id + "," + "_blank");
+      window.open("ingreso/pdf/ingreso_" + id);
     },
     selectCuenta: function selectCuenta(search, loading) {
       var me = this;
@@ -11388,10 +11380,10 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       me.listar(page, buscar, criterio);
     },
     cargarPdf: function cargarPdf() {
-      window.open("/cuenta/listarPdf", "_blank");
+      window.open("cuenta/listarPdf");
     },
     imprimir: function imprimir() {
-      window.open("/cuenta/imprimir", "_blank");
+      window.open("cuenta/imprimir");
     },
     selectCuenta: function selectCuenta(search, loading) {
       var me = this;
@@ -12025,15 +12017,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -12058,7 +12041,6 @@ __webpack_require__.r(__webpack_exports__);
         to: 0
       },
       offset: 3,
-      pagina: 10,
       buscar: "",
       activarValidate: "",
       mensaje: ''
@@ -12096,9 +12078,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    listarProducto: function listarProducto(page, buscar, pagina) {
+    listarProducto: function listarProducto(page, buscar) {
       var me = this;
-      var url = "producto?page=" + page + "&buscar=" + buscar + "&pagina=" + pagina;
+      var url = "producto?page=" + page + "&buscar=" + buscar;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         me.arrayProducto = respuesta.productos.data;
@@ -12107,18 +12089,18 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
-    cambiarPagina: function cambiarPagina(page, buscar, pagina) {
+    cambiarPagina: function cambiarPagina(page, buscar) {
       var me = this; // actualizar la Pagina
 
       me.pagination.current_page = page; // enviar la peticion para visualizar la data de esta pagina
 
-      me.listarProducto(page, buscar, pagina);
+      me.listarProducto(page, buscar);
     },
     cargarPdf: function cargarPdf() {
-      window.open("producto/listarPdf", "_blank");
+      window.open("producto/listarPdf");
     },
     imprimir: function imprimir() {
-      window.open("producto/imprimir", "_blank");
+      window.open("producto/imprimir");
     },
     registrarProducto: function registrarProducto() {
       if (this.validarProducto()) {
@@ -12143,7 +12125,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         $('#ModalLong').modal('hide');
         me.cerrarModal();
-        me.listarProducto(1, "", me.pagina);
+        me.listarProducto(1, "");
       })["catch"](function (error) {
         console.log(error);
       });
@@ -12172,7 +12154,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         $("#ModalLong").modal("hide");
         me.cerrarModal();
-        me.listarProducto(1, "", me.pagina);
+        me.listarProducto(1, "");
       })["catch"](function (error) {
         console.log(error);
       });
@@ -12201,7 +12183,7 @@ __webpack_require__.r(__webpack_exports__);
           axios.put("producto/desactivar", {
             id: id
           }).then(function (response) {
-            me.listarProducto(1, "", me.pagina);
+            me.listarProducto(1, "");
             Swal.fire({
               position: "center",
               type: "success",
@@ -12247,7 +12229,7 @@ __webpack_require__.r(__webpack_exports__);
           axios.put("producto/activar", {
             id: id
           }).then(function (response) {
-            me.listarProducto(1, "", me.pagina);
+            me.listarProducto(1, "");
             Swal.fire({
               position: "center",
               type: "success",
@@ -12329,7 +12311,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    this.listarProducto(1, this.buscar, this.pagina);
+    this.listarProducto(1, this.buscar);
   }
 });
 
@@ -13078,10 +13060,10 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       });
     },
     pdfVenta: function pdfVenta(id) {
-      window.open("venta/pdf/venta_" + id + "," + "_blank");
+      window.open("venta/pdf/venta_" + id);
     },
     imprimir: function imprimir(id) {
-      window.open("venta/imprimir/venta_" + id + "," + "_blank");
+      window.open("venta/imprimir/venta_" + id);
     },
     selectCliente: function selectCliente(search, loading) {
       var me = this;
@@ -85060,310 +85042,287 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group row border" }, [
-                    _c("div", { staticClass: "table-responsive col-md-12" }, [
-                      _c(
-                        "table",
-                        {
-                          staticClass:
-                            "table table-bordered table-striped table-sm"
-                        },
-                        [
-                          _vm._m(17),
-                          _vm._v(" "),
-                          _vm.arrayDetalle.length
-                            ? _c(
-                                "tbody",
-                                [
-                                  _vm._l(_vm.arrayDetalle, function(
-                                    detalle,
-                                    index
-                                  ) {
-                                    return _c("tr", { key: detalle.idCuenta }, [
-                                      _c("td", [
-                                        _c(
-                                          "button",
-                                          {
-                                            staticClass:
-                                              "btn btn-danger btn-sm",
-                                            attrs: { type: "button" },
-                                            on: {
-                                              click: function($event) {
-                                                return _vm.eliminarDetalle(
-                                                  index
-                                                )
-                                              }
-                                            }
-                                          },
-                                          [
-                                            _c("i", {
-                                              staticClass: "icon-close"
-                                            })
-                                          ]
-                                        )
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _c("span", {
-                                          staticClass: "badge badge-success",
-                                          domProps: {
-                                            textContent: _vm._s(detalle.codigo)
+                  _c(
+                    "table",
+                    {
+                      staticClass:
+                        "table table-responsive-sm table-bordered table-striped table-sm"
+                    },
+                    [
+                      _vm._m(17),
+                      _vm._v(" "),
+                      _vm.arrayDetalle.length
+                        ? _c(
+                            "tbody",
+                            [
+                              _vm._l(_vm.arrayDetalle, function(
+                                detalle,
+                                index
+                              ) {
+                                return _c("tr", { key: detalle.idCuenta }, [
+                                  _c("td", [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn btn-danger btn-sm",
+                                        attrs: { type: "button" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.eliminarDetalle(index)
                                           }
-                                        })
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", {
-                                        domProps: {
-                                          textContent: _vm._s(detalle.cuenta)
                                         }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: detalle.debe,
-                                              expression: "detalle.debe"
-                                            }
-                                          ],
-                                          staticClass: "form-control",
-                                          attrs: {
-                                            type: "number",
-                                            min: "0",
-                                            step: "any"
-                                          },
-                                          domProps: { value: detalle.debe },
-                                          on: {
-                                            input: [
-                                              function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.$set(
-                                                  detalle,
-                                                  "debe",
-                                                  $event.target.value
-                                                )
-                                              },
-                                              function($event) {
-                                                return _vm.sumarDebeHaber()
-                                              }
-                                            ]
-                                          }
-                                        })
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: detalle.haber,
-                                              expression: "detalle.haber"
-                                            }
-                                          ],
-                                          staticClass: "form-control",
-                                          attrs: {
-                                            type: "number",
-                                            min: "0",
-                                            step: "any"
-                                          },
-                                          domProps: { value: detalle.haber },
-                                          on: {
-                                            input: [
-                                              function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.$set(
-                                                  detalle,
-                                                  "haber",
-                                                  $event.target.value
-                                                )
-                                              },
-                                              function($event) {
-                                                return _vm.sumarDebeHaber()
-                                              }
-                                            ]
-                                          }
-                                        })
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: detalle.descripcionD,
-                                              expression: "detalle.descripcionD"
-                                            }
-                                          ],
-                                          staticClass: "form-control",
-                                          attrs: {
-                                            type: "text",
-                                            required: "",
-                                            placeholder: "Descripcion"
-                                          },
-                                          domProps: {
-                                            value: detalle.descripcionD
-                                          },
-                                          on: {
-                                            input: function($event) {
-                                              if ($event.target.composing) {
-                                                return
-                                              }
-                                              _vm.$set(
-                                                detalle,
-                                                "descripcionD",
-                                                $event.target.value
-                                              )
-                                            }
-                                          }
-                                        })
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        detalle.debe - detalle.haber ==
-                                          detalle.debe ||
-                                        detalle.haber - detalle.debe ==
-                                          detalle.haber
-                                          ? _c("div", [
-                                              _c(
-                                                "span",
-                                                {
-                                                  staticClass:
-                                                    "badge badge-success"
-                                                },
-                                                [_vm._v("OK")]
-                                              )
-                                            ])
-                                          : _c("div", [
-                                              _c(
-                                                "span",
-                                                {
-                                                  staticClass:
-                                                    "badge badge-danger"
-                                                },
-                                                [_vm._v("ERROR")]
-                                              )
-                                            ])
-                                      ])
-                                    ])
+                                      },
+                                      [_c("i", { staticClass: "icon-close" })]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c("span", {
+                                      staticClass: "badge badge-success",
+                                      domProps: {
+                                        textContent: _vm._s(detalle.codigo)
+                                      }
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", {
+                                    domProps: {
+                                      textContent: _vm._s(detalle.cuenta)
+                                    }
                                   }),
                                   _vm._v(" "),
-                                  _c("tr", [
-                                    _c("td", { attrs: { colspan: "3" } }, [
-                                      _vm._v("Total")
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("td", [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.debeTotal,
-                                            expression: "debeTotal"
-                                          }
-                                        ],
-                                        staticClass: "form-control",
-                                        attrs: { readonly: "", type: "number" },
-                                        domProps: { value: _vm.debeTotal },
-                                        on: {
-                                          input: function($event) {
+                                  _c("td", [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: detalle.debe,
+                                          expression: "detalle.debe"
+                                        }
+                                      ],
+                                      staticClass: "form-control",
+                                      attrs: {
+                                        type: "number",
+                                        min: "0",
+                                        step: "any"
+                                      },
+                                      domProps: { value: detalle.debe },
+                                      on: {
+                                        input: [
+                                          function($event) {
                                             if ($event.target.composing) {
                                               return
                                             }
-                                            _vm.debeTotal = $event.target.value
+                                            _vm.$set(
+                                              detalle,
+                                              "debe",
+                                              $event.target.value
+                                            )
+                                          },
+                                          function($event) {
+                                            return _vm.sumarDebeHaber()
                                           }
+                                        ]
+                                      }
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: detalle.haber,
+                                          expression: "detalle.haber"
                                         }
-                                      })
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("td", [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.haberTotal,
-                                            expression: "haberTotal"
-                                          }
-                                        ],
-                                        staticClass: "form-control",
-                                        attrs: { readonly: "", type: "number" },
-                                        domProps: { value: _vm.haberTotal },
-                                        on: {
-                                          input: function($event) {
+                                      ],
+                                      staticClass: "form-control",
+                                      attrs: {
+                                        type: "number",
+                                        min: "0",
+                                        step: "any"
+                                      },
+                                      domProps: { value: detalle.haber },
+                                      on: {
+                                        input: [
+                                          function($event) {
                                             if ($event.target.composing) {
                                               return
                                             }
-                                            _vm.haberTotal = $event.target.value
+                                            _vm.$set(
+                                              detalle,
+                                              "haber",
+                                              $event.target.value
+                                            )
+                                          },
+                                          function($event) {
+                                            return _vm.sumarDebeHaber()
                                           }
+                                        ]
+                                      }
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: detalle.descripcionD,
+                                          expression: "detalle.descripcionD"
                                         }
-                                      })
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("td", [
-                                      _vm.debeTotal - _vm.haberTotal == 0
-                                        ? _c("div", [
-                                            _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "badge badge-success"
-                                              },
-                                              [_vm._v("Asiento Correcto")]
-                                            )
-                                          ])
-                                        : _c("div", [
-                                            _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "badge badge-danger"
-                                              },
-                                              [_vm._v("Asiento Incorrecto")]
-                                            )
-                                          ])
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("td", [
-                                      _vm.debeTotal - _vm.haberTotal == 0
-                                        ? _c("div", [
-                                            _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "badge badge-success"
-                                              },
-                                              [_vm._v("OK")]
-                                            )
-                                          ])
-                                        : _c("div", [
-                                            _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "badge badge-danger"
-                                              },
-                                              [_vm._v("ERROR")]
-                                            )
-                                          ])
-                                    ])
+                                      ],
+                                      staticClass: "form-control",
+                                      attrs: {
+                                        type: "text",
+                                        required: "",
+                                        placeholder: "Descripcion"
+                                      },
+                                      domProps: { value: detalle.descripcionD },
+                                      on: {
+                                        input: function($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.$set(
+                                            detalle,
+                                            "descripcionD",
+                                            $event.target.value
+                                          )
+                                        }
+                                      }
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    detalle.debe - detalle.haber ==
+                                      detalle.debe ||
+                                    detalle.haber - detalle.debe ==
+                                      detalle.haber
+                                      ? _c("div", [
+                                          _c(
+                                            "span",
+                                            {
+                                              staticClass: "badge badge-success"
+                                            },
+                                            [_vm._v("OK")]
+                                          )
+                                        ])
+                                      : _c("div", [
+                                          _c(
+                                            "span",
+                                            {
+                                              staticClass: "badge badge-danger"
+                                            },
+                                            [_vm._v("ERROR")]
+                                          )
+                                        ])
                                   ])
-                                ],
-                                2
-                              )
-                            : _c("tbody", [_vm._m(18)])
-                        ]
-                      )
-                    ])
-                  ]),
+                                ])
+                              }),
+                              _vm._v(" "),
+                              _c("tr", [
+                                _c("td", { attrs: { colspan: "3" } }, [
+                                  _vm._v("Total")
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.debeTotal,
+                                        expression: "debeTotal"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: { readonly: "", type: "number" },
+                                    domProps: { value: _vm.debeTotal },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.debeTotal = $event.target.value
+                                      }
+                                    }
+                                  })
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.haberTotal,
+                                        expression: "haberTotal"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: { readonly: "", type: "number" },
+                                    domProps: { value: _vm.haberTotal },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.haberTotal = $event.target.value
+                                      }
+                                    }
+                                  })
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm.debeTotal - _vm.haberTotal == 0
+                                    ? _c("div", [
+                                        _c(
+                                          "span",
+                                          {
+                                            staticClass: "badge badge-success"
+                                          },
+                                          [_vm._v("Asiento Correcto")]
+                                        )
+                                      ])
+                                    : _c("div", [
+                                        _c(
+                                          "span",
+                                          { staticClass: "badge badge-danger" },
+                                          [_vm._v("Asiento Incorrecto")]
+                                        )
+                                      ])
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm.debeTotal - _vm.haberTotal == 0
+                                    ? _c("div", [
+                                        _c(
+                                          "span",
+                                          {
+                                            staticClass: "badge badge-success"
+                                          },
+                                          [_vm._v("OK")]
+                                        )
+                                      ])
+                                    : _c("div", [
+                                        _c(
+                                          "span",
+                                          { staticClass: "badge badge-danger" },
+                                          [_vm._v("ERROR")]
+                                        )
+                                      ])
+                                ])
+                              ])
+                            ],
+                            2
+                          )
+                        : _c("tbody", [_vm._m(18)])
+                    ]
+                  ),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
                     _c("div", { staticClass: "col-md-12" }, [
@@ -85992,7 +85951,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("tr", [
       _c("td", { attrs: { colspan: "7" } }, [
-        _vm._v("NO hay artículos agregados")
+        _vm._v("No hay Productos Agregados")
       ])
     ])
   },
@@ -88842,310 +88801,287 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group row border" }, [
-                    _c("div", { staticClass: "table-responsive col-md-12" }, [
-                      _c(
-                        "table",
-                        {
-                          staticClass:
-                            "table table-bordered table-striped table-sm"
-                        },
-                        [
-                          _vm._m(3),
-                          _vm._v(" "),
-                          _vm.arrayDetalle.length
-                            ? _c(
-                                "tbody",
-                                [
-                                  _vm._l(_vm.arrayDetalle, function(
-                                    detalle,
-                                    index
-                                  ) {
-                                    return _c("tr", { key: detalle.idCuenta }, [
-                                      _c("td", [
-                                        _c(
-                                          "button",
-                                          {
-                                            staticClass:
-                                              "btn btn-danger btn-sm",
-                                            attrs: { type: "button" },
-                                            on: {
-                                              click: function($event) {
-                                                return _vm.eliminarDetalle(
-                                                  index
-                                                )
-                                              }
-                                            }
-                                          },
-                                          [
-                                            _c("i", {
-                                              staticClass: "icon-close"
-                                            })
-                                          ]
-                                        )
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _c("span", {
-                                          staticClass: "badge badge-success",
-                                          domProps: {
-                                            textContent: _vm._s(detalle.codigo)
+                  _c(
+                    "table",
+                    {
+                      staticClass:
+                        "table table-responsive-sm table-bordered table-striped table-sm"
+                    },
+                    [
+                      _vm._m(3),
+                      _vm._v(" "),
+                      _vm.arrayDetalle.length
+                        ? _c(
+                            "tbody",
+                            [
+                              _vm._l(_vm.arrayDetalle, function(
+                                detalle,
+                                index
+                              ) {
+                                return _c("tr", { key: detalle.idCuenta }, [
+                                  _c("td", [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn btn-danger btn-sm",
+                                        attrs: { type: "button" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.eliminarDetalle(index)
                                           }
-                                        })
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", {
-                                        domProps: {
-                                          textContent: _vm._s(detalle.cuenta)
                                         }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: detalle.debe,
-                                              expression: "detalle.debe"
-                                            }
-                                          ],
-                                          staticClass: "form-control",
-                                          attrs: {
-                                            type: "number",
-                                            min: "0",
-                                            step: "any"
-                                          },
-                                          domProps: { value: detalle.debe },
-                                          on: {
-                                            input: [
-                                              function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.$set(
-                                                  detalle,
-                                                  "debe",
-                                                  $event.target.value
-                                                )
-                                              },
-                                              function($event) {
-                                                return _vm.sumarDebeHaber()
-                                              }
-                                            ]
-                                          }
-                                        })
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: detalle.haber,
-                                              expression: "detalle.haber"
-                                            }
-                                          ],
-                                          staticClass: "form-control",
-                                          attrs: {
-                                            type: "number",
-                                            min: "0",
-                                            step: "any"
-                                          },
-                                          domProps: { value: detalle.haber },
-                                          on: {
-                                            input: [
-                                              function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.$set(
-                                                  detalle,
-                                                  "haber",
-                                                  $event.target.value
-                                                )
-                                              },
-                                              function($event) {
-                                                return _vm.sumarDebeHaber()
-                                              }
-                                            ]
-                                          }
-                                        })
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: detalle.descripcionD,
-                                              expression: "detalle.descripcionD"
-                                            }
-                                          ],
-                                          staticClass: "form-control",
-                                          attrs: {
-                                            type: "text",
-                                            required: "",
-                                            placeholder: "Descripcion"
-                                          },
-                                          domProps: {
-                                            value: detalle.descripcionD
-                                          },
-                                          on: {
-                                            input: function($event) {
-                                              if ($event.target.composing) {
-                                                return
-                                              }
-                                              _vm.$set(
-                                                detalle,
-                                                "descripcionD",
-                                                $event.target.value
-                                              )
-                                            }
-                                          }
-                                        })
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        detalle.debe - detalle.haber ==
-                                          detalle.debe ||
-                                        detalle.haber - detalle.debe ==
-                                          detalle.haber
-                                          ? _c("div", [
-                                              _c(
-                                                "span",
-                                                {
-                                                  staticClass:
-                                                    "badge badge-success"
-                                                },
-                                                [_vm._v("OK")]
-                                              )
-                                            ])
-                                          : _c("div", [
-                                              _c(
-                                                "span",
-                                                {
-                                                  staticClass:
-                                                    "badge badge-danger"
-                                                },
-                                                [_vm._v("ERROR")]
-                                              )
-                                            ])
-                                      ])
-                                    ])
+                                      },
+                                      [_c("i", { staticClass: "icon-close" })]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c("span", {
+                                      staticClass: "badge badge-success",
+                                      domProps: {
+                                        textContent: _vm._s(detalle.codigo)
+                                      }
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", {
+                                    domProps: {
+                                      textContent: _vm._s(detalle.cuenta)
+                                    }
                                   }),
                                   _vm._v(" "),
-                                  _c("tr", [
-                                    _c("td", { attrs: { colspan: "3" } }, [
-                                      _vm._v("Total")
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("td", [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.debeTotal,
-                                            expression: "debeTotal"
-                                          }
-                                        ],
-                                        staticClass: "form-control",
-                                        attrs: { readonly: "", type: "number" },
-                                        domProps: { value: _vm.debeTotal },
-                                        on: {
-                                          input: function($event) {
+                                  _c("td", [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: detalle.debe,
+                                          expression: "detalle.debe"
+                                        }
+                                      ],
+                                      staticClass: "form-control",
+                                      attrs: {
+                                        type: "number",
+                                        min: "0",
+                                        step: "any"
+                                      },
+                                      domProps: { value: detalle.debe },
+                                      on: {
+                                        input: [
+                                          function($event) {
                                             if ($event.target.composing) {
                                               return
                                             }
-                                            _vm.debeTotal = $event.target.value
+                                            _vm.$set(
+                                              detalle,
+                                              "debe",
+                                              $event.target.value
+                                            )
+                                          },
+                                          function($event) {
+                                            return _vm.sumarDebeHaber()
                                           }
+                                        ]
+                                      }
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: detalle.haber,
+                                          expression: "detalle.haber"
                                         }
-                                      })
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("td", [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.haberTotal,
-                                            expression: "haberTotal"
-                                          }
-                                        ],
-                                        staticClass: "form-control",
-                                        attrs: { readonly: "", type: "number" },
-                                        domProps: { value: _vm.haberTotal },
-                                        on: {
-                                          input: function($event) {
+                                      ],
+                                      staticClass: "form-control",
+                                      attrs: {
+                                        type: "number",
+                                        min: "0",
+                                        step: "any"
+                                      },
+                                      domProps: { value: detalle.haber },
+                                      on: {
+                                        input: [
+                                          function($event) {
                                             if ($event.target.composing) {
                                               return
                                             }
-                                            _vm.haberTotal = $event.target.value
+                                            _vm.$set(
+                                              detalle,
+                                              "haber",
+                                              $event.target.value
+                                            )
+                                          },
+                                          function($event) {
+                                            return _vm.sumarDebeHaber()
                                           }
+                                        ]
+                                      }
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: detalle.descripcionD,
+                                          expression: "detalle.descripcionD"
                                         }
-                                      })
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("td", [
-                                      _vm.debeTotal - _vm.haberTotal == 0
-                                        ? _c("div", [
-                                            _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "badge badge-success"
-                                              },
-                                              [_vm._v("Asiento Correcto")]
-                                            )
-                                          ])
-                                        : _c("div", [
-                                            _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "badge badge-danger"
-                                              },
-                                              [_vm._v("Asiento Incorrecto")]
-                                            )
-                                          ])
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("td", [
-                                      _vm.debeTotal - _vm.haberTotal == 0
-                                        ? _c("div", [
-                                            _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "badge badge-success"
-                                              },
-                                              [_vm._v("OK")]
-                                            )
-                                          ])
-                                        : _c("div", [
-                                            _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "badge badge-danger"
-                                              },
-                                              [_vm._v("ERROR")]
-                                            )
-                                          ])
-                                    ])
+                                      ],
+                                      staticClass: "form-control",
+                                      attrs: {
+                                        type: "text",
+                                        required: "",
+                                        placeholder: "Descripcion"
+                                      },
+                                      domProps: { value: detalle.descripcionD },
+                                      on: {
+                                        input: function($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.$set(
+                                            detalle,
+                                            "descripcionD",
+                                            $event.target.value
+                                          )
+                                        }
+                                      }
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    detalle.debe - detalle.haber ==
+                                      detalle.debe ||
+                                    detalle.haber - detalle.debe ==
+                                      detalle.haber
+                                      ? _c("div", [
+                                          _c(
+                                            "span",
+                                            {
+                                              staticClass: "badge badge-success"
+                                            },
+                                            [_vm._v("OK")]
+                                          )
+                                        ])
+                                      : _c("div", [
+                                          _c(
+                                            "span",
+                                            {
+                                              staticClass: "badge badge-danger"
+                                            },
+                                            [_vm._v("ERROR")]
+                                          )
+                                        ])
                                   ])
-                                ],
-                                2
-                              )
-                            : _c("tbody", [_vm._m(4)])
-                        ]
-                      )
-                    ])
-                  ]),
+                                ])
+                              }),
+                              _vm._v(" "),
+                              _c("tr", [
+                                _c("td", { attrs: { colspan: "3" } }, [
+                                  _vm._v("Total")
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.debeTotal,
+                                        expression: "debeTotal"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: { readonly: "", type: "number" },
+                                    domProps: { value: _vm.debeTotal },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.debeTotal = $event.target.value
+                                      }
+                                    }
+                                  })
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.haberTotal,
+                                        expression: "haberTotal"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: { readonly: "", type: "number" },
+                                    domProps: { value: _vm.haberTotal },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.haberTotal = $event.target.value
+                                      }
+                                    }
+                                  })
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm.debeTotal - _vm.haberTotal == 0
+                                    ? _c("div", [
+                                        _c(
+                                          "span",
+                                          {
+                                            staticClass: "badge badge-success"
+                                          },
+                                          [_vm._v("Asiento Correcto")]
+                                        )
+                                      ])
+                                    : _c("div", [
+                                        _c(
+                                          "span",
+                                          { staticClass: "badge badge-danger" },
+                                          [_vm._v("Asiento Incorrecto")]
+                                        )
+                                      ])
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm.debeTotal - _vm.haberTotal == 0
+                                    ? _c("div", [
+                                        _c(
+                                          "span",
+                                          {
+                                            staticClass: "badge badge-success"
+                                          },
+                                          [_vm._v("OK")]
+                                        )
+                                      ])
+                                    : _c("div", [
+                                        _c(
+                                          "span",
+                                          { staticClass: "badge badge-danger" },
+                                          [_vm._v("ERROR")]
+                                        )
+                                      ])
+                                ])
+                              ])
+                            ],
+                            2
+                          )
+                        : _c("tbody", [_vm._m(4)])
+                    ]
+                  ),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
                     _c("div", { staticClass: "col-md-12" }, [
@@ -95151,310 +95087,287 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group row border" }, [
-                    _c("div", { staticClass: "table-responsive col-md-12" }, [
-                      _c(
-                        "table",
-                        {
-                          staticClass:
-                            "table table-bordered table-striped table-sm"
-                        },
-                        [
-                          _vm._m(3),
-                          _vm._v(" "),
-                          _vm.arrayDetalle.length
-                            ? _c(
-                                "tbody",
-                                [
-                                  _vm._l(_vm.arrayDetalle, function(
-                                    detalle,
-                                    index
-                                  ) {
-                                    return _c("tr", { key: detalle.idCuenta }, [
-                                      _c("td", [
-                                        _c(
-                                          "button",
-                                          {
-                                            staticClass:
-                                              "btn btn-danger btn-sm",
-                                            attrs: { type: "button" },
-                                            on: {
-                                              click: function($event) {
-                                                return _vm.eliminarDetalle(
-                                                  index
-                                                )
-                                              }
-                                            }
-                                          },
-                                          [
-                                            _c("i", {
-                                              staticClass: "icon-close"
-                                            })
-                                          ]
-                                        )
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _c("span", {
-                                          staticClass: "badge badge-success",
-                                          domProps: {
-                                            textContent: _vm._s(detalle.codigo)
+                  _c(
+                    "table",
+                    {
+                      staticClass:
+                        "table table-responsive-sm table-bordered table-striped table-sm"
+                    },
+                    [
+                      _vm._m(3),
+                      _vm._v(" "),
+                      _vm.arrayDetalle.length
+                        ? _c(
+                            "tbody",
+                            [
+                              _vm._l(_vm.arrayDetalle, function(
+                                detalle,
+                                index
+                              ) {
+                                return _c("tr", { key: detalle.idCuenta }, [
+                                  _c("td", [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn btn-danger btn-sm",
+                                        attrs: { type: "button" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.eliminarDetalle(index)
                                           }
-                                        })
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", {
-                                        domProps: {
-                                          textContent: _vm._s(detalle.cuenta)
                                         }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: detalle.debe,
-                                              expression: "detalle.debe"
-                                            }
-                                          ],
-                                          staticClass: "form-control",
-                                          attrs: {
-                                            type: "number",
-                                            min: "0",
-                                            step: "any"
-                                          },
-                                          domProps: { value: detalle.debe },
-                                          on: {
-                                            input: [
-                                              function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.$set(
-                                                  detalle,
-                                                  "debe",
-                                                  $event.target.value
-                                                )
-                                              },
-                                              function($event) {
-                                                return _vm.sumarDebeHaber()
-                                              }
-                                            ]
-                                          }
-                                        })
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: detalle.haber,
-                                              expression: "detalle.haber"
-                                            }
-                                          ],
-                                          staticClass: "form-control",
-                                          attrs: {
-                                            type: "number",
-                                            min: "0",
-                                            step: "any"
-                                          },
-                                          domProps: { value: detalle.haber },
-                                          on: {
-                                            input: [
-                                              function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.$set(
-                                                  detalle,
-                                                  "haber",
-                                                  $event.target.value
-                                                )
-                                              },
-                                              function($event) {
-                                                return _vm.sumarDebeHaber()
-                                              }
-                                            ]
-                                          }
-                                        })
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: detalle.descripcionD,
-                                              expression: "detalle.descripcionD"
-                                            }
-                                          ],
-                                          staticClass: "form-control",
-                                          attrs: {
-                                            type: "text",
-                                            required: "",
-                                            placeholder: "Descripcion"
-                                          },
-                                          domProps: {
-                                            value: detalle.descripcionD
-                                          },
-                                          on: {
-                                            input: function($event) {
-                                              if ($event.target.composing) {
-                                                return
-                                              }
-                                              _vm.$set(
-                                                detalle,
-                                                "descripcionD",
-                                                $event.target.value
-                                              )
-                                            }
-                                          }
-                                        })
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        detalle.debe - detalle.haber ==
-                                          detalle.debe ||
-                                        detalle.haber - detalle.debe ==
-                                          detalle.haber
-                                          ? _c("div", [
-                                              _c(
-                                                "span",
-                                                {
-                                                  staticClass:
-                                                    "badge badge-success"
-                                                },
-                                                [_vm._v("OK")]
-                                              )
-                                            ])
-                                          : _c("div", [
-                                              _c(
-                                                "span",
-                                                {
-                                                  staticClass:
-                                                    "badge badge-danger"
-                                                },
-                                                [_vm._v("ERROR")]
-                                              )
-                                            ])
-                                      ])
-                                    ])
+                                      },
+                                      [_c("i", { staticClass: "icon-close" })]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c("span", {
+                                      staticClass: "badge badge-success",
+                                      domProps: {
+                                        textContent: _vm._s(detalle.codigo)
+                                      }
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", {
+                                    domProps: {
+                                      textContent: _vm._s(detalle.cuenta)
+                                    }
                                   }),
                                   _vm._v(" "),
-                                  _c("tr", [
-                                    _c("td", { attrs: { colspan: "3" } }, [
-                                      _vm._v("Total")
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("td", [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.debeTotal,
-                                            expression: "debeTotal"
-                                          }
-                                        ],
-                                        staticClass: "form-control",
-                                        attrs: { readonly: "", type: "number" },
-                                        domProps: { value: _vm.debeTotal },
-                                        on: {
-                                          input: function($event) {
+                                  _c("td", [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: detalle.debe,
+                                          expression: "detalle.debe"
+                                        }
+                                      ],
+                                      staticClass: "form-control",
+                                      attrs: {
+                                        type: "number",
+                                        min: "0",
+                                        step: "any"
+                                      },
+                                      domProps: { value: detalle.debe },
+                                      on: {
+                                        input: [
+                                          function($event) {
                                             if ($event.target.composing) {
                                               return
                                             }
-                                            _vm.debeTotal = $event.target.value
+                                            _vm.$set(
+                                              detalle,
+                                              "debe",
+                                              $event.target.value
+                                            )
+                                          },
+                                          function($event) {
+                                            return _vm.sumarDebeHaber()
                                           }
+                                        ]
+                                      }
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: detalle.haber,
+                                          expression: "detalle.haber"
                                         }
-                                      })
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("td", [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.haberTotal,
-                                            expression: "haberTotal"
-                                          }
-                                        ],
-                                        staticClass: "form-control",
-                                        attrs: { readonly: "", type: "number" },
-                                        domProps: { value: _vm.haberTotal },
-                                        on: {
-                                          input: function($event) {
+                                      ],
+                                      staticClass: "form-control",
+                                      attrs: {
+                                        type: "number",
+                                        min: "0",
+                                        step: "any"
+                                      },
+                                      domProps: { value: detalle.haber },
+                                      on: {
+                                        input: [
+                                          function($event) {
                                             if ($event.target.composing) {
                                               return
                                             }
-                                            _vm.haberTotal = $event.target.value
+                                            _vm.$set(
+                                              detalle,
+                                              "haber",
+                                              $event.target.value
+                                            )
+                                          },
+                                          function($event) {
+                                            return _vm.sumarDebeHaber()
                                           }
+                                        ]
+                                      }
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: detalle.descripcionD,
+                                          expression: "detalle.descripcionD"
                                         }
-                                      })
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("td", [
-                                      _vm.debeTotal - _vm.haberTotal == 0
-                                        ? _c("div", [
-                                            _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "badge badge-success"
-                                              },
-                                              [_vm._v("Asiento Correcto")]
-                                            )
-                                          ])
-                                        : _c("div", [
-                                            _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "badge badge-danger"
-                                              },
-                                              [_vm._v("Asiento Incorrecto")]
-                                            )
-                                          ])
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("td", [
-                                      _vm.debeTotal - _vm.haberTotal == 0
-                                        ? _c("div", [
-                                            _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "badge badge-success"
-                                              },
-                                              [_vm._v("OK")]
-                                            )
-                                          ])
-                                        : _c("div", [
-                                            _c(
-                                              "span",
-                                              {
-                                                staticClass:
-                                                  "badge badge-danger"
-                                              },
-                                              [_vm._v("ERROR")]
-                                            )
-                                          ])
-                                    ])
+                                      ],
+                                      staticClass: "form-control",
+                                      attrs: {
+                                        type: "text",
+                                        required: "",
+                                        placeholder: "Descripcion"
+                                      },
+                                      domProps: { value: detalle.descripcionD },
+                                      on: {
+                                        input: function($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.$set(
+                                            detalle,
+                                            "descripcionD",
+                                            $event.target.value
+                                          )
+                                        }
+                                      }
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    detalle.debe - detalle.haber ==
+                                      detalle.debe ||
+                                    detalle.haber - detalle.debe ==
+                                      detalle.haber
+                                      ? _c("div", [
+                                          _c(
+                                            "span",
+                                            {
+                                              staticClass: "badge badge-success"
+                                            },
+                                            [_vm._v("OK")]
+                                          )
+                                        ])
+                                      : _c("div", [
+                                          _c(
+                                            "span",
+                                            {
+                                              staticClass: "badge badge-danger"
+                                            },
+                                            [_vm._v("ERROR")]
+                                          )
+                                        ])
                                   ])
-                                ],
-                                2
-                              )
-                            : _c("tbody", [_vm._m(4)])
-                        ]
-                      )
-                    ])
-                  ]),
+                                ])
+                              }),
+                              _vm._v(" "),
+                              _c("tr", [
+                                _c("td", { attrs: { colspan: "3" } }, [
+                                  _vm._v("Total")
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.debeTotal,
+                                        expression: "debeTotal"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: { readonly: "", type: "number" },
+                                    domProps: { value: _vm.debeTotal },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.debeTotal = $event.target.value
+                                      }
+                                    }
+                                  })
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.haberTotal,
+                                        expression: "haberTotal"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: { readonly: "", type: "number" },
+                                    domProps: { value: _vm.haberTotal },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.haberTotal = $event.target.value
+                                      }
+                                    }
+                                  })
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm.debeTotal - _vm.haberTotal == 0
+                                    ? _c("div", [
+                                        _c(
+                                          "span",
+                                          {
+                                            staticClass: "badge badge-success"
+                                          },
+                                          [_vm._v("Asiento Correcto")]
+                                        )
+                                      ])
+                                    : _c("div", [
+                                        _c(
+                                          "span",
+                                          { staticClass: "badge badge-danger" },
+                                          [_vm._v("Asiento Incorrecto")]
+                                        )
+                                      ])
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm.debeTotal - _vm.haberTotal == 0
+                                    ? _c("div", [
+                                        _c(
+                                          "span",
+                                          {
+                                            staticClass: "badge badge-success"
+                                          },
+                                          [_vm._v("OK")]
+                                        )
+                                      ])
+                                    : _c("div", [
+                                        _c(
+                                          "span",
+                                          { staticClass: "badge badge-danger" },
+                                          [_vm._v("ERROR")]
+                                        )
+                                      ])
+                                ])
+                              ])
+                            ],
+                            2
+                          )
+                        : _c("tbody", [_vm._m(4)])
+                    ]
+                  ),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
                     _c("div", { staticClass: "col-md-12" }, [
@@ -97116,7 +97029,7 @@ var render = function() {
                           ) {
                             return null
                           }
-                          return _vm.listarProducto(1, _vm.buscar, _vm.pagina)
+                          return _vm.listarProducto(1, _vm.buscar)
                         },
                         input: function($event) {
                           if ($event.target.composing) {
@@ -97135,11 +97048,7 @@ var render = function() {
                           attrs: { type: "submit" },
                           on: {
                             click: function($event) {
-                              return _vm.listarProducto(
-                                1,
-                                _vm.buscar,
-                                _vm.pagina
-                              )
+                              return _vm.listarProducto(1, _vm.buscar)
                             }
                           }
                         },
@@ -97150,50 +97059,6 @@ var render = function() {
                       )
                     ])
                   ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-2" }, [
-                  _c(
-                    "select",
-                    {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.pagina,
-                          expression: "pagina"
-                        }
-                      ],
-                      staticClass: "form-control col-md-12",
-                      on: {
-                        select: function($event) {
-                          return _vm.listarProducto(1, _vm.buscar, _vm.pagina)
-                        },
-                        change: function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.pagina = $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        }
-                      }
-                    },
-                    [
-                      _c("option", { attrs: { value: "10" } }, [_vm._v("10")]),
-                      _vm._v(" "),
-                      _c("option", { attrs: { value: "20" } }, [_vm._v("20")]),
-                      _vm._v(" "),
-                      _c("option", { attrs: { value: "50" } }, [_vm._v("50")]),
-                      _vm._v(" "),
-                      _c("option", { attrs: { value: "100" } }, [_vm._v("100")])
-                    ]
-                  )
                 ])
               ])
             ])
@@ -97345,8 +97210,7 @@ var render = function() {
                               $event.preventDefault()
                               return _vm.cambiarPagina(
                                 _vm.pagination.current_page - 1,
-                                _vm.buscar,
-                                _vm.pagina
+                                _vm.buscar
                               )
                             }
                           }
@@ -97372,11 +97236,7 @@ var render = function() {
                         on: {
                           click: function($event) {
                             $event.preventDefault()
-                            return _vm.cambiarPagina(
-                              page,
-                              _vm.buscar,
-                              _vm.pagina
-                            )
+                            return _vm.cambiarPagina(page, _vm.buscar)
                           }
                         }
                       })
@@ -97396,8 +97256,7 @@ var render = function() {
                               $event.preventDefault()
                               return _vm.cambiarPagina(
                                 _vm.pagination.current_page + 1,
-                                _vm.buscar,
-                                _vm.pagina
+                                _vm.buscar
                               )
                             }
                           }
@@ -99616,7 +99475,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("tr", [
       _c("td", { attrs: { colspan: "7" } }, [
-        _vm._v("NO hay artículos agregados")
+        _vm._v("No hay Productos Agregados")
       ])
     ])
   },
