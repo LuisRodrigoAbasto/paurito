@@ -145,7 +145,7 @@ Route::group(['middleware'=>['auth']],function(){
    Route::get('/egreso/imprimir/egreso_{id}','EgresoController@imprimir')->name('egreso_imprimir');
 
    Route::get('/balanceGeneral', 'BalanceGeneralController@index');
-   Route::get('/lista', 'BalanceGeneralController@lista');
+   Route::get('/estadoResultado', 'EstadoResultadoController@index');
 
    });
 Auth::routes();

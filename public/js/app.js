@@ -3577,25 +3577,20 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
     cargarFecha: function cargarFecha() {
       var year = this.fecha.getFullYear();
       var mes = this.fecha.getMonth();
-      var dia = this.fecha.getDate();
       mes++;
 
       if (mes < 10) {
-        mes = "0" + mes;
+        this.fechaInicio = year + "-0" + mes + "-" + "01";
+
+        if (mes + 1 < 10) {
+          this.fechaFin = year + "-0" + (mes + 1) + "-" + "01";
+        } else {
+          this.fechaFin = year + "-" + (mes + 1) + "-" + "01";
+        }
+      } else {
+        this.fechaInicio = year + "-" + mes + "-" + "01";
+        this.fechaFin = year + "-" + (mes + 1) + "-" + "01";
       }
-
-      if (dia < 10) {
-        dia = "0" + dia;
-      }
-
-      var mesI = mes - 1;
-
-      if (mesI < 10) {
-        mesI = "0" + mesI;
-      }
-
-      this.fechaInicio = year + "-" + mesI + "-" + dia;
-      this.fechaFin = year + "-" + mes + "-" + dia;
     },
     desactivar: function desactivar(id, opcion) {
       var _this = this;
@@ -6907,6 +6902,2170 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
   },
   mounted: function mounted() {
     this.listar(1, this.buscar, this.criterio);
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/EstadoResultado.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/EstadoResultado.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
+/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-select/dist/vue-select.css */ "./node_modules/vue-select/dist/vue-select.css");
+/* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_2__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      factura: 0,
+      registro: 0,
+      cuenta: "",
+      nivel: 1,
+      idCuenta: 0,
+      cuenta_id: 0,
+      nombre: "",
+      telefono: "",
+      empresa: "",
+      direccion: "",
+      arrayData: [],
+      arrayDetalle: [],
+      arrayProducto: [],
+      nivel1: 0,
+      nivel2: 0,
+      nivel3: 0,
+      nivel4: 0,
+      modal: 0,
+      editar: false,
+      tituloModal: "",
+      tipoAccion: 0,
+      offset: 3,
+      fecha: new Date(),
+      fechaInicio: "",
+      fechaFin: "",
+      ventana: 0,
+      // Ventas
+      venta_id: 0,
+      idCliente: 0,
+      idFormula: 0,
+      pago: "",
+      cantidad: 0,
+      montoVenta: 0,
+      descripcion: "",
+      formula: "",
+      arrayFormula: [],
+      arrayCliente: [],
+      cliente: "",
+      idProducto: 0,
+      producto: "",
+      unidad: "",
+      referencia: "",
+      tipo: 0,
+      arrayDetalleFormula: [],
+      precio: 0,
+      codigo: 0,
+      selectedCliente: null,
+      selectedFormula: null,
+      validaciones: "",
+      mensaje: "",
+      // Compras
+      compra_id: 0,
+      idProveedor: 0,
+      montoCompra: 0,
+      arrayProveedor: [],
+      criterio: "descripcion",
+      criterioP: "nombre",
+      buscarP: "",
+      buscar: "",
+      proveedor: "",
+      selectedProveedor: null,
+      cantidadTotal: 0,
+      formulario: "Balance General",
+      ingreso_id: 0,
+      haberTotal: 0,
+      debeTotal: 0,
+      arrayCuenta: [],
+      debe: 0,
+      haber: 0
+    };
+  },
+  computed: {},
+  methods: {
+    listar: function listar(inicio, fin) {
+      var me = this;
+      var url = "/estadoResultado?fechaInicio=" + inicio + "&fechaFin=" + fin;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.arrayData = respuesta.cuentas;
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    cargarPdf: function cargarPdf() {
+      window.open("cuenta/listarPdf", "_blank");
+    },
+    pdf: function pdf(accion, id) {
+      switch (accion) {
+        case "Ventas":
+          {
+            window.open("venta/pdf/venta_" + id + "," + "_blank");
+            break;
+          }
+
+        case "Compras":
+          {
+            window.open("compra/pdf/compra_" + id + "," + "_blank");
+          }
+      }
+    },
+    imprimir: function imprimir(id) {
+      window.open("venta/imprimir/venta_" + id + "," + "_blank");
+    },
+    selectCuenta: function selectCuenta(search, loading) {
+      var me = this;
+      loading(true);
+      var url = "cuenta/selectCuenta?filtro=" + search;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+
+        q: search;
+
+        me.arrayCuenta = respuesta.cuentas;
+        loading(false);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    getDatosCuenta: function getDatosCuenta(val1) {
+      var me = this;
+      me.loading = true;
+
+      try {
+        me.idCuenta = val1.id;
+        me.cuenta = val1.nombre;
+        me.codigo = val1.tipo + "." + val1.nivel1 + "." + val1.nivel2 + "." + val1.nivel3 + "." + val1.nivel4;
+      } catch (error) {
+        me.idCuenta = 0;
+        me.cuenta = "";
+        me.codigo = "";
+      }
+    },
+    sumarDebeHaber: function sumarDebeHaber() {
+      var me = this;
+      me.debeTotal = 0;
+      me.haberTotal = 0;
+
+      for (var i = 0; i < this.arrayDetalle.length; i++) {
+        me.debeTotal = me.arrayDetalle[i].debe * 1 + me.debeTotal;
+        me.haberTotal = me.arrayDetalle[i].haber * 1 + me.haberTotal;
+      }
+    },
+    selectProveedor: function selectProveedor(search, loading) {
+      var me = this;
+      loading(true);
+      var url = "cuenta/selectCuenta?filtro=" + search;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+
+        q: search;
+
+        me.arrayProveedor = respuesta.cuentas;
+        loading(false);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    getDatosProveedor: function getDatosProveedor(val1) {
+      var me = this;
+      me.loading = true;
+
+      try {
+        me.idProveedor = val1.id;
+        me.proveedor = val1.nombre;
+      } catch (error) {
+        me.idProveedor = 0;
+        me.proveedor = "";
+      }
+    },
+    // Ventas
+    selectCliente: function selectCliente(search, loading) {
+      var me = this;
+      loading(true);
+      var url = "cuenta/selectCuenta?filtro=" + search;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+
+        q: search;
+
+        me.arrayCliente = respuesta.cuentas;
+        loading(false);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    getDatosCliente: function getDatosCliente(val1) {
+      var me = this;
+      me.loading = true;
+
+      try {
+        me.idCliente = val1.id;
+        me.cliente = val1.nombre;
+      } catch (error) {
+        me.idCliente = 0;
+        me.cliente = "";
+      }
+    },
+    selectProducto: function selectProducto(search, loading) {
+      var me = this;
+      loading(true);
+      var url = "producto/selectProducto?filtro=" + search;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+
+        q: search;
+
+        me.arrayProducto = respuesta.productos;
+        loading(false);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    getDatosProducto: function getDatosProducto(val1) {
+      var me = this;
+      me.loading = true;
+
+      try {
+        me.idProducto = val1.id;
+        me.producto = val1.nombre;
+        me.codigo = val1.codigo;
+        me.unidad = val1.unidad;
+        me.referencia = val1.referencia;
+      } catch (error) {
+        me.idProducto = 0;
+        me.producto = "";
+        me.codigo = 0;
+        me.unidad = "";
+        me.referencia = "";
+      }
+    },
+    selectFormula: function selectFormula(search, loading) {
+      var me = this;
+      loading(true);
+      var url = "formula/selectFormula?filtro=" + search;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+
+        q: search;
+
+        me.arrayFormula = respuesta.formulas;
+        loading(false);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    mostrarFormula: function mostrarFormula(id) {
+      var me = this;
+      var url = "formula/listarFormula?id=" + id;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.arrayDetalle = respuesta.detalles;
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    getDatosFormula: function getDatosFormula(val2) {
+      var me = this;
+      me.loading = true;
+
+      try {
+        me.idFormula = val2.id;
+        me.formula = val2.nombre;
+      } catch (error) {
+        me.idFormula = 0;
+        me.formula = "";
+      }
+    },
+    encuentra: function encuentra(id) {
+      var sw = false;
+
+      for (var i = 0; i < this.arrayDetalle.length && sw == false; i++) {
+        if (this.arrayDetalle[i].idProducto == id) {
+          sw = true;
+        }
+      }
+
+      return sw;
+    },
+    encuentraIE: function encuentraIE(id) {
+      var sw = false;
+
+      for (var i = 0; i < this.arrayDetalle.length && sw == false; i++) {
+        if (this.arrayDetalle[i].idCuenta == id) {
+          sw = true;
+        }
+      }
+
+      return sw;
+    },
+    eliminarDetalle: function eliminarDetalle(index) {
+      var me = this;
+      me.arrayDetalle.splice(index, 1);
+    },
+    ocultarDetalle: function ocultarDetalle() {
+      this.ventana = 0;
+      this.limpiarRegistro();
+    },
+    ventaTotal: function ventaTotal() {
+      this.montoVenta = 0;
+
+      for (var i = 0; i < this.arrayDetalle.length; i++) {
+        if (this.arrayDetalle[i].precio) {
+          this.montoVenta = this.arrayDetalle[i].cantidad / this.arrayDetalle[i].codigo * this.arrayDetalle[i].precio + this.montoVenta;
+        }
+      }
+
+      this.montoVenta = this.montoVenta.toFixed(2);
+    },
+    compraTotal: function compraTotal() {
+      this.cantidadTotal = 0;
+      this.montoCompra = 0;
+
+      for (var i = 0; i < this.arrayDetalle.length; i++) {
+        this.montoCompra = this.arrayDetalle[i].cantidad / this.arrayDetalle[i].codigo * this.arrayDetalle[i].precio + this.montoCompra;
+        this.cantidadTotal = this.arrayDetalle[i].cantidad * 1 + this.cantidadTotal;
+      }
+
+      this.montoCompra = this.montoCompra.toFixed(2);
+      this.cantidadTotal = this.cantidadTotal.toFixed(2);
+    },
+    ventaTotalFormula: function ventaTotalFormula() {
+      this.montoVenta = 0;
+
+      for (var i = 0; i < this.arrayDetalle.length; i++) {
+        if (this.arrayDetalle[i].precio) {
+          this.montoVenta = this.arrayDetalle[i].cantidad * this.cantidad / this.arrayDetalle[i].codigo * this.arrayDetalle[i].precio + this.montoVenta;
+        }
+      }
+
+      this.montoVenta = this.montoVenta.toFixed(2);
+    },
+    agregarDetalleIE: function agregarDetalleIE() {
+      var me = this;
+
+      if (me.idCuenta == 0) {
+        Swal.fire({
+          position: "center",
+          title: "Error !!",
+          type: "error",
+          showConfirmButton: false,
+          timer: 1000
+        });
+      } else {
+        if (me.encuentraIE(me.idCuenta)) {
+          Swal.fire({
+            position: "center",
+            title: "Se Encuentra Agregado",
+            type: "error",
+            showConfirmButton: false,
+            timer: 1000
+          });
+        } else {
+          me.arrayDetalle.push({
+            idCuenta: me.idCuenta,
+            codigo: me.codigo,
+            cuenta: me.cuenta,
+            debe: me.debe,
+            haber: me.haber,
+            descripcionD: ""
+          });
+          this.debe = 0;
+          this.haber = 0;
+        }
+      }
+    },
+    agregarDetalleModalIE: function agregarDetalleModalIE() {
+      var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      var me = this;
+
+      if (me.encuentraIE(data["id"])) {
+        Swal.fire({
+          position: "center",
+          title: "Se Encuentra Agregado",
+          type: "error",
+          showConfirmButton: false,
+          timer: 1000
+        });
+      } else {
+        me.arrayDetalle.push({
+          idCuenta: data["id"],
+          cuenta: data["nombre"],
+          codigo: data["tipo"] + "." + data["nivel1"] + "." + data["nivel2"] + "." + data["nivel3"] + "." + data["nivel4"],
+          debe: 0,
+          haber: 0,
+          descripcionD: ""
+        });
+      }
+    },
+    agregarDetalle: function agregarDetalle() {
+      var me = this;
+
+      if (me.idProducto == 0) {
+        Swal.fire({
+          position: "center",
+          title: "Error !!",
+          type: "error",
+          showConfirmButton: false,
+          timer: 1000
+        });
+      } else {
+        if (me.encuentra(me.idProducto)) {
+          Swal.fire({
+            position: "center",
+            title: "Se Encuentra Agregado",
+            type: "error",
+            showConfirmButton: false,
+            timer: 1000
+          });
+        } else {
+          me.arrayDetalle.push({
+            idProducto: me.idProducto,
+            producto: me.producto,
+            cantidad: me.cantidad,
+            codigo: me.codigo,
+            precio: 1,
+            unidad: me.unidad,
+            referencia: me.referencia,
+            descripcionD: ""
+          });
+          me.cantidad = 0;
+        }
+      }
+    },
+    renovarDetalle: function renovarDetalle() {
+      var me = this;
+      me.arrayDetalle = [];
+      me.montoVenta = 0;
+      me.formula = "";
+      me.producto = "";
+      me.idFormula = 0, me.cantidad = 0;
+    },
+    listarCuenta: function listarCuenta(buscar) {
+      var me = this;
+      var url = "/cuenta/listarCuenta?filtro=" + buscar;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.arrayCuenta = respuesta.cuentas;
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    agregarDetalleModal: function agregarDetalleModal() {
+      var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      var me = this;
+
+      if (me.encuentra(data["id"])) {
+        Swal.fire({
+          position: "center",
+          title: "Se Encuentra Agregado",
+          type: "error",
+          showConfirmButton: false,
+          timer: 1000
+        });
+      } else {
+        me.arrayDetalle.push({
+          idProducto: data["id"],
+          producto: data["nombre"],
+          cantidad: 1,
+          codigo: data["codigo"],
+          precio: 1,
+          unidad: data["unidad"],
+          referencia: data["referencia"],
+          descripcionD: ""
+        });
+      }
+    },
+    listarProducto: function listarProducto(buscar, criterio) {
+      var me = this;
+      var url = "producto/listarProducto?buscar=" + buscar + "&criterio=" + criterio;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.arrayProducto = respuesta.productos;
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    validarCompra: function validarCompra() {
+      if (this.idProveedor == 0) {
+        this.mensaje = "Seleccione el Proveedor";
+        return true;
+      }
+
+      if (this.pago == "") {
+        this.mensaje = "Seleccione el Pago";
+        return true;
+      }
+
+      if (this.descripcion == "") {
+        this.mensaje = "Ingrese La Descripcion del Concepto";
+        return true;
+      }
+
+      if (this.arrayDetalle.length <= 0) {
+        this.mensaje = "No tiene Productos en su Detalle";
+        return true;
+      }
+
+      for (var i = 0; i < this.arrayDetalle.length; i++) {
+        if (!this.arrayDetalle[i].cantidad || !this.arrayDetalle[i].precio) {
+          this.mensaje = "La Cantidad y el Precio en el Detalle, no Puede Ser 0";
+          return true;
+        }
+      }
+
+      return false;
+    },
+    validarIE: function validarIE() {
+      if (!this.descripcion) {
+        this.mensaje = "Describa El Concepto";
+        return true;
+      }
+
+      if (!this.arrayDetalle.length) {
+        this.mensaje = "No tiene Cuentas en Su Detalle";
+        return true;
+      }
+
+      if (this.haberTotal != this.debeTotal) {
+        this.mensaje = "El debe y el haber no coinciden";
+        return true;
+      }
+
+      if (this.haberTotal == 0 && this.debeTotal == 0) {
+        this.mensaje = "El Debe y el Haber no debe ser Cero";
+        return true;
+      }
+
+      for (var i = 0; i < this.arrayDetalle.length; i++) {
+        if (!this.arrayDetalle[i].descripcionD) {
+          this.mensaje = "Le Falta la Descripcion de la Cuenta!!";
+          return true;
+        }
+      }
+
+      return false;
+    },
+    actualizarIE: function actualizarIE() {
+      if (this.validarIE()) {
+        this.validaciones = "was-validated";
+        Swal.fire({
+          position: "center",
+          type: "error",
+          title: this.mensaje,
+          showConfirmButton: false,
+          timer: 1500
+        });
+        return;
+      }
+
+      var me = this;
+      var url = "";
+
+      if (me.formulario == "Ingresos") {
+        url = "ingreso/actualizar";
+      } else {
+        url = "egreso/actualizar";
+      }
+
+      axios.put(url, {
+        descripcion: me.descripcion,
+        monto: me.debeTotal,
+        data: me.arrayDetalle,
+        id: me.ingreso_id
+      }).then(function (response) {
+        me.ventana = 0;
+        me.listar(me.fechaInicio, me.fechaFin);
+        me.limpiarRegistro();
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    actualizarCompra: function actualizarCompra() {
+      if (this.validarCompra()) {
+        this.validaciones = "was-validated";
+        Swal.fire({
+          position: "center",
+          type: "error",
+          title: this.mensaje,
+          showConfirmButton: false,
+          timer: 1500
+        });
+        return;
+      }
+
+      var me = this;
+      axios.put("compra/actualizar", {
+        idProveedor: me.idProveedor,
+        pago: me.pago,
+        montoCompra: me.montoCompra,
+        cantidad: me.cantidadTotal,
+        descripcion: me.descripcion,
+        id: me.compra_id,
+        data: me.arrayDetalle
+      }).then(function (response) {
+        me.ventana = 0;
+        me.listar(me.fechaInicio, me.fechaFin);
+        me.limpiarRegistro();
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    validarVenta: function validarVenta() {
+      if (!this.idCliente) {
+        this.mensaje = "Seleccione el Cliente";
+        return true;
+      }
+
+      if (this.pago == "") {
+        this.mensaje = "Sleecione el Pago";
+        return true;
+      }
+
+      if (!this.descripcion) {
+        this.mensaje = "Ingrese La Descripcion del Concepto";
+        return true;
+      }
+
+      if (this.tipo == 1) {
+        if (!this.idFormula) {
+          this.mensaje = "Seleccione la Formula";
+          return true;
+        }
+
+        if (!this.cantidad) {
+          this.mensaje = "Ingrese la Cantidad Para la Formula";
+          return true;
+        }
+      }
+
+      if (this.arrayDetalle.length <= 0) {
+        this.mensaje = "No tiene Productos en su Detalle";
+        return true;
+      }
+
+      for (var i = 0; i < this.arrayDetalle.length; i++) {
+        if (this.tipo == 0) {
+          if (!this.arrayDetalle[i].cantidad || !this.arrayDetalle[i].precio || !this.arrayDetalle[i].descripcionD) {
+            this.mensaje = "La Cantidad o el Precio, Descripcion no tienen Valor en el  en el Detalle";
+            return true;
+          }
+        } else {
+          if (!this.arrayDetalle[i].cantidad || !this.arrayDetalle[i].precio) {
+            this.mensaje = "La Cantidad y el Precio en el Detalle, no Puede Ser 0";
+            return true;
+          }
+        }
+      }
+
+      return false;
+    },
+    actualizarVenta: function actualizarVenta() {
+      if (this.validarVenta()) {
+        this.validaciones = "was-validated";
+        Swal.fire({
+          position: "center",
+          type: "error",
+          title: this.mensaje,
+          showConfirmButton: false,
+          timer: 1500
+        });
+        return;
+      }
+
+      var me = this;
+      axios.put("venta/actualizar", {
+        idCliente: this.idCliente,
+        idFormula: this.idFormula,
+        pago: this.pago,
+        cantidad: this.cantidad,
+        descripcion: this.descripcion,
+        montoVenta: this.montoVenta,
+        id: this.venta_id,
+        data: this.arrayDetalle
+      }).then(function (response) {
+        me.ventana = 0;
+        me.listar(me.fechaInicio, me.fechaFin);
+        me.limpiarRegistro();
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    cargarFecha: function cargarFecha() {
+      var year = this.fecha.getFullYear();
+      var mes = this.fecha.getMonth();
+      mes++;
+
+      if (mes < 10) {
+        this.fechaInicio = year + "-0" + mes + "-" + "01";
+
+        if (mes + 1 < 10) {
+          this.fechaFin = year + "-0" + (mes + 1) + "-" + "01";
+        } else {
+          this.fechaFin = year + "-" + (mes + 1) + "-" + "01";
+        }
+      } else {
+        this.fechaInicio = year + "-" + mes + "-" + "01";
+        this.fechaFin = year + "-" + (mes + 1) + "-" + "01";
+      }
+    },
+    desactivar: function desactivar(id, opcion) {
+      var _this = this;
+
+      var swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+      });
+      swalWithBootstrapButtons.fire({
+        title: "Estas Seguro de Desactivar el Registro?",
+        text: "Si Desactiva no estara en la Lista!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Si, Desactivar!",
+        cancelButtonText: "No, Cancelar!",
+        reverseButtons: true
+      }).then(function (result) {
+        if (result.value) {
+          var me = _this;
+          var url = "";
+
+          if (opcion == "Ventas") {
+            url = "venta/desactivar";
+          } else {
+            if (opcion == "Compras") {
+              url = "compra/desactivar";
+            } else {
+              if (opcion == "Ingresos") {
+                url = "ingreso/desactivar";
+              } else {
+                if (opcion == "Egresos") {
+                  url = "egreso/desactivar";
+                }
+              }
+            }
+          }
+
+          axios.put(url, {
+            id: id
+          }).then(function (response) {
+            me.listar(me.fechaInicio, me.fechaFin);
+            Swal.fire({
+              position: "center",
+              type: "success",
+              title: "El Registro ha sido Desactivado",
+              showConfirmButton: false,
+              timer: 1000
+            })["catch"](function (error) {
+              console.log(error);
+            });
+          });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire({
+            position: "center",
+            type: "error",
+            title: "Cancelado",
+            showConfirmButton: false,
+            timer: 1000
+          });
+        }
+      });
+    },
+    limpiarRegistro: function limpiarRegistro() {
+      this.mensaje = "";
+      this.validaciones = "";
+      this.compra_id = 0;
+      this.proveedor = "";
+      this.idProveedor = 0;
+      this.montoCompra = 0;
+      this.producto = "";
+      this.referencia = "";
+      this.selectedProveedor = null;
+      this.cantidadTotal = 0;
+      this.venta_id = 0;
+      this.cliente = "";
+      this.idCliente = 0;
+      this.pago = "";
+      this.cantidad = 0;
+      this.idFormula = 0;
+      this.formula = "";
+      this.descripcion = "";
+      this.idProducto = 0;
+      this.tipo = 0;
+      this.montoVenta = 0;
+      this.arrayDetalle = [];
+      this.arrayCliente = [];
+      this.arrayProducto = [];
+      this.arrayFormula = [];
+      this.selectedCliente = null;
+      this.mensaje = "";
+      this.validaciones = "";
+      this.arrayCuenta = [];
+      this.formulario = "Balance General";
+      this.ingreso_id = 0;
+    },
+    cargarVenta: function cargarVenta(id) {
+      var me = this;
+      var url = "venta/listarVentas?id=" + id;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.arrayDetalle = respuesta.detalles;
+        me.venta_id = respuesta.ventas[0].id;
+        me.idFormula = respuesta.ventas[0].idFormula;
+        me.cliente = respuesta.ventas[0].nombre;
+        me.idCliente = respuesta.ventas[0].idCliente;
+        me.pago = respuesta.ventas[0].pago;
+        me.cantidad = respuesta.ventas[0].cantidad;
+        me.descripcion = respuesta.ventas[0].descripcion;
+        me.montoVenta = respuesta.ventas[0].montoVenta;
+        me.selectedCliente = {
+          id: me.idCliente,
+          nombre: me.cliente
+        };
+
+        if (me.idFormula > 0) {
+          me.selectedFormula = {
+            id: respuesta.formula[0].id,
+            nombre: respuesta.formula[0].nombre
+          };
+        } else {
+          me.selectedFormula = null;
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    cargarCompra: function cargarCompra(id) {
+      var me = this;
+      var url = "compra/listarCompras?id=" + id;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.arrayDetalle = respuesta.detalles;
+        me.compra_id = respuesta.compras[0].id;
+        me.proveedor = respuesta.compras[0].nombre;
+        me.idProveedor = respuesta.compras[0].idProveedor;
+        me.pago = respuesta.compras[0].pago; // me.cantidad = respuesta.compras[0].cantidad;
+
+        me.descripcion = respuesta.compras[0].descripcion;
+        me.montoCompra = respuesta.compras[0].montoCompra;
+        me.selectedProveedor = {
+          id: me.idProveedor,
+          nombre: me.proveedor
+        };
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    cargarIngresoEgreso: function cargarIngresoEgreso(id) {
+      var me = this;
+
+      if (me.formulario == "Ingresos") {
+        var url = "ingreso/listarIngreso?id=" + id;
+        axios.get(url).then(function (response) {
+          var respuesta = response.data;
+          me.arrayDetalle = respuesta.detalles;
+          me.ingreso_id = respuesta.ingresos[0].id;
+          me.factura = respuesta.ingresos[0].factura;
+          me.registro = respuesta.ingresos[0].registro; // me.fecha = respuesta.ingresos[0].pago;
+
+          me.haberTotal = respuesta.ingresos[0].monto;
+          me.debeTotal = respuesta.ingresos[0].monto;
+          me.descripcion = respuesta.ingresos[0].descripcion;
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      } else {
+        var url = "egreso/listarEgreso?id=" + id;
+        axios.get(url).then(function (response) {
+          var respuesta = response.data;
+          me.arrayDetalle = respuesta.detalles;
+          me.ingreso_id = respuesta.egresos[0].id;
+          me.factura = respuesta.egresos[0].factura;
+          me.registro = respuesta.egresos[0].registro;
+          me.fecha = respuesta.egresos[0].pago;
+          me.haberTotal = respuesta.egresos[0].monto;
+          me.debeTotal = respuesta.egresos[0].monto;
+          me.descripcion = respuesta.egresos[0].descripcion;
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      }
+    },
+    mostrarDetalle: function mostrarDetalle(accion) {
+      var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+      this.formulario = accion;
+
+      switch (accion) {
+        case "Ventas":
+          {
+            this.cargarVenta(data["id"]);
+            this.ventana = 1;
+            break;
+          }
+
+        case "Compras":
+          {
+            this.cargarCompra(data["id"]);
+            this.ventana = 2;
+            break;
+          }
+
+        case "Ingresos":
+          {
+            this.cargarIngresoEgreso(data["id"]);
+            this.ventana = 3;
+            break;
+          }
+
+        case "Egresos":
+          {
+            this.cargarIngresoEgreso(data["id"]);
+            this.ventana = 3;
+            break;
+          }
+      }
+    },
+    abrirNivel: function abrirNivel(valor, accion, index1, index2, index3, index4, index5) {
+      switch (accion) {
+        case "nivel1":
+          {
+            this.arrayData[index1].estado = valor;
+            break;
+          }
+
+        case "nivel2":
+          {
+            this.arrayData[index1].datos[index2].estado = valor;
+            break;
+          }
+
+        case "nivel3":
+          {
+            this.arrayData[index1].datos[index2].datos[index3].estado = valor;
+            break;
+          }
+
+        case "nivel4":
+          {
+            this.arrayData[index1].datos[index2].datos[index3].datos[index4].estado = valor;
+            break;
+          }
+
+        case "nivel5":
+          {
+            this.arrayData[index1].datos[index2].datos[index3].datos[index4].datos[index5].estado = valor;
+            break;
+          }
+      }
+    }
+  },
+  mounted: function mounted() {
+    this.cargarFecha();
+    this.listar(this.fechaInicio, this.fechaFin);
   }
 });
 
@@ -30667,6 +32826,25 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 // module
 exports.push([module.i, "\n.modal-content {\r\n  width: 100% !important;\r\n  position: absolute !important;\n}\n.mostrar {\r\n  display: list-item !important;\r\n  opacity: 1 !important;\r\n  position: absolute !important;\r\n  background-color: #3c29297a !important;\n}\n.div-error {\r\n  display: flex;\r\n  justify-content: center;\n}\n.text-error {\r\n  color: red !important;\r\n  font-weight: bold;\n}\n@media (min-width: 600px) {\n.btnagregar {\r\n    margin-top: 2rem;\n}\n}\r\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/EstadoResultado.vue?vue&type=style&index=0&lang=css&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/EstadoResultado.vue?vue&type=style&index=0&lang=css& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.modal-content {\r\n  width: 100% !important;\r\n  position: absolute !important;\n}\n.mostrar {\r\n  display: list-item !important;\r\n  opacity: 1 !important;\r\n  position: absolute !important;\r\n  background-color: #3c29297a !important;\n}\n.div-error {\r\n  display: flex;\r\n  justify-content: center;\n}\n.text-error {\r\n  color: red !important;\r\n  font-weight: bold;\n}\r\n", ""]);
 
 // exports
 
@@ -79339,6 +81517,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/EstadoResultado.vue?vue&type=style&index=0&lang=css&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/EstadoResultado.vue?vue&type=style&index=0&lang=css& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../node_modules/css-loader??ref--5-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--5-2!../../../node_modules/vue-loader/lib??vue-loader-options!./EstadoResultado.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/EstadoResultado.vue?vue&type=style&index=0&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Formula.vue?vue&type=style&index=0&lang=css&":
 /*!*****************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Formula.vue?vue&type=style&index=0&lang=css& ***!
@@ -84194,21 +86402,21 @@ var render = function() {
                           return _c("tr", { key: data.id }, [
                             _c("td", [
                               _c("span", {
-                                staticClass: "badge badge-success",
+                                staticClass: "badge badge-danger",
                                 domProps: { textContent: _vm._s(data.id) }
                               })
                             ]),
                             _vm._v(" "),
                             _c("td", [
                               _c("span", {
-                                staticClass: "badge badge-info",
+                                staticClass: "badge badge-warning",
                                 domProps: { textContent: _vm._s(data.factura) }
                               })
                             ]),
                             _vm._v(" "),
                             _c("td", [
                               _c("span", {
-                                staticClass: "badge badge-info",
+                                staticClass: "badge badge-success",
                                 domProps: { textContent: _vm._s(data.registro) }
                               })
                             ]),
@@ -86219,14 +88427,14 @@ var render = function() {
                             return _c("tr", { key: data.id }, [
                               _c("td", [
                                 _c("span", {
-                                  staticClass: "badge badge-success",
+                                  staticClass: "badge badge-danger",
                                   domProps: { textContent: _vm._s(data.id) }
                                 })
                               ]),
                               _vm._v(" "),
                               _c("td", [
                                 _c("span", {
-                                  staticClass: "badge badge-info",
+                                  staticClass: "badge badge-warning",
                                   domProps: {
                                     textContent: _vm._s(data.factura)
                                   }
@@ -86235,7 +88443,7 @@ var render = function() {
                               _vm._v(" "),
                               _c("td", [
                                 _c("span", {
-                                  staticClass: "badge badge-info",
+                                  staticClass: "badge badge-success",
                                   domProps: {
                                     textContent: _vm._s(data.registro)
                                   }
@@ -87335,6 +89543,3961 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Estado")])
       ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/EstadoResultado.vue?vue&type=template&id=fc8aeee4&":
+/*!******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/EstadoResultado.vue?vue&type=template&id=fc8aeee4& ***!
+  \******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("main", { staticClass: "main" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "container-fluid" }, [
+      _c(
+        "div",
+        { staticClass: "card" },
+        [
+          _c("div", { staticClass: "card-header" }, [
+            _c("i", { staticClass: "fa fa-align-justify" }),
+            _vm._v("\n        " + _vm._s(_vm.formulario) + "\n        "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    _vm.ventana = 0
+                  }
+                }
+              },
+              [
+                _c("i", { staticClass: "icon-home" }),
+                _vm._v(" Inicio\n        ")
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-info",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.cargarPdf()
+                  }
+                }
+              },
+              [_vm._m(1), _vm._v(" Reporte\n        ")]
+            )
+          ]),
+          _vm._v(" "),
+          _vm.ventana == 0
+            ? [
+                _c("div", { staticClass: "card-body" }, [
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("div", { staticClass: "col-md-12" }, [
+                      _c("div", { staticClass: "input-group" }, [
+                        _c("label", { attrs: { for: "" } }, [
+                          _vm._v("Fecha Inicio")
+                        ]),
+                        _vm._v("\n                  \n                "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.fechaInicio,
+                              expression: "fechaInicio"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "date", placeholder: "fecha Inicio" },
+                          domProps: { value: _vm.fechaInicio },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.fechaInicio = $event.target.value
+                            }
+                          }
+                        }),
+                        _vm._v("\n                    \n                "),
+                        _c("label", { attrs: { for: "" } }, [
+                          _vm._v("Fecha Fin")
+                        ]),
+                        _vm._v("\n                  \n                "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.fechaFin,
+                              expression: "fechaFin"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "date", placeholder: "fecha Inicio" },
+                          domProps: { value: _vm.fechaFin },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.fechaFin = $event.target.value
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "input-group-append" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-primary",
+                              attrs: { type: "submit" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.listar(
+                                    _vm.fechaInicio,
+                                    _vm.fechaFin
+                                  )
+                                }
+                              }
+                            },
+                            [
+                              _c("i", { staticClass: "fa fa-search" }),
+                              _vm._v(" Buscar\n                  ")
+                            ]
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "input-group" })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "table-responsive" }, [
+                    _c(
+                      "table",
+                      {
+                        staticClass:
+                          "table table-bordered table-striped table-sm"
+                      },
+                      [
+                        _vm._m(2),
+                        _vm._v(" "),
+                        _vm.arrayData.length > 0
+                          ? _c(
+                              "tbody",
+                              [
+                                _vm._l(_vm.arrayData, function(data, index) {
+                                  return [
+                                    data.montoTotal > 0
+                                      ? _c("tr", { key: data.id }, [
+                                          _c("td", [
+                                            data.estado
+                                              ? _c(
+                                                  "button",
+                                                  {
+                                                    staticClass:
+                                                      "btn btn-danger form-control-sm btn-sm",
+                                                    attrs: { type: "button" },
+                                                    on: {
+                                                      click: function($event) {
+                                                        return _vm.abrirNivel(
+                                                          0,
+                                                          "nivel1",
+                                                          index
+                                                        )
+                                                      }
+                                                    }
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass: "icon-minus"
+                                                    })
+                                                  ]
+                                                )
+                                              : _c(
+                                                  "button",
+                                                  {
+                                                    staticClass:
+                                                      "btn btn-success form-control-sm btn-sm",
+                                                    attrs: { type: "button" },
+                                                    on: {
+                                                      click: function($event) {
+                                                        return _vm.abrirNivel(
+                                                          1,
+                                                          "nivel1",
+                                                          index
+                                                        )
+                                                      }
+                                                    }
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass: "icon-plus"
+                                                    })
+                                                  ]
+                                                )
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("td", [
+                                            _c("u", [
+                                              _c("b", [
+                                                _vm._v(_vm._s(data.tipo))
+                                              ])
+                                            ])
+                                          ]),
+                                          _vm._v(" "),
+                                          _c(
+                                            "td",
+                                            { attrs: { colspan: "5" } },
+                                            [
+                                              _c(
+                                                "font",
+                                                {
+                                                  staticStyle: {
+                                                    "text-transform":
+                                                      "uppercase"
+                                                  }
+                                                },
+                                                [
+                                                  _c("u", [
+                                                    _c("b", [
+                                                      _vm._v(
+                                                        _vm._s(data.nombre)
+                                                      )
+                                                    ])
+                                                  ])
+                                                ]
+                                              )
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c("td", [
+                                            _vm._v(
+                                              _vm._s(data.montoTotal.toFixed(2))
+                                            )
+                                          ])
+                                        ])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    data.estado
+                                      ? [
+                                          _vm._l(data.datos, function(
+                                            data2,
+                                            index2
+                                          ) {
+                                            return [
+                                              data2.montoTotal > 0
+                                                ? _c("tr", { key: data2.id }, [
+                                                    _c("td", [
+                                                      _vm._v(
+                                                        "\n                            \n                          "
+                                                      ),
+                                                      data2.estado
+                                                        ? _c(
+                                                            "button",
+                                                            {
+                                                              staticClass:
+                                                                "btn btn-danger form-control-sm btn-sm",
+                                                              attrs: {
+                                                                type: "button"
+                                                              },
+                                                              on: {
+                                                                click: function(
+                                                                  $event
+                                                                ) {
+                                                                  return _vm.abrirNivel(
+                                                                    0,
+                                                                    "nivel2",
+                                                                    index,
+                                                                    index2
+                                                                  )
+                                                                }
+                                                              }
+                                                            },
+                                                            [
+                                                              _c("i", {
+                                                                staticClass:
+                                                                  "icon-minus"
+                                                              })
+                                                            ]
+                                                          )
+                                                        : _c(
+                                                            "button",
+                                                            {
+                                                              staticClass:
+                                                                "btn btn-success form-control-sm btn-sm",
+                                                              attrs: {
+                                                                type: "button"
+                                                              },
+                                                              on: {
+                                                                click: function(
+                                                                  $event
+                                                                ) {
+                                                                  return _vm.abrirNivel(
+                                                                    1,
+                                                                    "nivel2",
+                                                                    index,
+                                                                    index2
+                                                                  )
+                                                                }
+                                                              }
+                                                            },
+                                                            [
+                                                              _c("i", {
+                                                                staticClass:
+                                                                  "icon-plus"
+                                                              })
+                                                            ]
+                                                          )
+                                                    ]),
+                                                    _vm._v(" "),
+                                                    _c("td", [
+                                                      _c("b", [
+                                                        _vm._v(
+                                                          _vm._s(
+                                                            data2.tipo +
+                                                              "." +
+                                                              data2.nivel1
+                                                          )
+                                                        )
+                                                      ])
+                                                    ]),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "td",
+                                                      {
+                                                        attrs: { colspan: "5" }
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                                 \n                          "
+                                                        ),
+                                                        _c(
+                                                          "font",
+                                                          {
+                                                            staticStyle: {
+                                                              "text-transform":
+                                                                "uppercase"
+                                                            }
+                                                          },
+                                                          [
+                                                            _c("b", [
+                                                              _vm._v(
+                                                                _vm._s(
+                                                                  data2.nombre
+                                                                )
+                                                              )
+                                                            ])
+                                                          ]
+                                                        )
+                                                      ],
+                                                      1
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c("td", [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          data2.montoTotal.toFixed(
+                                                            2
+                                                          )
+                                                        )
+                                                      )
+                                                    ])
+                                                  ])
+                                                : _vm._e(),
+                                              _vm._v(" "),
+                                              data2.estado
+                                                ? [
+                                                    _vm._l(
+                                                      data2.datos,
+                                                      function(data3, index3) {
+                                                        return [
+                                                          data3.montoTotal > 0
+                                                            ? _c(
+                                                                "tr",
+                                                                {
+                                                                  key: data3.id
+                                                                },
+                                                                [
+                                                                  _c("td", [
+                                                                    _vm._v(
+                                                                      "\n                                  \n                              "
+                                                                    ),
+                                                                    data3.estado
+                                                                      ? _c(
+                                                                          "button",
+                                                                          {
+                                                                            staticClass:
+                                                                              "btn btn-danger form-control-sm btn-sm",
+                                                                            attrs: {
+                                                                              type:
+                                                                                "button"
+                                                                            },
+                                                                            on: {
+                                                                              click: function(
+                                                                                $event
+                                                                              ) {
+                                                                                return _vm.abrirNivel(
+                                                                                  0,
+                                                                                  "nivel3",
+                                                                                  index,
+                                                                                  index2,
+                                                                                  index3
+                                                                                )
+                                                                              }
+                                                                            }
+                                                                          },
+                                                                          [
+                                                                            _c(
+                                                                              "i",
+                                                                              {
+                                                                                staticClass:
+                                                                                  "icon-minus"
+                                                                              }
+                                                                            )
+                                                                          ]
+                                                                        )
+                                                                      : _c(
+                                                                          "button",
+                                                                          {
+                                                                            staticClass:
+                                                                              "btn btn-success form-control-sm btn-sm",
+                                                                            attrs: {
+                                                                              type:
+                                                                                "button"
+                                                                            },
+                                                                            on: {
+                                                                              click: function(
+                                                                                $event
+                                                                              ) {
+                                                                                return _vm.abrirNivel(
+                                                                                  1,
+                                                                                  "nivel3",
+                                                                                  index,
+                                                                                  index2,
+                                                                                  index3
+                                                                                )
+                                                                              }
+                                                                            }
+                                                                          },
+                                                                          [
+                                                                            _c(
+                                                                              "i",
+                                                                              {
+                                                                                staticClass:
+                                                                                  "icon-plus"
+                                                                              }
+                                                                            )
+                                                                          ]
+                                                                        )
+                                                                  ]),
+                                                                  _vm._v(" "),
+                                                                  _c("td", [
+                                                                    _c("u", [
+                                                                      _vm._v(
+                                                                        _vm._s(
+                                                                          data3.tipo +
+                                                                            "." +
+                                                                            data3.nivel1 +
+                                                                            ".0" +
+                                                                            data3.nivel2
+                                                                        )
+                                                                      )
+                                                                    ])
+                                                                  ]),
+                                                                  _vm._v(" "),
+                                                                  _c(
+                                                                    "td",
+                                                                    {
+                                                                      attrs: {
+                                                                        colspan:
+                                                                          "5"
+                                                                      }
+                                                                    },
+                                                                    [
+                                                                      _vm._v(
+                                                                        "\n                                             \n                              "
+                                                                      ),
+                                                                      _c(
+                                                                        "font",
+                                                                        {
+                                                                          staticStyle: {
+                                                                            "text-transform":
+                                                                              "uppercase"
+                                                                          }
+                                                                        },
+                                                                        [
+                                                                          _c(
+                                                                            "u",
+                                                                            [
+                                                                              _vm._v(
+                                                                                _vm._s(
+                                                                                  data3.nombre
+                                                                                )
+                                                                              )
+                                                                            ]
+                                                                          )
+                                                                        ]
+                                                                      )
+                                                                    ],
+                                                                    1
+                                                                  ),
+                                                                  _vm._v(" "),
+                                                                  _c("td", [
+                                                                    _vm._v(
+                                                                      _vm._s(
+                                                                        data3.montoTotal
+                                                                      )
+                                                                    )
+                                                                  ])
+                                                                ]
+                                                              )
+                                                            : _vm._e(),
+                                                          _vm._v(" "),
+                                                          data3.estado
+                                                            ? [
+                                                                _vm._l(
+                                                                  data3.datos,
+                                                                  function(
+                                                                    data4,
+                                                                    index4
+                                                                  ) {
+                                                                    return [
+                                                                      data4.montoTotal >
+                                                                      0
+                                                                        ? _c(
+                                                                            "tr",
+                                                                            {
+                                                                              key:
+                                                                                data4.id
+                                                                            },
+                                                                            [
+                                                                              _c(
+                                                                                "td",
+                                                                                [
+                                                                                  _vm._v(
+                                                                                    "\n                                        \n                                  "
+                                                                                  ),
+                                                                                  data4.estado
+                                                                                    ? _c(
+                                                                                        "button",
+                                                                                        {
+                                                                                          staticClass:
+                                                                                            "btn btn-danger form-control-sm btn-sm",
+                                                                                          attrs: {
+                                                                                            type:
+                                                                                              "button"
+                                                                                          },
+                                                                                          on: {
+                                                                                            click: function(
+                                                                                              $event
+                                                                                            ) {
+                                                                                              return _vm.abrirNivel(
+                                                                                                0,
+                                                                                                "nivel4",
+                                                                                                index,
+                                                                                                index2,
+                                                                                                index3,
+                                                                                                index4
+                                                                                              )
+                                                                                            }
+                                                                                          }
+                                                                                        },
+                                                                                        [
+                                                                                          _c(
+                                                                                            "i",
+                                                                                            {
+                                                                                              staticClass:
+                                                                                                "icon-minus"
+                                                                                            }
+                                                                                          )
+                                                                                        ]
+                                                                                      )
+                                                                                    : _c(
+                                                                                        "button",
+                                                                                        {
+                                                                                          staticClass:
+                                                                                            "btn btn-success form-control-sm btn-sm",
+                                                                                          attrs: {
+                                                                                            type:
+                                                                                              "button"
+                                                                                          },
+                                                                                          on: {
+                                                                                            click: function(
+                                                                                              $event
+                                                                                            ) {
+                                                                                              return _vm.abrirNivel(
+                                                                                                1,
+                                                                                                "nivel4",
+                                                                                                index,
+                                                                                                index2,
+                                                                                                index3,
+                                                                                                index4
+                                                                                              )
+                                                                                            }
+                                                                                          }
+                                                                                        },
+                                                                                        [
+                                                                                          _c(
+                                                                                            "i",
+                                                                                            {
+                                                                                              staticClass:
+                                                                                                "icon-plus"
+                                                                                            }
+                                                                                          )
+                                                                                        ]
+                                                                                      )
+                                                                                ]
+                                                                              ),
+                                                                              _vm._v(
+                                                                                " "
+                                                                              ),
+                                                                              _c(
+                                                                                "td",
+                                                                                [
+                                                                                  _vm._v(
+                                                                                    _vm._s(
+                                                                                      data4.tipo +
+                                                                                        "." +
+                                                                                        data4.nivel1 +
+                                                                                        ".0" +
+                                                                                        data4.nivel2 +
+                                                                                        ".0" +
+                                                                                        data4.nivel3
+                                                                                    )
+                                                                                  )
+                                                                                ]
+                                                                              ),
+                                                                              _vm._v(
+                                                                                " "
+                                                                              ),
+                                                                              _c(
+                                                                                "td",
+                                                                                {
+                                                                                  attrs: {
+                                                                                    colspan:
+                                                                                      "5"
+                                                                                  }
+                                                                                },
+                                                                                [
+                                                                                  _vm._v(
+                                                                                    "\n                                                         \n                                  "
+                                                                                  ),
+                                                                                  _c(
+                                                                                    "font",
+                                                                                    {
+                                                                                      staticStyle: {
+                                                                                        "text-transform":
+                                                                                          "uppercase"
+                                                                                      }
+                                                                                    },
+                                                                                    [
+                                                                                      _vm._v(
+                                                                                        _vm._s(
+                                                                                          data4.nombre
+                                                                                        )
+                                                                                      )
+                                                                                    ]
+                                                                                  )
+                                                                                ],
+                                                                                1
+                                                                              ),
+                                                                              _vm._v(
+                                                                                " "
+                                                                              ),
+                                                                              _c(
+                                                                                "td",
+                                                                                [
+                                                                                  _vm._v(
+                                                                                    _vm._s(
+                                                                                      data4.montoTotal
+                                                                                    )
+                                                                                  )
+                                                                                ]
+                                                                              )
+                                                                            ]
+                                                                          )
+                                                                        : _vm._e(),
+                                                                      _vm._v(
+                                                                        " "
+                                                                      ),
+                                                                      data4.estado
+                                                                        ? [
+                                                                            _vm._l(
+                                                                              data4.datos,
+                                                                              function(
+                                                                                data5,
+                                                                                index5
+                                                                              ) {
+                                                                                return [
+                                                                                  data5.montoTotal >
+                                                                                  0
+                                                                                    ? _c(
+                                                                                        "tr",
+                                                                                        [
+                                                                                          _c(
+                                                                                            "td",
+                                                                                            [
+                                                                                              _vm._v(
+                                                                                                "\n                                              \n                                      "
+                                                                                              ),
+                                                                                              data5.estado
+                                                                                                ? _c(
+                                                                                                    "button",
+                                                                                                    {
+                                                                                                      staticClass:
+                                                                                                        "btn btn-danger form-control-sm btn-sm",
+                                                                                                      attrs: {
+                                                                                                        type:
+                                                                                                          "button"
+                                                                                                      },
+                                                                                                      on: {
+                                                                                                        click: function(
+                                                                                                          $event
+                                                                                                        ) {
+                                                                                                          return _vm.abrirNivel(
+                                                                                                            0,
+                                                                                                            "nivel5",
+                                                                                                            index,
+                                                                                                            index2,
+                                                                                                            index3,
+                                                                                                            index4,
+                                                                                                            index5
+                                                                                                          )
+                                                                                                        }
+                                                                                                      }
+                                                                                                    },
+                                                                                                    [
+                                                                                                      _c(
+                                                                                                        "i",
+                                                                                                        {
+                                                                                                          staticClass:
+                                                                                                            "icon-minus"
+                                                                                                        }
+                                                                                                      )
+                                                                                                    ]
+                                                                                                  )
+                                                                                                : _c(
+                                                                                                    "button",
+                                                                                                    {
+                                                                                                      staticClass:
+                                                                                                        "btn btn-success form-control-sm btn-sm",
+                                                                                                      attrs: {
+                                                                                                        type:
+                                                                                                          "button"
+                                                                                                      },
+                                                                                                      on: {
+                                                                                                        click: function(
+                                                                                                          $event
+                                                                                                        ) {
+                                                                                                          return _vm.abrirNivel(
+                                                                                                            1,
+                                                                                                            "nivel5",
+                                                                                                            index,
+                                                                                                            index2,
+                                                                                                            index3,
+                                                                                                            index4,
+                                                                                                            index5
+                                                                                                          )
+                                                                                                        }
+                                                                                                      }
+                                                                                                    },
+                                                                                                    [
+                                                                                                      _c(
+                                                                                                        "i",
+                                                                                                        {
+                                                                                                          staticClass:
+                                                                                                            "icon-plus"
+                                                                                                        }
+                                                                                                      )
+                                                                                                    ]
+                                                                                                  )
+                                                                                            ]
+                                                                                          ),
+                                                                                          _vm._v(
+                                                                                            " "
+                                                                                          ),
+                                                                                          _c(
+                                                                                            "td",
+                                                                                            [
+                                                                                              _vm._v(
+                                                                                                _vm._s(
+                                                                                                  data5.tipo +
+                                                                                                    "." +
+                                                                                                    data5.nivel1 +
+                                                                                                    ".0" +
+                                                                                                    data5.nivel2 +
+                                                                                                    ".0" +
+                                                                                                    data5.nivel3 +
+                                                                                                    ".0" +
+                                                                                                    data5.nivel4
+                                                                                                )
+                                                                                              )
+                                                                                            ]
+                                                                                          ),
+                                                                                          _vm._v(
+                                                                                            " "
+                                                                                          ),
+                                                                                          _c(
+                                                                                            "td",
+                                                                                            {
+                                                                                              attrs: {
+                                                                                                colspan:
+                                                                                                  "5"
+                                                                                              }
+                                                                                            },
+                                                                                            [
+                                                                                              _vm._v(
+                                                                                                "\n                                                                     \n                                      " +
+                                                                                                  _vm._s(
+                                                                                                    data5.nombre
+                                                                                                  ) +
+                                                                                                  "\n                                    "
+                                                                                              )
+                                                                                            ]
+                                                                                          ),
+                                                                                          _vm._v(
+                                                                                            " "
+                                                                                          ),
+                                                                                          _c(
+                                                                                            "td",
+                                                                                            [
+                                                                                              _vm._v(
+                                                                                                _vm._s(
+                                                                                                  data5.montoTotal
+                                                                                                )
+                                                                                              )
+                                                                                            ]
+                                                                                          )
+                                                                                        ]
+                                                                                      )
+                                                                                    : _vm._e(),
+                                                                                  _vm._v(
+                                                                                    " "
+                                                                                  ),
+                                                                                  data5.estado &&
+                                                                                  data5.montoTotal >
+                                                                                    0
+                                                                                    ? [
+                                                                                        _c(
+                                                                                          "tr",
+                                                                                          [
+                                                                                            _c(
+                                                                                              "th"
+                                                                                            ),
+                                                                                            _vm._v(
+                                                                                              " "
+                                                                                            ),
+                                                                                            _c(
+                                                                                              "th",
+                                                                                              [
+                                                                                                _vm._v(
+                                                                                                  "Factura"
+                                                                                                )
+                                                                                              ]
+                                                                                            ),
+                                                                                            _vm._v(
+                                                                                              " "
+                                                                                            ),
+                                                                                            _c(
+                                                                                              "th",
+                                                                                              [
+                                                                                                _vm._v(
+                                                                                                  "Registro"
+                                                                                                )
+                                                                                              ]
+                                                                                            ),
+                                                                                            _vm._v(
+                                                                                              " "
+                                                                                            ),
+                                                                                            _c(
+                                                                                              "th",
+                                                                                              [
+                                                                                                _vm._v(
+                                                                                                  "Fecha"
+                                                                                                )
+                                                                                              ]
+                                                                                            ),
+                                                                                            _vm._v(
+                                                                                              " "
+                                                                                            ),
+                                                                                            _c(
+                                                                                              "th",
+                                                                                              [
+                                                                                                _vm._v(
+                                                                                                  "Descripcion"
+                                                                                                )
+                                                                                              ]
+                                                                                            ),
+                                                                                            _vm._v(
+                                                                                              " "
+                                                                                            ),
+                                                                                            _c(
+                                                                                              "th",
+                                                                                              [
+                                                                                                _vm._v(
+                                                                                                  "Monto Total"
+                                                                                                )
+                                                                                              ]
+                                                                                            ),
+                                                                                            _vm._v(
+                                                                                              " "
+                                                                                            ),
+                                                                                            _c(
+                                                                                              "th",
+                                                                                              [
+                                                                                                _vm._v(
+                                                                                                  "Tipo"
+                                                                                                )
+                                                                                              ]
+                                                                                            ),
+                                                                                            _vm._v(
+                                                                                              " "
+                                                                                            ),
+                                                                                            _c(
+                                                                                              "th",
+                                                                                              [
+                                                                                                _vm._v(
+                                                                                                  "Opciones"
+                                                                                                )
+                                                                                              ]
+                                                                                            )
+                                                                                          ]
+                                                                                        ),
+                                                                                        _vm._v(
+                                                                                          " "
+                                                                                        ),
+                                                                                        _vm._l(
+                                                                                          data5.datos,
+                                                                                          function(
+                                                                                            data6
+                                                                                          ) {
+                                                                                            return [
+                                                                                              data6.montoTotal >
+                                                                                              0
+                                                                                                ? _c(
+                                                                                                    "tr",
+                                                                                                    [
+                                                                                                      _c(
+                                                                                                        "td"
+                                                                                                      ),
+                                                                                                      _vm._v(
+                                                                                                        " "
+                                                                                                      ),
+                                                                                                      _c(
+                                                                                                        "td",
+                                                                                                        [
+                                                                                                          _vm._v(
+                                                                                                            _vm._s(
+                                                                                                              data6.factura
+                                                                                                            )
+                                                                                                          )
+                                                                                                        ]
+                                                                                                      ),
+                                                                                                      _vm._v(
+                                                                                                        " "
+                                                                                                      ),
+                                                                                                      _c(
+                                                                                                        "td",
+                                                                                                        [
+                                                                                                          _vm._v(
+                                                                                                            _vm._s(
+                                                                                                              data6.registro
+                                                                                                            )
+                                                                                                          )
+                                                                                                        ]
+                                                                                                      ),
+                                                                                                      _vm._v(
+                                                                                                        " "
+                                                                                                      ),
+                                                                                                      _c(
+                                                                                                        "td",
+                                                                                                        [
+                                                                                                          _vm._v(
+                                                                                                            _vm._s(
+                                                                                                              data6.fecha
+                                                                                                            )
+                                                                                                          )
+                                                                                                        ]
+                                                                                                      ),
+                                                                                                      _vm._v(
+                                                                                                        " "
+                                                                                                      ),
+                                                                                                      _c(
+                                                                                                        "td",
+                                                                                                        [
+                                                                                                          _vm._v(
+                                                                                                            _vm._s(
+                                                                                                              data6.descripcion
+                                                                                                            )
+                                                                                                          )
+                                                                                                        ]
+                                                                                                      ),
+                                                                                                      _vm._v(
+                                                                                                        " "
+                                                                                                      ),
+                                                                                                      _c(
+                                                                                                        "td",
+                                                                                                        [
+                                                                                                          _vm._v(
+                                                                                                            _vm._s(
+                                                                                                              data6.montoTotal
+                                                                                                            )
+                                                                                                          )
+                                                                                                        ]
+                                                                                                      ),
+                                                                                                      _vm._v(
+                                                                                                        " "
+                                                                                                      ),
+                                                                                                      _c(
+                                                                                                        "td",
+                                                                                                        [
+                                                                                                          _c(
+                                                                                                            "span",
+                                                                                                            {
+                                                                                                              staticClass:
+                                                                                                                "badge badge-success"
+                                                                                                            },
+                                                                                                            [
+                                                                                                              _vm._v(
+                                                                                                                _vm._s(
+                                                                                                                  data6.tipo
+                                                                                                                )
+                                                                                                              )
+                                                                                                            ]
+                                                                                                          )
+                                                                                                        ]
+                                                                                                      ),
+                                                                                                      _vm._v(
+                                                                                                        " "
+                                                                                                      ),
+                                                                                                      _c(
+                                                                                                        "td",
+                                                                                                        [
+                                                                                                          _c(
+                                                                                                            "button",
+                                                                                                            {
+                                                                                                              staticClass:
+                                                                                                                "btn btn-info btn-sm",
+                                                                                                              attrs: {
+                                                                                                                type:
+                                                                                                                  "button"
+                                                                                                              },
+                                                                                                              on: {
+                                                                                                                click: function(
+                                                                                                                  $event
+                                                                                                                ) {
+                                                                                                                  return _vm.imprimir(
+                                                                                                                    data.id
+                                                                                                                  )
+                                                                                                                }
+                                                                                                              }
+                                                                                                            },
+                                                                                                            [
+                                                                                                              _c(
+                                                                                                                "i",
+                                                                                                                {
+                                                                                                                  staticClass:
+                                                                                                                    "fa fa-print fa-lg"
+                                                                                                                }
+                                                                                                              )
+                                                                                                            ]
+                                                                                                          ),
+                                                                                                          _vm._v(
+                                                                                                            " \n                                          "
+                                                                                                          ),
+                                                                                                          _c(
+                                                                                                            "button",
+                                                                                                            {
+                                                                                                              staticClass:
+                                                                                                                "btn btn-danger btn-sm",
+                                                                                                              attrs: {
+                                                                                                                type:
+                                                                                                                  "button"
+                                                                                                              },
+                                                                                                              on: {
+                                                                                                                click: function(
+                                                                                                                  $event
+                                                                                                                ) {
+                                                                                                                  return _vm.pdf(
+                                                                                                                    data6.tipo,
+                                                                                                                    data6.id
+                                                                                                                  )
+                                                                                                                }
+                                                                                                              }
+                                                                                                            },
+                                                                                                            [
+                                                                                                              _c(
+                                                                                                                "i",
+                                                                                                                {
+                                                                                                                  staticClass:
+                                                                                                                    "fa fa-file-pdf-o"
+                                                                                                                }
+                                                                                                              )
+                                                                                                            ]
+                                                                                                          ),
+                                                                                                          _vm._v(
+                                                                                                            "  \n                                          "
+                                                                                                          ),
+                                                                                                          _c(
+                                                                                                            "button",
+                                                                                                            {
+                                                                                                              staticClass:
+                                                                                                                "btn btn-warning btn-sm",
+                                                                                                              attrs: {
+                                                                                                                type:
+                                                                                                                  "button"
+                                                                                                              },
+                                                                                                              on: {
+                                                                                                                click: function(
+                                                                                                                  $event
+                                                                                                                ) {
+                                                                                                                  return _vm.mostrarDetalle(
+                                                                                                                    data6.tipo,
+                                                                                                                    data6
+                                                                                                                  )
+                                                                                                                }
+                                                                                                              }
+                                                                                                            },
+                                                                                                            [
+                                                                                                              _c(
+                                                                                                                "i",
+                                                                                                                {
+                                                                                                                  staticClass:
+                                                                                                                    "icon-pencil"
+                                                                                                                }
+                                                                                                              )
+                                                                                                            ]
+                                                                                                          ),
+                                                                                                          _vm._v(
+                                                                                                            "\n                                           \n                                          "
+                                                                                                          ),
+                                                                                                          _c(
+                                                                                                            "button",
+                                                                                                            {
+                                                                                                              staticClass:
+                                                                                                                "btn btn-danger btn-sm",
+                                                                                                              attrs: {
+                                                                                                                type:
+                                                                                                                  "button"
+                                                                                                              },
+                                                                                                              on: {
+                                                                                                                click: function(
+                                                                                                                  $event
+                                                                                                                ) {
+                                                                                                                  return _vm.desactivar(
+                                                                                                                    data6.id,
+                                                                                                                    data6.tipo
+                                                                                                                  )
+                                                                                                                }
+                                                                                                              }
+                                                                                                            },
+                                                                                                            [
+                                                                                                              _c(
+                                                                                                                "i",
+                                                                                                                {
+                                                                                                                  staticClass:
+                                                                                                                    "icon-trash"
+                                                                                                                }
+                                                                                                              )
+                                                                                                            ]
+                                                                                                          )
+                                                                                                        ]
+                                                                                                      )
+                                                                                                    ]
+                                                                                                  )
+                                                                                                : _vm._e()
+                                                                                            ]
+                                                                                          }
+                                                                                        )
+                                                                                      ]
+                                                                                    : _vm._e()
+                                                                                ]
+                                                                              }
+                                                                            )
+                                                                          ]
+                                                                        : _vm._e()
+                                                                    ]
+                                                                  }
+                                                                )
+                                                              ]
+                                                            : _vm._e()
+                                                        ]
+                                                      }
+                                                    )
+                                                  ]
+                                                : _vm._e()
+                                            ]
+                                          })
+                                        ]
+                                      : _vm._e()
+                                  ]
+                                })
+                              ],
+                              2
+                            )
+                          : _vm._e()
+                      ]
+                    )
+                  ])
+                ])
+              ]
+            : _vm.ventana == 1
+            ? [
+                _c(
+                  "div",
+                  { class: "card-body " + _vm.validaciones },
+                  [
+                    _c("div", { staticClass: "form-group row border" }, [
+                      _c("div", { staticClass: "col-md-5" }, [
+                        _c(
+                          "div",
+                          { staticClass: "form-group" },
+                          [
+                            _c("label", [_vm._v("Cliente")]),
+                            _vm._v(" "),
+                            _c("v-select", {
+                              attrs: {
+                                options: _vm.arrayCliente,
+                                label: "nombre",
+                                placeholder: "Buscar Cliente..."
+                              },
+                              on: {
+                                search: _vm.selectCliente,
+                                input: _vm.getDatosCliente
+                              },
+                              model: {
+                                value: _vm.selectedCliente,
+                                callback: function($$v) {
+                                  _vm.selectedCliente = $$v
+                                },
+                                expression: "selectedCliente"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-3" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "" } }, [_vm._v("Pago")]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.pago,
+                                  expression: "pago"
+                                }
+                              ],
+                              staticClass: "form-control col-md-12",
+                              attrs: { required: "" },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.pago = $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                }
+                              }
+                            },
+                            [
+                              _c(
+                                "option",
+                                { attrs: { value: "", readonly: "" } },
+                                [_vm._v("Seleccione")]
+                              ),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "2" } }, [
+                                _vm._v("Contado")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "1" } }, [
+                                _vm._v("Credito")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "0" } }, [
+                                _vm._v("Diario")
+                              ])
+                            ]
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-3" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", { attrs: { for: "" } }, [
+                            _vm._v("Ventas")
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.tipo,
+                                  expression: "tipo"
+                                }
+                              ],
+                              staticClass: "form-control col-md-12",
+                              on: {
+                                change: [
+                                  function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.tipo = $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  },
+                                  function($event) {
+                                    return _vm.renovarDetalle()
+                                  }
+                                ]
+                              }
+                            },
+                            [
+                              _c("option", { attrs: { value: "0" } }, [
+                                _vm._v("Publicas")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "1" } }, [
+                                _vm._v("Granjas")
+                              ])
+                            ]
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-12" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _vm._m(3),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.descripcion,
+                                expression: "descripcion"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              required: "",
+                              placeholder: "Descripcion..."
+                            },
+                            domProps: { value: _vm.descripcion },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.descripcion = $event.target.value
+                              }
+                            }
+                          })
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _vm.tipo == 0
+                      ? [
+                          _c("div", { staticClass: "form-group row border" }, [
+                            _c("div", { staticClass: "col-md-5" }, [
+                              _c(
+                                "div",
+                                { staticClass: "form-group" },
+                                [
+                                  _c("label", [_vm._v("Producto")]),
+                                  _vm._v(" "),
+                                  _c("v-select", {
+                                    attrs: {
+                                      label: "nombre",
+                                      options: _vm.arrayProducto,
+                                      placeholder: "Buscar Productos..."
+                                    },
+                                    on: {
+                                      search: _vm.selectProducto,
+                                      input: _vm.getDatosProducto
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _vm._m(4),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-2" }, [
+                              _c("div", { staticClass: "form-group" }, [
+                                _c("label", { attrs: { for: "" } }, [
+                                  _vm._v("Cantidad")
+                                ]),
+                                _vm._v(" "),
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.cantidad,
+                                      expression: "cantidad"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: {
+                                    type: "number",
+                                    min: "0",
+                                    step: "any"
+                                  },
+                                  domProps: { value: _vm.cantidad },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.cantidad = $event.target.value
+                                    }
+                                  }
+                                })
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-0" }, [
+                              _c("div", { staticClass: "form-group" }, [
+                                _c("label", { attrs: { for: "" } }, [
+                                  _vm._v("Unidad")
+                                ]),
+                                _vm._v(" "),
+                                _c("td", {
+                                  domProps: { textContent: _vm._s(_vm.unidad) }
+                                })
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-2" }, [
+                              _c("div", { staticClass: "form-group" }, [
+                                _c("label", { attrs: { for: "" } }),
+                                _vm._v(" "),
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-success form-control",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.agregarDetalle()
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("i", { staticClass: "icon-plus" }, [
+                                      _vm._v("Agregar")
+                                    ])
+                                  ]
+                                )
+                              ])
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "table",
+                            {
+                              staticClass:
+                                "table table-responsive-sm table-bordered table-striped table-sm"
+                            },
+                            [
+                              _vm._m(5),
+                              _vm._v(" "),
+                              _vm.arrayDetalle.length
+                                ? _c(
+                                    "tbody",
+                                    [
+                                      _vm._l(_vm.arrayDetalle, function(
+                                        detalle,
+                                        index
+                                      ) {
+                                        return _c(
+                                          "tr",
+                                          { key: detalle.idProducto },
+                                          [
+                                            _c("td", [
+                                              _c("b", [
+                                                _vm._v(_vm._s(index * 1 + 1))
+                                              ])
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("td", [
+                                              _c(
+                                                "button",
+                                                {
+                                                  staticClass:
+                                                    "btn btn-danger btn-sm",
+                                                  attrs: { type: "button" },
+                                                  on: {
+                                                    click: function($event) {
+                                                      return _vm.eliminarDetalle(
+                                                        index
+                                                      )
+                                                    }
+                                                  }
+                                                },
+                                                [
+                                                  _c("i", {
+                                                    staticClass: "icon-close"
+                                                  })
+                                                ]
+                                              )
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("td", [
+                                              _c("span", {
+                                                staticClass:
+                                                  "badge badge-success",
+                                                domProps: {
+                                                  textContent: _vm._s(
+                                                    detalle.idProducto
+                                                  )
+                                                }
+                                              })
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("td", {
+                                              domProps: {
+                                                textContent: _vm._s(
+                                                  detalle.producto
+                                                )
+                                              }
+                                            }),
+                                            _vm._v(" "),
+                                            _c(
+                                              "td",
+                                              { staticClass: "input-group" },
+                                              [
+                                                _c("input", {
+                                                  directives: [
+                                                    {
+                                                      name: "model",
+                                                      rawName: "v-model",
+                                                      value: detalle.cantidad,
+                                                      expression:
+                                                        "detalle.cantidad"
+                                                    }
+                                                  ],
+                                                  staticClass: "form-control",
+                                                  attrs: {
+                                                    type: "number",
+                                                    min: "0",
+                                                    step: "any",
+                                                    required: "",
+                                                    placeholder: "Cantidad...."
+                                                  },
+                                                  domProps: {
+                                                    value: detalle.cantidad
+                                                  },
+                                                  on: {
+                                                    input: [
+                                                      function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.$set(
+                                                          detalle,
+                                                          "cantidad",
+                                                          $event.target.value
+                                                        )
+                                                      },
+                                                      function($event) {
+                                                        return _vm.ventaTotal()
+                                                      }
+                                                    ]
+                                                  }
+                                                }),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "span",
+                                                  {
+                                                    staticClass:
+                                                      "input-group-append"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      "  " +
+                                                        _vm._s(
+                                                          detalle.referencia
+                                                        )
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c("td", [
+                                              _vm._v(
+                                                "\n                    " +
+                                                  _vm._s(
+                                                    Math.floor(
+                                                      detalle.cantidad /
+                                                        detalle.codigo
+                                                    )
+                                                  ) +
+                                                  " " +
+                                                  _vm._s(detalle.unidad) +
+                                                  " +\n                    " +
+                                                  _vm._s(
+                                                    (
+                                                      (detalle.cantidad /
+                                                        detalle.codigo -
+                                                        Math.floor(
+                                                          detalle.cantidad /
+                                                            detalle.codigo
+                                                        )) *
+                                                      detalle.codigo
+                                                    ).toFixed(2)
+                                                  ) +
+                                                  " " +
+                                                  _vm._s(detalle.referencia) +
+                                                  "\n                  "
+                                              )
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("td", [
+                                              _c("input", {
+                                                directives: [
+                                                  {
+                                                    name: "model",
+                                                    rawName: "v-model",
+                                                    value: detalle.precio,
+                                                    expression: "detalle.precio"
+                                                  }
+                                                ],
+                                                staticClass: "form-control",
+                                                attrs: {
+                                                  type: "number",
+                                                  min: "0",
+                                                  step: "any",
+                                                  required: "",
+                                                  placeholder: "Precio....."
+                                                },
+                                                domProps: {
+                                                  value: detalle.precio
+                                                },
+                                                on: {
+                                                  input: [
+                                                    function($event) {
+                                                      if (
+                                                        $event.target.composing
+                                                      ) {
+                                                        return
+                                                      }
+                                                      _vm.$set(
+                                                        detalle,
+                                                        "precio",
+                                                        $event.target.value
+                                                      )
+                                                    },
+                                                    function($event) {
+                                                      return _vm.ventaTotal()
+                                                    }
+                                                  ]
+                                                }
+                                              })
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("td", [
+                                              _c("input", {
+                                                directives: [
+                                                  {
+                                                    name: "model",
+                                                    rawName: "v-model",
+                                                    value: detalle.descripcionD,
+                                                    expression:
+                                                      "detalle.descripcionD"
+                                                  }
+                                                ],
+                                                staticClass: "form-control",
+                                                attrs: {
+                                                  type: "text",
+                                                  required: "",
+                                                  placeholder: "Descripcion...."
+                                                },
+                                                domProps: {
+                                                  value: detalle.descripcionD
+                                                },
+                                                on: {
+                                                  input: function($event) {
+                                                    if (
+                                                      $event.target.composing
+                                                    ) {
+                                                      return
+                                                    }
+                                                    _vm.$set(
+                                                      detalle,
+                                                      "descripcionD",
+                                                      $event.target.value
+                                                    )
+                                                  }
+                                                }
+                                              })
+                                            ]),
+                                            _vm._v(" "),
+                                            (detalle.cantidad /
+                                              detalle.codigo) *
+                                            detalle.precio
+                                              ? _c("td", [
+                                                  _c("div", {
+                                                    domProps: {
+                                                      textContent: _vm._s(
+                                                        (
+                                                          (detalle.cantidad /
+                                                            detalle.codigo) *
+                                                          detalle.precio
+                                                        ).toFixed(2)
+                                                      )
+                                                    }
+                                                  })
+                                                ])
+                                              : _c("td", [
+                                                  _c("div", [_vm._v("00.00")])
+                                                ])
+                                          ]
+                                        )
+                                      }),
+                                      _vm._v(" "),
+                                      _c("tr", [
+                                        _c("td", { attrs: { colspan: "8" } }, [
+                                          _vm._v("Total")
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.montoVenta,
+                                                expression: "montoVenta"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: {
+                                              type: "number",
+                                              readonly: ""
+                                            },
+                                            domProps: { value: _vm.montoVenta },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.montoVenta =
+                                                  $event.target.value
+                                              }
+                                            }
+                                          })
+                                        ])
+                                      ])
+                                    ],
+                                    2
+                                  )
+                                : _c("tbody", [_vm._m(6)])
+                            ]
+                          )
+                        ]
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.tipo >= 1
+                      ? [
+                          _c("div", { staticClass: "form-group row border" }, [
+                            _c("div", { staticClass: "col-md-6" }, [
+                              _c(
+                                "div",
+                                { staticClass: "form-group" },
+                                [
+                                  _vm._m(7),
+                                  _vm._v(" "),
+                                  _c("v-select", {
+                                    attrs: {
+                                      label: "nombre",
+                                      options: _vm.arrayFormula,
+                                      placeholder: "Buscar Formula..."
+                                    },
+                                    on: {
+                                      search: _vm.selectFormula,
+                                      input: _vm.getDatosFormula
+                                    },
+                                    model: {
+                                      value: _vm.selectedFormula,
+                                      callback: function($$v) {
+                                        _vm.selectedFormula = $$v
+                                      },
+                                      expression: "selectedFormula"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-2" }, [
+                              _c("div", { staticClass: "form-group" }, [
+                                _c("label", [_vm._v("Cantidad")]),
+                                _vm._v(" "),
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.cantidad,
+                                      expression: "cantidad"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: {
+                                    type: "number",
+                                    min: "0",
+                                    step: "any",
+                                    required: "",
+                                    placeholder: "Cantidad...."
+                                  },
+                                  domProps: { value: _vm.cantidad },
+                                  on: {
+                                    input: [
+                                      function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.cantidad = $event.target.value
+                                      },
+                                      function($event) {
+                                        return _vm.ventaTotalFormula()
+                                      }
+                                    ]
+                                  }
+                                })
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _vm._m(8),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-2" }, [
+                              _c("div", { staticClass: "form-group" }, [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass:
+                                      "btn btn-success form-control btnagregar",
+                                    attrs: { type: "button" },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.mostrarFormula(_vm.idFormula)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("i", { staticClass: "icon-plus" }, [
+                                      _vm._v("Agregar")
+                                    ])
+                                  ]
+                                )
+                              ])
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "table",
+                            {
+                              staticClass:
+                                "table table-responsive-sm table-bordered table-striped table-sm"
+                            },
+                            [
+                              _vm._m(9),
+                              _vm._v(" "),
+                              _vm.arrayDetalle.length
+                                ? _c(
+                                    "tbody",
+                                    [
+                                      _vm._l(_vm.arrayDetalle, function(
+                                        detalle,
+                                        index
+                                      ) {
+                                        return _c(
+                                          "tr",
+                                          { key: detalle.idProducto },
+                                          [
+                                            _c("td", [
+                                              _c("b", [
+                                                _vm._v(_vm._s(index * 1 + 1))
+                                              ])
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("td", [
+                                              _c("span", {
+                                                staticClass:
+                                                  "badge badge-success",
+                                                domProps: {
+                                                  textContent: _vm._s(
+                                                    detalle.idProducto
+                                                  )
+                                                }
+                                              })
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("td", {
+                                              domProps: {
+                                                textContent: _vm._s(
+                                                  detalle.producto
+                                                )
+                                              }
+                                            }),
+                                            _vm._v(" "),
+                                            _c("td", [
+                                              _vm._v(
+                                                _vm._s(
+                                                  (
+                                                    detalle.cantidad *
+                                                    _vm.cantidad
+                                                  ).toFixed(2)
+                                                ) +
+                                                  " " +
+                                                  _vm._s(detalle.referencia)
+                                              )
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("td", [
+                                              _vm._v(
+                                                "\n                    " +
+                                                  _vm._s(
+                                                    Math.floor(
+                                                      (detalle.cantidad *
+                                                        _vm.cantidad) /
+                                                        detalle.codigo
+                                                    )
+                                                  ) +
+                                                  " " +
+                                                  _vm._s(detalle.unidad) +
+                                                  " +\n                    " +
+                                                  _vm._s(
+                                                    (
+                                                      ((detalle.cantidad *
+                                                        _vm.cantidad) /
+                                                        detalle.codigo -
+                                                        Math.floor(
+                                                          (detalle.cantidad *
+                                                            _vm.cantidad) /
+                                                            detalle.codigo
+                                                        )) *
+                                                      detalle.codigo
+                                                    ).toFixed(2)
+                                                  ) +
+                                                  " " +
+                                                  _vm._s(detalle.referencia) +
+                                                  "\n                  "
+                                              )
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("td", [
+                                              _c("input", {
+                                                directives: [
+                                                  {
+                                                    name: "model",
+                                                    rawName: "v-model",
+                                                    value: detalle.precio,
+                                                    expression: "detalle.precio"
+                                                  }
+                                                ],
+                                                staticClass: "form-control",
+                                                attrs: {
+                                                  type: "number",
+                                                  min: "0",
+                                                  step: "any",
+                                                  required: "",
+                                                  placeholder: "Precio..."
+                                                },
+                                                domProps: {
+                                                  value: detalle.precio
+                                                },
+                                                on: {
+                                                  input: [
+                                                    function($event) {
+                                                      if (
+                                                        $event.target.composing
+                                                      ) {
+                                                        return
+                                                      }
+                                                      _vm.$set(
+                                                        detalle,
+                                                        "precio",
+                                                        $event.target.value
+                                                      )
+                                                    },
+                                                    function($event) {
+                                                      return _vm.ventaTotalFormula()
+                                                    }
+                                                  ]
+                                                }
+                                              })
+                                            ]),
+                                            _vm._v(" "),
+                                            ((detalle.cantidad * _vm.cantidad) /
+                                              detalle.codigo) *
+                                            detalle.precio
+                                              ? _c("td", [
+                                                  _c("div", {
+                                                    domProps: {
+                                                      textContent: _vm._s(
+                                                        (
+                                                          ((detalle.cantidad *
+                                                            _vm.cantidad) /
+                                                            detalle.codigo) *
+                                                          detalle.precio
+                                                        ).toFixed(2)
+                                                      )
+                                                    }
+                                                  })
+                                                ])
+                                              : _c("td", [
+                                                  _c("div", [_vm._v("00.00")])
+                                                ])
+                                          ]
+                                        )
+                                      }),
+                                      _vm._v(" "),
+                                      _c("tr", [
+                                        _c("td", { attrs: { colspan: "6" } }, [
+                                          _vm._v("Total :")
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.montoVenta,
+                                                expression: "montoVenta"
+                                              }
+                                            ],
+                                            staticClass: "form-control",
+                                            attrs: {
+                                              type: "number",
+                                              readonly: ""
+                                            },
+                                            domProps: { value: _vm.montoVenta },
+                                            on: {
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.montoVenta =
+                                                  $event.target.value
+                                              }
+                                            }
+                                          })
+                                        ])
+                                      ])
+                                    ],
+                                    2
+                                  )
+                                : _c("tbody", [_vm._m(10)])
+                            ]
+                          )
+                        ]
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c("div", { staticClass: "col-md-12" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-secondary",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                return _vm.ocultarDetalle()
+                              }
+                            }
+                          },
+                          [_vm._v("Cerrar")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                return _vm.actualizarVenta()
+                              }
+                            }
+                          },
+                          [_vm._v("Actualizar " + _vm._s(_vm.formulario))]
+                        )
+                      ])
+                    ])
+                  ],
+                  2
+                )
+              ]
+            : _vm.ventana == 2
+            ? [
+                _c("div", { class: "card-body " + _vm.validaciones }, [
+                  _c("div", { staticClass: "form-group row border" }, [
+                    _c("div", { staticClass: "col-md-6" }, [
+                      _c(
+                        "div",
+                        { staticClass: "form-group" },
+                        [
+                          _c("label", [_vm._v("Proveedor")]),
+                          _vm._v(" "),
+                          _c("v-select", {
+                            attrs: {
+                              options: _vm.arrayProveedor,
+                              label: "nombre",
+                              placeholder: "Buscar Proveedor..."
+                            },
+                            on: {
+                              search: _vm.selectProveedor,
+                              input: _vm.getDatosProveedor
+                            },
+                            model: {
+                              value: _vm.selectedProveedor,
+                              callback: function($$v) {
+                                _vm.selectedProveedor = $$v
+                              },
+                              expression: "selectedProveedor"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-3" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "" } }, [_vm._v("Pago")]),
+                        _vm._v(" "),
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.pago,
+                                expression: "pago"
+                              }
+                            ],
+                            staticClass: "form-control col-md-12",
+                            attrs: { required: "" },
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.pago = $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              }
+                            }
+                          },
+                          [
+                            _c(
+                              "option",
+                              { attrs: { value: "", readonly: "" } },
+                              [_vm._v("Seleccione")]
+                            ),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "2" } }, [
+                              _vm._v("Contado")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "1" } }, [
+                              _vm._v("Credito")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "0" } }, [
+                              _vm._v("Diario")
+                            ])
+                          ]
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-12" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _vm._m(11),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.descripcion,
+                              expression: "descripcion"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "text",
+                            required: "",
+                            placeholder: "Descripcion..."
+                          },
+                          domProps: { value: _vm.descripcion },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.descripcion = $event.target.value
+                            }
+                          }
+                        })
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row border" }, [
+                    _c("div", { staticClass: "col-md-5" }, [
+                      _c(
+                        "div",
+                        { staticClass: "form-group" },
+                        [
+                          _c("label", [_vm._v("Producto")]),
+                          _vm._v(" "),
+                          _c("v-select", {
+                            attrs: {
+                              label: "nombre",
+                              options: _vm.arrayProducto,
+                              placeholder: "Buscar Productos..."
+                            },
+                            on: {
+                              search: _vm.selectProducto,
+                              input: _vm.getDatosProducto
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(12),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-2" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Cantidad")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.cantidad,
+                              expression: "cantidad"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "number", min: "0" },
+                          domProps: { value: _vm.cantidad },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.cantidad = $event.target.value
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-0" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Unidad")]),
+                        _vm._v(" "),
+                        _c("td", {
+                          domProps: { textContent: _vm._s(_vm.unidad) }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-2" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              "btn btn-success form-control btnagregar",
+                            on: {
+                              click: function($event) {
+                                return _vm.agregarDetalle()
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "icon-plus" }, [
+                              _vm._v("Agregar")
+                            ])
+                          ]
+                        )
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "table",
+                    {
+                      staticClass:
+                        "table table-responsive-sm table-bordered table-striped table-sm"
+                    },
+                    [
+                      _vm._m(13),
+                      _vm._v(" "),
+                      _vm.arrayDetalle.length
+                        ? _c(
+                            "tbody",
+                            [
+                              _vm._l(_vm.arrayDetalle, function(
+                                detalle,
+                                index
+                              ) {
+                                return _c("tr", { key: detalle.idProducto }, [
+                                  _c("td", [
+                                    _c("b", [_vm._v(_vm._s(index * 1 + 1))])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn btn-danger btn-sm",
+                                        attrs: { type: "button" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.eliminarDetalle(index)
+                                          }
+                                        }
+                                      },
+                                      [_c("i", { staticClass: "icon-close" })]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c("span", {
+                                      staticClass: "badge badge-success",
+                                      domProps: {
+                                        textContent: _vm._s(detalle.idProducto)
+                                      }
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", {
+                                    domProps: {
+                                      textContent: _vm._s(detalle.producto)
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("td", { staticClass: "input-group" }, [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: detalle.cantidad,
+                                          expression: "detalle.cantidad"
+                                        }
+                                      ],
+                                      staticClass: "form-control",
+                                      attrs: {
+                                        type: "number",
+                                        min: "0",
+                                        step: "any",
+                                        required: "",
+                                        placeholder: "Cantidad..."
+                                      },
+                                      domProps: { value: detalle.cantidad },
+                                      on: {
+                                        input: [
+                                          function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              detalle,
+                                              "cantidad",
+                                              $event.target.value
+                                            )
+                                          },
+                                          function($event) {
+                                            return _vm.compraTotal()
+                                          }
+                                        ]
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "span",
+                                      { staticClass: "input-group-append" },
+                                      [
+                                        _vm._v(
+                                          "  " + _vm._s(detalle.referencia)
+                                        )
+                                      ]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _vm._v(
+                                      "\n                  " +
+                                        _vm._s(
+                                          Math.floor(
+                                            detalle.cantidad / detalle.codigo
+                                          )
+                                        ) +
+                                        " " +
+                                        _vm._s(detalle.unidad) +
+                                        " +\n                  " +
+                                        _vm._s(
+                                          (
+                                            (detalle.cantidad / detalle.codigo -
+                                              Math.floor(
+                                                detalle.cantidad /
+                                                  detalle.codigo
+                                              )) *
+                                            detalle.codigo
+                                          ).toFixed(2)
+                                        ) +
+                                        " " +
+                                        _vm._s(detalle.referencia) +
+                                        "\n                "
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", { staticClass: "input-group" }, [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: detalle.precio,
+                                          expression: "detalle.precio"
+                                        }
+                                      ],
+                                      staticClass: "form-control",
+                                      attrs: {
+                                        type: "number",
+                                        min: "0",
+                                        step: "any",
+                                        placeholder: "Precio.....",
+                                        required: ""
+                                      },
+                                      domProps: { value: detalle.precio },
+                                      on: {
+                                        input: [
+                                          function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              detalle,
+                                              "precio",
+                                              $event.target.value
+                                            )
+                                          },
+                                          function($event) {
+                                            return _vm.compraTotal()
+                                          }
+                                        ]
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "span",
+                                      { staticClass: "input-group-append" },
+                                      [_vm._v("  Bs.")]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  (detalle.cantidad / detalle.codigo) *
+                                  detalle.precio
+                                    ? _c("td", [
+                                        _c("div", {
+                                          domProps: {
+                                            textContent: _vm._s(
+                                              (
+                                                (detalle.cantidad /
+                                                  detalle.codigo) *
+                                                detalle.precio
+                                              ).toFixed(2)
+                                            )
+                                          }
+                                        })
+                                      ])
+                                    : _c("td", [_c("div", [_vm._v("00.00")])])
+                                ])
+                              }),
+                              _vm._v(" "),
+                              _c("tr", [
+                                _c("td", { attrs: { colspan: "3" } }, [
+                                  _vm._v("Total")
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v("Cantidad :")]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.cantidadTotal,
+                                        expression: "cantidadTotal"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: { type: "number", readonly: "" },
+                                    domProps: { value: _vm.cantidadTotal },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.cantidadTotal = $event.target.value
+                                      }
+                                    }
+                                  })
+                                ]),
+                                _vm._v(" "),
+                                _c("td", { attrs: { colspan: "1" } }),
+                                _vm._v(" "),
+                                _c("td", [_vm._v("Monto :")]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.montoCompra,
+                                        expression: "montoCompra"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: { type: "number", readonly: "" },
+                                    domProps: { value: _vm.montoCompra },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.montoCompra = $event.target.value
+                                      }
+                                    }
+                                  })
+                                ])
+                              ])
+                            ],
+                            2
+                          )
+                        : _c("tbody", [_vm._m(14)])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("div", { staticClass: "col-md-12" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-secondary",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              return _vm.ocultarDetalle()
+                            }
+                          }
+                        },
+                        [_vm._v("Cerrar")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              return _vm.actualizarCompra()
+                            }
+                          }
+                        },
+                        [_vm._v("Actualizar " + _vm._s(_vm.formulario))]
+                      )
+                    ])
+                  ])
+                ])
+              ]
+            : _vm.ventana == 3
+            ? [
+                _c("div", { class: "card-body " + _vm.validaciones }, [
+                  _c("div", { staticClass: "form-group row border" }, [
+                    _c("div", { staticClass: "col-md-12" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _vm._m(15),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.descripcion,
+                              expression: "descripcion"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "text",
+                            required: "",
+                            placeholder: "Descripcion...."
+                          },
+                          domProps: { value: _vm.descripcion },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.descripcion = $event.target.value
+                            }
+                          }
+                        })
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row border" }, [
+                    _c("div", { staticClass: "col-md-4" }, [
+                      _c(
+                        "div",
+                        { staticClass: "form-group" },
+                        [
+                          _c("label", [_vm._v("Cuenta")]),
+                          _vm._v(" "),
+                          _c("v-select", {
+                            attrs: {
+                              label: "nombre",
+                              options: _vm.arrayCuenta,
+                              placeholder: "Buscar Cuenta..."
+                            },
+                            on: {
+                              search: _vm.selectCuenta,
+                              input: _vm.getDatosCuenta
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(16),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-2" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "" } }, [_vm._v("Debe")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.debe,
+                              expression: "debe"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "number", min: "0" },
+                          domProps: { value: _vm.debe },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.debe = $event.target.value
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-2" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "" } }, [_vm._v("Haber")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.haber,
+                              expression: "haber"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "number", min: "0" },
+                          domProps: { value: _vm.haber },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.haber = $event.target.value
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-2" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              "btn btn-success form-control btnagregar",
+                            on: {
+                              click: function($event) {
+                                return _vm.agregarDetalleIE()
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "icon-plus" }, [
+                              _vm._v("Agregar")
+                            ])
+                          ]
+                        )
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row border" }, [
+                    _c("div", { staticClass: "table-responsive col-md-12" }, [
+                      _c(
+                        "table",
+                        {
+                          staticClass:
+                            "table table-bordered table-striped table-sm"
+                        },
+                        [
+                          _vm._m(17),
+                          _vm._v(" "),
+                          _vm.arrayDetalle.length
+                            ? _c(
+                                "tbody",
+                                [
+                                  _vm._l(_vm.arrayDetalle, function(
+                                    detalle,
+                                    index
+                                  ) {
+                                    return _c("tr", { key: detalle.idCuenta }, [
+                                      _c("td", [
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "btn btn-danger btn-sm",
+                                            attrs: { type: "button" },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.eliminarDetalle(
+                                                  index
+                                                )
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "icon-close"
+                                            })
+                                          ]
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("span", {
+                                          staticClass: "badge badge-success",
+                                          domProps: {
+                                            textContent: _vm._s(detalle.codigo)
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", {
+                                        domProps: {
+                                          textContent: _vm._s(detalle.cuenta)
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: detalle.debe,
+                                              expression: "detalle.debe"
+                                            }
+                                          ],
+                                          staticClass: "form-control",
+                                          attrs: {
+                                            type: "number",
+                                            min: "0",
+                                            step: "any"
+                                          },
+                                          domProps: { value: detalle.debe },
+                                          on: {
+                                            input: [
+                                              function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  detalle,
+                                                  "debe",
+                                                  $event.target.value
+                                                )
+                                              },
+                                              function($event) {
+                                                return _vm.sumarDebeHaber()
+                                              }
+                                            ]
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: detalle.haber,
+                                              expression: "detalle.haber"
+                                            }
+                                          ],
+                                          staticClass: "form-control",
+                                          attrs: {
+                                            type: "number",
+                                            min: "0",
+                                            step: "any"
+                                          },
+                                          domProps: { value: detalle.haber },
+                                          on: {
+                                            input: [
+                                              function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.$set(
+                                                  detalle,
+                                                  "haber",
+                                                  $event.target.value
+                                                )
+                                              },
+                                              function($event) {
+                                                return _vm.sumarDebeHaber()
+                                              }
+                                            ]
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: detalle.descripcionD,
+                                              expression: "detalle.descripcionD"
+                                            }
+                                          ],
+                                          staticClass: "form-control",
+                                          attrs: {
+                                            type: "text",
+                                            required: "",
+                                            placeholder: "Descripcion"
+                                          },
+                                          domProps: {
+                                            value: detalle.descripcionD
+                                          },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                detalle,
+                                                "descripcionD",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        detalle.debe - detalle.haber ==
+                                          detalle.debe ||
+                                        detalle.haber - detalle.debe ==
+                                          detalle.haber
+                                          ? _c("div", [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "badge badge-success"
+                                                },
+                                                [_vm._v("OK")]
+                                              )
+                                            ])
+                                          : _c("div", [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "badge badge-danger"
+                                                },
+                                                [_vm._v("ERROR")]
+                                              )
+                                            ])
+                                      ])
+                                    ])
+                                  }),
+                                  _vm._v(" "),
+                                  _c("tr", [
+                                    _c("td", { attrs: { colspan: "3" } }, [
+                                      _vm._v("Total")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("td", [
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.debeTotal,
+                                            expression: "debeTotal"
+                                          }
+                                        ],
+                                        staticClass: "form-control",
+                                        attrs: { readonly: "", type: "number" },
+                                        domProps: { value: _vm.debeTotal },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.debeTotal = $event.target.value
+                                          }
+                                        }
+                                      })
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("td", [
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.haberTotal,
+                                            expression: "haberTotal"
+                                          }
+                                        ],
+                                        staticClass: "form-control",
+                                        attrs: { readonly: "", type: "number" },
+                                        domProps: { value: _vm.haberTotal },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.haberTotal = $event.target.value
+                                          }
+                                        }
+                                      })
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("td", [
+                                      _vm.debeTotal - _vm.haberTotal == 0
+                                        ? _c("div", [
+                                            _c(
+                                              "span",
+                                              {
+                                                staticClass:
+                                                  "badge badge-success"
+                                              },
+                                              [_vm._v("Asiento Correcto")]
+                                            )
+                                          ])
+                                        : _c("div", [
+                                            _c(
+                                              "span",
+                                              {
+                                                staticClass:
+                                                  "badge badge-danger"
+                                              },
+                                              [_vm._v("Asiento Incorrecto")]
+                                            )
+                                          ])
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("td", [
+                                      _vm.debeTotal - _vm.haberTotal == 0
+                                        ? _c("div", [
+                                            _c(
+                                              "span",
+                                              {
+                                                staticClass:
+                                                  "badge badge-success"
+                                              },
+                                              [_vm._v("OK")]
+                                            )
+                                          ])
+                                        : _c("div", [
+                                            _c(
+                                              "span",
+                                              {
+                                                staticClass:
+                                                  "badge badge-danger"
+                                              },
+                                              [_vm._v("ERROR")]
+                                            )
+                                          ])
+                                    ])
+                                  ])
+                                ],
+                                2
+                              )
+                            : _c("tbody", [_vm._m(18)])
+                        ]
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("div", { staticClass: "col-md-12" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-secondary",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              return _vm.ocultarDetalle()
+                            }
+                          }
+                        },
+                        [_vm._v("Cerrar")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              return _vm.actualizarIE()
+                            }
+                          }
+                        },
+                        [_vm._v("Actualizar " + _vm._s(_vm.formulario))]
+                      )
+                    ])
+                  ])
+                ])
+              ]
+            : _vm._e()
+        ],
+        2
+      )
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade bd-example-modal-lg",
+        attrs: {
+          tabindex: "-1",
+          id: "ModalProducto",
+          role: "dialog",
+          "aria-labelledby": "myModalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-primary modal-lg",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c("h5", {
+                  staticClass: "modal-title",
+                  attrs: { id: "exampleModalLongTitle" },
+                  domProps: { textContent: _vm._s(_vm.tituloModal) }
+                }),
+                _vm._v(" "),
+                _vm._m(19)
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("div", { staticClass: "form-group row" }, [
+                  _c("div", { staticClass: "col-md-8" }, [
+                    _c("div", { staticClass: "input-group" }, [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.criterioP,
+                              expression: "criterioP"
+                            }
+                          ],
+                          staticClass: "form-control col-md-4",
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.criterioP = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { value: "nombre" } }, [
+                            _vm._v("Nombre")
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.buscarP,
+                            expression: "buscarP"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", placeholder: "Buscar Producto" },
+                        domProps: { value: _vm.buscarP },
+                        on: {
+                          keyup: function($event) {
+                            if (
+                              !$event.type.indexOf("key") &&
+                              _vm._k(
+                                $event.keyCode,
+                                "enter",
+                                13,
+                                $event.key,
+                                "Enter"
+                              )
+                            ) {
+                              return null
+                            }
+                            return _vm.listarProducto(
+                              _vm.buscarP,
+                              _vm.criterioP
+                            )
+                          },
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.buscarP = $event.target.value
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "input-group-append" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: { type: "submit" },
+                            on: {
+                              click: function($event) {
+                                return _vm.listarProducto(
+                                  _vm.buscarP,
+                                  _vm.criterioP
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "fa fa-search" }),
+                            _vm._v(" Buscar\n                  ")
+                          ]
+                        )
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "table",
+                  {
+                    staticClass:
+                      "table table-responsive-sm table-bordered table-striped table-sm"
+                  },
+                  [
+                    _vm._m(20),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.arrayProducto, function(data) {
+                        return _c("tr", { key: data.id }, [
+                          _c("td", [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-success btn-sm",
+                                attrs: { type: "button" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.agregarDetalleModal(data)
+                                  }
+                                }
+                              },
+                              [_c("i", { staticClass: "icon-check" })]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", {
+                            domProps: { textContent: _vm._s(data.nombre) }
+                          }),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(data.stock) + " " + _vm._s(data.unidad)
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(data.codigo) +
+                                " " +
+                                _vm._s(data.referencia)
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            data.estado
+                              ? _c("div", [
+                                  _c(
+                                    "span",
+                                    { staticClass: "badge badge-success" },
+                                    [_vm._v("Activo")]
+                                  )
+                                ])
+                              : _c("div", [
+                                  _c(
+                                    "span",
+                                    { staticClass: "badge badge-danger" },
+                                    [_vm._v("Desactivado")]
+                                  )
+                                ])
+                          ])
+                        ])
+                      }),
+                      0
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _vm._m(21)
+            ])
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade bd-example-modal-lg",
+        attrs: {
+          tabindex: "-1",
+          id: "ModalIngresoEgreso",
+          role: "dialog",
+          "aria-labelledby": "myModalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-primary modal-lg",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c("h4", {
+                  staticClass: "modal-title",
+                  domProps: { textContent: _vm._s(_vm.tituloModal) }
+                }),
+                _vm._v(" "),
+                _vm._m(22)
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("div", { staticClass: "form-group row" }, [
+                  _c("div", { staticClass: "col-md-8" }, [
+                    _c("div", { staticClass: "input-group" }, [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.criterioP,
+                              expression: "criterioP"
+                            }
+                          ],
+                          staticClass: "form-control col-md-4",
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.criterioP = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { value: "nombre" } }, [
+                            _vm._v("Nombre")
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.buscarP,
+                            expression: "buscarP"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", placeholder: "Buscar Producto" },
+                        domProps: { value: _vm.buscarP },
+                        on: {
+                          keyup: function($event) {
+                            if (
+                              !$event.type.indexOf("key") &&
+                              _vm._k(
+                                $event.keyCode,
+                                "enter",
+                                13,
+                                $event.key,
+                                "Enter"
+                              )
+                            ) {
+                              return null
+                            }
+                            return _vm.listarCuenta(_vm.buscarP)
+                          },
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.buscarP = $event.target.value
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "input-group-append" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: { type: "submit" },
+                            on: {
+                              click: function($event) {
+                                return _vm.listarCuenta(_vm.buscarP)
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "fa fa-search" }),
+                            _vm._v(" Buscar\n                  ")
+                          ]
+                        )
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "table-responsive" }, [
+                  _c(
+                    "table",
+                    {
+                      staticClass: "table table-bordered table-striped table-sm"
+                    },
+                    [
+                      _vm._m(23),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.arrayCuenta, function(data) {
+                          return _c("tr", { key: data.id }, [
+                            _c("td", [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-success btn-sm",
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.agregarDetalleModalIE(data)
+                                    }
+                                  }
+                                },
+                                [_c("i", { staticClass: "icon-check" })]
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", {
+                              domProps: { textContent: _vm._s(data.nombre) }
+                            }),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(
+                                  data.tipo +
+                                    "." +
+                                    data.nivel1 +
+                                    "." +
+                                    data.nivel2 +
+                                    "." +
+                                    data.nivel3 +
+                                    "." +
+                                    data.nivel4
+                                )
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(data.nivel))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              data.estado
+                                ? _c("div", [
+                                    _c(
+                                      "span",
+                                      { staticClass: "badge badge-success" },
+                                      [_vm._v("Activo")]
+                                    )
+                                  ])
+                                : _c("div", [
+                                    _c(
+                                      "span",
+                                      { staticClass: "badge badge-danger" },
+                                      [_vm._v("Desactivado")]
+                                    )
+                                  ])
+                            ])
+                          ])
+                        }),
+                        0
+                      )
+                    ]
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _vm._m(24)
+            ])
+          ]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ol", { staticClass: "breadcrumb" }, [
+      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Home")]),
+      _vm._v(" "),
+      _c("li", { staticClass: "breadcrumb-item" }, [
+        _c("a", { attrs: { href: "#" } }, [_vm._v("Admin")])
+      ]),
+      _vm._v(" "),
+      _c("li", { staticClass: "breadcrumb-item active" }, [_vm._v("Dashboard")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "badge badge-danger" }, [
+      _c("i", { staticClass: "icon-doc" }),
+      _vm._v("PDF\n          ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th"),
+        _vm._v(" "),
+        _c("th", [_vm._v("Codigo")]),
+        _vm._v(" "),
+        _c("th", { attrs: { colspan: "5" } }, [_vm._v("Balance General")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Total")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "" } }, [
+      _vm._v("\n                  Por Concepto De\n                  "),
+      _c("br")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-2" }, [
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "" } }),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-success form-control",
+            attrs: { "data-toggle": "modal", "data-target": "#ModalProducto" }
+          },
+          [
+            _c("i", { staticClass: "icon-plus" }),
+            _vm._v(" "),
+            _c("i", { staticClass: "icon-plus" }),
+            _vm._v(" "),
+            _c("i", { staticClass: "icon-plus" })
+          ]
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("N°")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Opciones")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Producto")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Cantidad")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Unidad")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Precio")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Descripcion")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Precio Total")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { attrs: { colspan: "9" } }, [
+        _vm._v("No hay Productos Agregados")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", [
+      _vm._v("\n                    Formula\n                    "),
+      _c("span")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-0" }, [
+      _c("div", { staticClass: "form-group" }, [
+        _c("br"),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("label", { attrs: { for: "" } }, [_vm._v("Ton.")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("N°")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Producto")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Cantidad")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Cantidad + Unidad")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Precio")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Precio Total")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { attrs: { colspan: "7" } }, [
+        _vm._v("NO hay artículos agregados")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "" } }, [
+      _vm._v("\n                  Por Concepto De\n                  "),
+      _c("br")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-0" }, [
+      _c("div", { staticClass: "form-group" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-success form-control btnagregar",
+            attrs: { "data-toggle": "modal", "data-target": "#ModalProducto" }
+          },
+          [
+            _c("i", { staticClass: "icon-plus" }),
+            _vm._v(" "),
+            _c("i", { staticClass: "icon-plus" }),
+            _vm._v(" "),
+            _c("i", { staticClass: "icon-plus" })
+          ]
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("N°")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Opciones")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Producto")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Cantidad")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Cantidad + Unidad")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Precio")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Precio Total")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { attrs: { colspan: "9" } }, [
+        _vm._v("No hay Productos Agregados")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "" } }, [
+      _vm._v("\n                  Por Concepto De\n                  "),
+      _c("br")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-0" }, [
+      _c("div", { staticClass: "form-group" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-success form-control btnagregar",
+            attrs: {
+              "data-toggle": "modal",
+              "data-target": "#ModalIngresoEgreso"
+            }
+          },
+          [
+            _c("i", { staticClass: "icon-plus" }),
+            _vm._v(" "),
+            _c("i", { staticClass: "icon-plus" }),
+            _vm._v(" "),
+            _c("i", { staticClass: "icon-plus" })
+          ]
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Quitar")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Codigo")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Cuenta")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Debe")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Haber")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Descripcion")]),
+        _vm._v(" "),
+        _c("th")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", { attrs: { colspan: "6" } }, [
+        _vm._v("No hay Cuentas Agregadas")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Opciones")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Nombre")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Stock")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Unidad")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Estado")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Cerrar")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Opciones")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Nombre")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Codigo")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Nivel")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Estado")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Cerrar")]
+      )
     ])
   }
 ]
@@ -88573,14 +94736,14 @@ var render = function() {
                             return _c("tr", { key: data.id }, [
                               _c("td", [
                                 _c("span", {
-                                  staticClass: "badge badge-success",
+                                  staticClass: "badge badge-danger",
                                   domProps: { textContent: _vm._s(data.id) }
                                 })
                               ]),
                               _vm._v(" "),
                               _c("td", [
                                 _c("span", {
-                                  staticClass: "badge badge-info",
+                                  staticClass: "badge badge-warning",
                                   domProps: {
                                     textContent: _vm._s(data.factura)
                                   }
@@ -88589,7 +94752,7 @@ var render = function() {
                               _vm._v(" "),
                               _c("td", [
                                 _c("span", {
-                                  staticClass: "badge badge-info",
+                                  staticClass: "badge badge-success",
                                   domProps: {
                                     textContent: _vm._s(data.registro)
                                   }
@@ -91789,21 +97952,21 @@ var render = function() {
                           return _c("tr", { key: data.id }, [
                             _c("td", [
                               _c("span", {
-                                staticClass: "badge badge-success",
+                                staticClass: "badge badge-danger",
                                 domProps: { textContent: _vm._s(data.id) }
                               })
                             ]),
                             _vm._v(" "),
                             _c("td", [
                               _c("span", {
-                                staticClass: "badge badge-info",
+                                staticClass: "badge badge-warning",
                                 domProps: { textContent: _vm._s(data.factura) }
                               })
                             ]),
                             _vm._v(" "),
                             _c("td", [
                               _c("span", {
-                                staticClass: "badge badge-info",
+                                staticClass: "badge badge-success",
                                 domProps: { textContent: _vm._s(data.registro) }
                               })
                             ]),
@@ -106200,17 +112363,22 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-var render, staticRenderFns
-var script = {}
+/* harmony import */ var _EstadoResultado_vue_vue_type_template_id_fc8aeee4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EstadoResultado.vue?vue&type=template&id=fc8aeee4& */ "./resources/js/components/EstadoResultado.vue?vue&type=template&id=fc8aeee4&");
+/* harmony import */ var _EstadoResultado_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EstadoResultado.vue?vue&type=script&lang=js& */ "./resources/js/components/EstadoResultado.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _EstadoResultado_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./EstadoResultado.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/EstadoResultado.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
 
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__["default"])(
-  script,
-  render,
-  staticRenderFns,
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _EstadoResultado_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _EstadoResultado_vue_vue_type_template_id_fc8aeee4___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _EstadoResultado_vue_vue_type_template_id_fc8aeee4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -106218,8 +112386,58 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   
 )
 
+/* hot reload */
+if (false) { var api; }
 component.options.__file = "resources/js/components/EstadoResultado.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/EstadoResultado.vue?vue&type=script&lang=js&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/EstadoResultado.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EstadoResultado_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./EstadoResultado.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/EstadoResultado.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EstadoResultado_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/EstadoResultado.vue?vue&type=style&index=0&lang=css&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/EstadoResultado.vue?vue&type=style&index=0&lang=css& ***!
+  \**************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EstadoResultado_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader??ref--5-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--5-2!../../../node_modules/vue-loader/lib??vue-loader-options!./EstadoResultado.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/EstadoResultado.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EstadoResultado_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EstadoResultado_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EstadoResultado_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EstadoResultado_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EstadoResultado_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/components/EstadoResultado.vue?vue&type=template&id=fc8aeee4&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/EstadoResultado.vue?vue&type=template&id=fc8aeee4& ***!
+  \************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EstadoResultado_vue_vue_type_template_id_fc8aeee4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./EstadoResultado.vue?vue&type=template&id=fc8aeee4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/EstadoResultado.vue?vue&type=template&id=fc8aeee4&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EstadoResultado_vue_vue_type_template_id_fc8aeee4___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EstadoResultado_vue_vue_type_template_id_fc8aeee4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 

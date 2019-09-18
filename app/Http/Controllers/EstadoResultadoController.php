@@ -10,7 +10,7 @@ use App\Venta;
 use App\DetalleVenta;
 use App\Producto;
 
-class BalanceGeneralController extends Controller
+class EstadoResultadoController extends Controller
 {
     public function index(Request $request)
     {
@@ -22,7 +22,7 @@ class BalanceGeneralController extends Controller
         ->join('cuentas as c2','c3.idCuenta','=','c2.id')
         ->join('cuentas as c1','c2.idCuenta','=','c1.id')
         ->where('c1.nivel','=','1')
-        ->where('c1.tipo','<=','3')
+        ->where('c1.tipo','>','3')
         ->select('c1.id','c1.nombre','c1.nivel','c1.tipo','c1.estado')
         ->groupBy('c1.id','c1.nombre','c1.nivel','c1.tipo','c1.estado')
         ->orderBy('c1.tipo','asc')
