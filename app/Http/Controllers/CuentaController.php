@@ -11,25 +11,26 @@ class CuentaController extends Controller
 {
     public function index(Request $request)
     {
-        // if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
         $buscar = $request->buscar;
         // $criterio = $request->criterio;
         if($buscar=='')
         {
-            $cuentas=Cuenta::orderBy('tipo','asc')
-            ->orderBy('nivel1','asc')
+            $cuentas=Cuenta::orderBy('nivel1','asc')
             ->orderBy('nivel2','asc')
             ->orderBy('nivel3','asc')
             ->orderBy('nivel4','asc')
+            ->orderBy('nivel5','asc')
             ->paginate(20);
         }
         else{
             $cuentas=Cuenta::where('nombre', 'like','%'.$buscar.'%')
-            ->orderBy('tipo','asc')
             ->orderBy('nivel1','asc')
             ->orderBy('nivel2','asc')
             ->orderBy('nivel3','asc')
-            ->orderBy('nivel4','asc')->paginate(20);
+            ->orderBy('nivel4','asc')
+            ->orderBy('nivel5','asc')
+            ->paginate(20);
         }
 
         return [
@@ -46,102 +47,44 @@ class CuentaController extends Controller
     }
     public function buscarCuenta(Request $request){
         if(!$request->ajax()) return redirect('/');
-        $nivel=$request->nivel;
-        $tipo = $request->tipo;
-        $nivel1 = $request->nivel1;
-        $nivel2 = $request->nivel2;
-        $nivel3 = $request->nivel3;
-        $nivel4 = $request->nivel4;
-        if($nivel==1){
-        $cuentas = Cuenta::where('estado','=','1')
-        ->where('tipo','>','0')
-        ->where('nivel1','=',$nivel1)
-        ->where('nivel2','=',$nivel2)
-        ->where('nivel3','=',$nivel3)
-        ->where('nivel4','=',$nivel4)
-        ->max('tipo');
-        }else{
-        if($nivel==2){
-            $cuentas = Cuenta::where('estado','=','1')
-            ->where('tipo','=',$tipo)
-            ->where('nivel1','>','0')
-            ->where('nivel2','=',$nivel2)
-            ->where('nivel3','=',$nivel3)
-            ->where('nivel4','=',$nivel4)
-            ->max('nivel1');
+        $idCuenta=$request->idCuenta;
+        
+        if($idCuenta==0){
+        $cuentas = Cuenta::where('nivel','=','1')
+        ->count('id');
+        }
+        else{
+            $cuentas = Cuenta::where('idCuenta','=',$idCuenta)
+        ->count('id');
             }
-            else{
-            if($nivel==3){
-                $cuentas = Cuenta::where('estado','=','1')
-                ->where('tipo','=',$tipo)
-                ->where('nivel1','=',$nivel1)
-                ->where('nivel2','>','0')
-                ->where('nivel3','=',$nivel3)
-                ->where('nivel4','=',$nivel4)
-                ->max('nivel2');
-                }
-                else{
-                if($nivel==4){
-                    $cuentas = Cuenta::where('estado','=','1')
-                    ->where('tipo','=',$tipo)
-                    ->where('nivel1','=',$nivel1)
-                    ->where('nivel2','=',$nivel2)
-                    ->where('nivel3','>','0')
-                    ->where('nivel4','=',$nivel4)
-                    ->max('nivel3');
-                    }
-                    else{
-                    if($nivel==5){
-                        $cuentas = Cuenta::where('estado','=','1')
-                        ->where('tipo','=',$tipo)
-                        ->where('nivel1','=',$nivel1)
-                        ->where('nivel2','=',$nivel2)
-                        ->where('nivel3','=',$nivel3)
-                        ->where('nivel4','>','0')
-                        ->max('nivel4');
-                        }
-                    }
-                }
-            }
-       }
-
+            $cuentas++;
         return ['cuentas'=>$cuentas];
     }
     public function listarPdf(Request $request)
     {
         $cuentas=Cuenta::where('estado','=','1')
-        // select('id','tipo','nivel1','nivel2','nivel3','nivel4','nombre','telefono','empresa','direccion','nivel','estado')
-        
-        ->orderBy('tipo','asc')
         ->orderBy('nivel1','asc')
         ->orderBy('nivel2','asc')
         ->orderBy('nivel3','asc')
         ->orderBy('nivel4','asc')
+        ->orderBy('nivel5','asc')
         ->get();
-
-        // $pdf = App::make('dompdf.wrapper');
-
-        $cont=Cuenta::count();
-        $pdf = \PDF::loadView('cuenta.pdf.index',['cuentas'=>$cuentas,'cont'=>$cont]);
+        $pdf = \PDF::loadView('cuenta.pdf.index',['cuentas'=>$cuentas]);
         return $pdf->download('cuentas.pdf');
         // return $pdf->stream();
     }
     public function listarImprimir(Request $request)
     {
         $cuentas=Cuenta::where('estado','=','1')
-        // select('id','tipo','nivel1','nivel2','nivel3','nivel4','nombre','telefono','empresa','direccion','nivel','estado')
-        
-        ->orderBy('tipo','asc')
         ->orderBy('nivel1','asc')
         ->orderBy('nivel2','asc')
         ->orderBy('nivel3','asc')
         ->orderBy('nivel4','asc')
+        ->orderBy('nivel5','asc')
         ->get();
 
         // $pdf = App::make('dompdf.wrapper');
-
-        $cont=Cuenta::count();
-        return view('cuenta.imprimir.index',['cuentas'=>$cuentas,'cont'=>$cont]);
+        return view('cuenta.imprimir.index',['cuentas'=>$cuentas]);
     }
     
     public function cuenta(Request $request)
@@ -149,7 +92,7 @@ class CuentaController extends Controller
         if(!$request->ajax()) return redirect('/');
         $filtro = $request->filtro;
         $cuentas = Cuenta::where('estado','=','1')
-        ->where('nivel4','=','0')
+        ->where('nivel','<','5')
         ->where('nombre','like','%'.$filtro.'%')
         ->orderBy('nombre','asc')
         ->get();
@@ -189,20 +132,17 @@ class CuentaController extends Controller
         $cuentas->empresa = $request->empresa;
         $cuentas->direccion = $request->direccion;
         $cuentas->nivel=$request->nivel;
+        $cuentas->idCuenta=$request->idCuenta;
 
-        if($cuentas->nivel==1)
+        if($cuentas->idCuenta==0)
         {
             $cuentas->idCuenta=null;
         }
-        else
-        {
-            $cuentas->idCuenta=$request->idCuenta;
-        }
-        $cuentas->tipo = $request->tipo;
         $cuentas->nivel1 = $request->nivel1;
         $cuentas->nivel2 = $request->nivel2;
         $cuentas->nivel3 = $request->nivel3;
         $cuentas->nivel4 = $request->nivel4;
+        $cuentas->nivel5 = $request->nivel5;
         $cuentas->estado = '1';
         $cuentas->save();
     }
@@ -216,11 +156,11 @@ class CuentaController extends Controller
         $cuentas->empresa = $request->empresa;
         $cuentas->direccion = $request->direccion;
         $cuentas->nivel=$request->nivel;
-        $cuentas->tipo = $request->tipo;
         $cuentas->nivel1 = $request->nivel1;
         $cuentas->nivel2 = $request->nivel2;
         $cuentas->nivel3 = $request->nivel3;
         $cuentas->nivel4 = $request->nivel4;
+        $cuentas->nivel5 = $request->nivel5;
         $cuentas->estado = '1';
         $cuentas->save();
     }

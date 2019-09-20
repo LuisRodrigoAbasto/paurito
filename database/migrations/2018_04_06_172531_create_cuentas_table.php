@@ -21,11 +21,11 @@ class CreateCuentasTable extends Migration
             $table->string('empresa',100)->nullable();
             $table->string('direccion',100)->nullable();
             $table->integer('nivel');
-            $table->integer('tipo');
             $table->integer('nivel1');
             $table->integer('nivel2');
             $table->integer('nivel3');
             $table->integer('nivel4');
+            $table->integer('nivel5');
             $table->boolean('estado')->default(1);
             $table->foreign('idCuenta')->references('id')->on('cuentas');
             $table->timestamps();

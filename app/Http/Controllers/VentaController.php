@@ -12,6 +12,7 @@ use App\Venta;
 use App\Compra;
 use App\Ingreso;
 use App\Egreso;
+use App\EnLetras;
 
 class VentaController extends Controller
 {
@@ -50,41 +51,37 @@ class VentaController extends Controller
     }
     public function pdf(Request $request, $id)
     {
-        $venta= Venta::where('ventas.id','=',$id)
-        ->with('cuenta')
-        ->get();
+        $venta= Venta::find($id);        
 
-        $detalles = DetalleVenta::where('detalle_ventas.idVenta','=',$id)
+        $venta->detalles = DetalleVenta::where('detalle_ventas.idVenta','=',$id)
         ->where('detalle_ventas.estado','=','1')
-        // ->with('producto')
         ->orderBy('detalle_ventas.orden','asc')
         ->get();
 
-        $pdf = \PDF::loadView('venta.pdf.index',['venta'=>$venta,'detalles'=>$detalles]);
+        $pdf = \PDF::loadView('venta.pdf.index',['venta'=>$venta]);
         return $pdf->download('venta_'.$id.'.pdf');
 
     }
     public function imprimir(Request $request, $id)
     {   
-        $venta= Venta::where('ventas.id','=',$id)
-        ->with('cuenta')
-        ->get();
+        $venta= Venta::find($id);
+        $Obj=new EnLetras();
+        $venta->letra=strtoupper($Obj->ValorEnLetras($venta->montoVenta,"BOLIVIANOS"));
 
-        $detalles = DetalleVenta::where('detalle_ventas.idVenta','=',$id)
+        $venta->detalles = DetalleVenta::where('detalle_ventas.idVenta','=',$id)
         ->where('detalle_ventas.estado','=','1')
-        ->with('producto')
         ->orderBy('detalle_ventas.orden','asc')
         ->get();
         
-        return view('venta.imprimir.index',['venta'=>$venta,'detalles'=>$detalles]);
+        return view('venta.imprimir.index',['venta'=>$venta]);
     }
     public function listarVentas(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
         $id = $request->id;
         $ventas= Venta::join('cuentas','ventas.idCliente','=','cuentas.id')
-        ->where('ventas.id','=',$id)
         ->select('ventas.id','ventas.factura','ventas.registro','idFormula','cuentas.nombre','ventas.idCliente','fecha','pago','cantidad','descripcion','montoVenta','ventas.estado')
+        ->where('ventas.id','=',$id)
         ->get();
 
         $detalles = DetalleVenta::join('ventas','ventas.id','=','detalle_ventas.idVenta')
@@ -185,7 +182,6 @@ class VentaController extends Controller
         $venta = Venta::findOrFail($request->id);
         $venta->idCliente = $request->idCliente;
         $venta->idFormula = $request->idFormula;
-        $venta->fecha = $mytime->toDateTimeString();
         $venta->pago = $request->pago;
         $venta->cantidad = $request->cantidad;
         $venta->descripcion = $request->descripcion;

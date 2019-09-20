@@ -59,33 +59,28 @@ class CompraController extends Controller
     }
     public function pdf(Request $request, $id)
     {
-        $compra= Compra::where('compras.id','=',$id)
-        ->with('cuenta')
-        ->get();
+        $compra= Compra::with('cuenta')->find($id);
 
-        $detalles = DetalleCompra::where('detalle_compras.idCompra','=',$id)
+        $compra->detalles = DetalleCompra::where('detalle_compras.idCompra','=',$id)
         ->orderBy('detalle_compras.orden','asc')
         ->where('detalle_compras.estado','=','1')
         ->with('producto')
         ->get();
         
-        $pdf = \PDF::loadView('compra.pdf.index',['compra'=>$compra,'detalles'=>$detalles]);
+        $pdf = \PDF::loadView('compra.pdf.index',['compra'=>$compra]);
         return $pdf->download('compra_'.$id.'.pdf');
 
     }
     public function imprimir(Request $request, $id)
     {
-        $compra= Compra::where('compras.id','=',$id)
-        ->with('cuenta')
-        ->get();
-
-        $detalles = DetalleCompra::where('detalle_compras.idCompra','=',$id)
+        $compra= Compra::with('cuenta')->find($id);
+        $compra->detalles = DetalleCompra::where('detalle_compras.idCompra','=',$id)
         ->orderBy('detalle_compras.orden','asc')
         ->where('detalle_compras.estado','=','1')
         ->with('producto')
         ->get();
 
-        return view('compra.imprimir.index',['compra'=>$compra,'detalles'=>$detalles]);
+        return view('compra.imprimir.index',['compra'=>$compra]);
     }
     public function listarCompras(Request $request)
     {
@@ -185,7 +180,6 @@ class CompraController extends Controller
         $mytime= Carbon::now('America/La_Paz');
         $compra = Compra::findOrFail($request->id);
         $compra->idProveedor = $request->idProveedor;
-        $compra->fecha = $mytime->toDateTimeString();
         $compra->cantidad=$request->cantidad;
         $compra->pago = $request->pago;
         $compra->montoCompra= $request->montoCompra;

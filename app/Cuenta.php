@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cuenta extends Model
 {
-    protected $fillable = ['idCuenta','nombre','telefono','empresa','direccion','nivel','tipo','nivel1','nivel2','nivel3','nivel4','estado'];
+    protected $fillable = ['idCuenta','nombre','telefono','empresa','direccion','nivel','nivel1','nivel2','nivel3','nivel4','nivel5','estado'];
 
     public function cuenta()
     {

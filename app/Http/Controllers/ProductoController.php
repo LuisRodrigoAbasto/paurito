@@ -84,8 +84,7 @@ class ProductoController extends Controller
         ->where('estado','=','1')
         ->orderBy('estado','desc')->orderBy('id','desc')->get();
 
-        $cont=Producto::where('estado','=','1')->count('id');
-        $pdf = \PDF::loadView('producto.pdf.index',['productos'=>$productos,'cont'=>$cont]);
+        $pdf = \PDF::loadView('producto.pdf.index',['productos'=>$productos]);
         return $pdf->download('productos.pdf');
 
 //         $pdf = App::make('dompdf.wrapper');
@@ -98,9 +97,7 @@ class ProductoController extends Controller
         DB::raw("floor(stock) as total,truncate(((stock-floor(stock))*codigo),2) as decimales"),'referencia','estado')
         ->where('estado','=','1')
         ->orderBy('estado','desc')->orderBy('id','desc')->get();
-
-        $cont=Producto::where('estado','=','1')->count('id');
-        return view('producto.imprimir.index',['productos'=>$productos,'cont'=>$cont]);
+        return view('producto.imprimir.index',['productos'=>$productos]);
 
 //         $pdf = App::make('dompdf.wrapper');
 // $pdf->loadHTML('<h1>Test</h1>');

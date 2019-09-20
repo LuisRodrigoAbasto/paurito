@@ -43,29 +43,27 @@ class IngresoController extends Controller
         }
         public function pdf(Request $request, $id)
         {
-            $ingreso=Ingreso::where('ingresos.id','=',$id)
-            ->get();
+            $ingreso=Ingreso::find($id);
     
-            $detalles = DetalleIngreso::where('detalle_ingresos.idIngreso','=',$id)
+            $ingreso->detalles = DetalleIngreso::where('detalle_ingresos.idIngreso','=',$id)
             ->where('detalle_ingresos.estado','=','1')
             ->orderBy('detalle_ingresos.orden','asc')
             ->with('cuenta')
             ->get(); 
-            $pdf = \PDF::loadView('ingreso.pdf.index',['ingreso'=>$ingreso,'detalles'=>$detalles]);
+            $pdf = \PDF::loadView('ingreso.pdf.index',['ingreso'=>$ingreso]);
             return $pdf->download('ingreso_'.$id.'.pdf');
         }
         public function imprimir(Request $request, $id)
         {
-            $ingreso=Ingreso::where('ingresos.id','=',$id)
-            ->get();
-    
-            $detalles = DetalleIngreso::where('detalle_ingresos.idIngreso','=',$id)
+            $ingreso=Ingreso::find($id);
+
+            $ingreso->detalles = DetalleIngreso::where('detalle_ingresos.idIngreso','=',$id)
             ->where('detalle_ingresos.estado','=','1')
             ->orderBy('detalle_ingresos.orden','asc')
             ->with('cuenta')
             ->get();       
                 
-            return view('ingreso.imprimir.index',['ingreso'=>$ingreso,'detalles'=>$detalles]);
+            return view('ingreso.imprimir.index',['ingreso'=>$ingreso]);
         }
         public function listarIngreso(Request $request)
         {
@@ -76,7 +74,7 @@ class IngresoController extends Controller
             $detalles = DetalleIngreso::join('cuentas','cuentas.id','detalle_ingresos.idCuenta')
             ->where('detalle_ingresos.idIngreso','=',$id) 
             ->where('detalle_ingresos.estado','=','1')
-            ->select('cuentas.id as idCuenta',DB::raw("concat(tipo,'.',nivel1,'.',nivel2,'.',nivel3,'.',nivel4)as codigo"),'cuentas.nombre as cuenta','debe','haber','orden','descripcionD')
+            ->select('cuentas.id as idCuenta',DB::raw("concat(nivel1,'.',nivel2,'.',nivel3,'.',nivel4,'.',nivel5)as codigo"),'cuentas.nombre as cuenta','debe','haber','orden','descripcionD')
             ->orderBy('detalle_ingresos.orden','asc')
             ->get();
             return ['detalles'=>$detalles,'ingresos'=>$ingresos];
@@ -153,7 +151,6 @@ class IngresoController extends Controller
            
             $mytime= Carbon::now('America/La_Paz');
             $ingreso = Ingreso::findOrFail($request->id);
-            $ingreso->fecha = $mytime->toDateTimeString();
             $ingreso->descripcion = $request->descripcion;
             $ingreso->tipo ='Ingresos';
             $ingreso->monto=$request->monto;

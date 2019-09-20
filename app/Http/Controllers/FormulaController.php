@@ -62,30 +62,28 @@ class FormulaController extends Controller
     }
     public function pdf(Request $request, $id)
     {
-        $formula=Formula::where('id','=',$id)
-        ->get();
+        $formula=Formula::find($id);
 
-        $detalles =DetalleFormula::where('idFormula','=',$id)
-        ->where('detalle_formulas.estado','=','1')
-        ->orderBy('detalle_formulas.orden','asc')
-        ->with('productos')
-        ->get();
-
-        $pdf = \PDF::loadView('formula.pdf.index',['venta'=>$formula,'detalles'=>$detalles]);
-        return $pdf->download('formula_'.$formula[0]->id.'.pdf');
-
-    }
-    public function imprimir(Request $request, $id)
-    {
-        $formula=Formula::where('id','=',$id)
-        ->get();
-
-        $detalles =DetalleFormula::where('idFormula','=',$id)
+        $formula->detalles =DetalleFormula::where('idFormula','=',$id)
         ->where('detalle_formulas.estado','=','1')
         ->orderBy('detalle_formulas.orden','asc')
         ->with('producto')
         ->get();
-        return view('formula.imprimir.index',['formula'=>$formula,'detalles'=>$detalles]);
+
+        $pdf = \PDF::loadView('formula.pdf.index',['formula'=>$formula]);
+        return $pdf->download('formula_'.$id.'.pdf');
+
+    }
+    public function imprimir(Request $request, $id)
+    {
+        $formula=Formula::find($id);
+
+        $formula->detalles =DetalleFormula::where('idFormula','=',$id)
+        ->where('detalle_formulas.estado','=','1')
+        ->orderBy('detalle_formulas.orden','asc')
+        ->with('producto')
+        ->get();
+        return view('formula.imprimir.index',['formula'=>$formula]);
     }
     public function store(Request $request)
     {   

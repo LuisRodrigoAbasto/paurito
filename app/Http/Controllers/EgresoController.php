@@ -46,44 +46,41 @@ class EgresoController extends Controller
         {
             if(!$request->ajax()) return redirect('/');
             $id = $request->id;
-            $egresos= Egreso::where('egresos.id','=',$id)
-            ->get();
+            $egresos=Egreso::find($id);
 
-            $detalles = DetalleEgreso::join('cuentas','cuentas.id','detalle_egresos.idCuenta')
+            $egresos->detalles = DetalleEgreso::join('cuentas','cuentas.id','detalle_egresos.idCuenta')
             ->where('detalle_egresos.idEgreso','=',$id) 
             ->where('detalle_egresos.estado','=','1')
-            ->select('cuentas.id as idCuenta',DB::raw("concat(tipo,'.',nivel1,'.',nivel2,'.',nivel3,'.',nivel4)as codigo"),'cuentas.nombre as cuenta','debe','haber','orden','descripcionD')
+            ->select('cuentas.id as idCuenta',DB::raw("concat(nivel1,'.',nivel2,'.',nivel3,'.',nivel4,'.',nivel5)as codigo"),'cuentas.nombre as cuenta','debe','haber','orden','descripcionD')
             ->orderBy('detalle_egresos.orden','asc')
             ->get();
-            return ['detalles'=>$detalles,'egresos'=>$egresos];
+            return ['egresos'=>$egresos];
         }
 
         public function pdf(Request $request, $id)
         {
-            $egreso= Egreso::where('egresos.id','=',$id)
-            ->get();
+            $egreso= Egreso::find($id);
     
-            $detalles = DetalleEgreso::where('detalle_egresos.idEgreso','=',$id)
+            $egreso->detalles = DetalleEgreso::where('detalle_egresos.idEgreso','=',$id)
             ->where('detalle_egresos.estado','=','1')
             ->orderBy('detalle_egresos.orden','asc')
             ->with('cuenta')
             ->get();            
-            $pdf = \PDF::loadView('egreso.pdf.egreso',['egreso'=>$egreso,'detalles'=>$detalles]);
+            $pdf = \PDF::loadView('egreso.pdf.index',['egreso'=>$egreso]);
             return $pdf->download('egreso_'.$id.'.pdf');
     
         }
         public function imprimir(Request $request, $id)
         {
-            $egreso= Egreso::where('egresos.id','=',$id)
-            ->get();
+            $egreso= Egreso::find($id);
     
-            $detalles = DetalleEgreso::where('detalle_egresos.idEgreso','=',$id)
+            $egreso->detalles  = DetalleEgreso::where('detalle_egresos.idEgreso','=',$id)
             ->where('detalle_egresos.estado','=','1')
             ->orderBy('detalle_egresos.orden','asc')
             ->with('cuenta')
             ->get();       
     
-            return view('egreso.imprimir.index',['egreso'=>$egreso,'detalles'=>$detalles]);
+            return view('egreso.imprimir.index',['egreso'=>$egreso]);
         }
         
         public function store(Request $request)
@@ -156,7 +153,6 @@ class EgresoController extends Controller
            
             $mytime= Carbon::now('America/La_Paz');
             $egreso = Egreso::findOrFail($request->id);
-            $egreso->fecha = $mytime->toDateTimeString();
             $egreso->descripcion = $request->descripcion;
             $egreso->tipo ='Egresos';
             $egreso->monto=$request->monto;
