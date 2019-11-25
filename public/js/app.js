@@ -2947,7 +2947,10 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       haber: 0
     };
   },
-  computed: {},
+  mounted: function mounted() {
+    this.cargarFecha();
+    this.listar(this.fechaInicio, this.fechaFin);
+  },
   methods: {
     listar: function listar(inicio, fin) {
       var me = this;
@@ -3359,7 +3362,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
     },
     listarCuenta: function listarCuenta(buscar) {
       var me = this;
-      var url = "/cuenta/listarCuenta?filtro=" + buscar;
+      var url = "cuenta/listarCuenta?filtro=" + buscar;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         me.arrayCuenta = respuesta.cuentas;
@@ -3657,9 +3660,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       });
     },
     cargarFecha: function cargarFecha() {
-      var year = this.fecha.getFullYear();
-      var mes = this.fecha.getMonth();
-      mes++;
+      var year = this.fecha.getFullYear(); // let mes = this.fecha.getMonth();
+
+      var mes = 12; // mes++;
 
       if (mes < 10) {
         this.fechaInicio = year + "-0" + mes + "-" + "01";
@@ -3670,8 +3673,10 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
           this.fechaFin = year + "-" + (mes + 1) + "-" + "01";
         }
       } else {
-        this.fechaInicio = year + "-" + mes + "-" + "01";
-        this.fechaFin = year + "-" + (mes + 1) + "-" + "01";
+        // this.fechaInicio = year + "-" + mes + "-" + "01";
+        // this.fechaFin = year + "-" + (mes + 1) + "-" + "01";
+        this.fechaInicio = year - 3 + "-" + mes + "-" + "01";
+        this.fechaFin = year + 1 + "-" + mes + "-" + "31";
       }
     },
     desactivar: function desactivar(id, opcion) {
@@ -3930,10 +3935,6 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
           }
       }
     }
-  },
-  mounted: function mounted() {
-    this.cargarFecha();
-    this.listar(this.fechaInicio, this.fechaFin);
   }
 });
 
@@ -4516,7 +4517,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
   methods: {
     listar: function listar(page, buscar, criterio) {
       var me = this;
-      var url = "/compra?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio;
+      var url = "compra?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         me.arrayData = respuesta.compras.data;
@@ -4534,7 +4535,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
     selectProveedor: function selectProveedor(search, loading) {
       var me = this;
       loading(true);
-      var url = "/cuenta/selectCuenta?filtro=" + search;
+      var url = "cuenta/selectCuenta?filtro=" + search;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
 
@@ -4561,7 +4562,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
     selectProducto: function selectProducto(search, loading) {
       var me = this;
       loading(true);
-      var url = "/producto/selectProducto?filtro=" + search;
+      var url = "producto/selectProducto?filtro=" + search;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
 
@@ -4685,7 +4686,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
     },
     listarProducto: function listarProducto(buscar, criterio) {
       var me = this;
-      var url = "/producto/listarProducto?buscar=" + buscar + "&criterio=" + criterio;
+      var url = "producto/listarProducto?buscar=" + buscar + "&criterio=" + criterio;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         me.arrayProducto = respuesta.productos;
@@ -4707,7 +4708,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }
 
       var me = this;
-      axios.post("/compra/registrar", {
+      axios.post("compra/registrar", {
         idProveedor: this.idProveedor,
         pago: this.pago,
         montoCompra: this.montoCompra,
@@ -4736,7 +4737,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }
 
       var me = this;
-      axios.put("/compra/actualizar", {
+      axios.put("compra/actualizar", {
         idProveedor: this.idProveedor,
         pago: this.pago,
         montoCompra: this.montoCompra,
@@ -4773,7 +4774,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }).then(function (result) {
         if (result.value) {
           var me = _this;
-          axios.put("/compra/desactivar", {
+          axios.put("compra/desactivar", {
             id: id
           }).then(function (response) {
             me.listar(1, "", "nombre");
@@ -4819,7 +4820,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }).then(function (result) {
         if (result.value) {
           var me = _this2;
-          axios.put("/compra/activar", {
+          axios.put("compra/activar", {
             id: id
           }).then(function (response) {
             me.listar(1, "", "nombre");
@@ -4943,7 +4944,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
                     nombre: this.proveedor
                   };
                   var me = this;
-                  var url = "/compra/listarCompras?id=" + data["id"];
+                  var url = "compra/listarCompras?id=" + data["id"];
                   axios.get(url).then(function (response) {
                     var respuesta = response.data;
                     me.arrayDetalle = respuesta.detalles;
@@ -5847,7 +5848,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
   methods: {
     listar: function listar(page, buscar, criterio) {
       var me = this;
-      var url = "/egreso?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio;
+      var url = "egreso?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         me.arrayData = respuesta.egresos.data;
@@ -5865,7 +5866,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
     selectCuenta: function selectCuenta(search, loading) {
       var me = this;
       loading(true);
-      var url = "/cuenta/selectCuenta?filtro=" + search;
+      var url = "cuenta/selectCuenta?filtro=" + search;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
 
@@ -5982,7 +5983,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
     },
     listarCuenta: function listarCuenta(buscar) {
       var me = this;
-      var url = "/cuenta/listarCuenta?filtro=" + buscar;
+      var url = "cuenta/listarCuenta?filtro=" + buscar;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         me.arrayCuenta = respuesta.cuentas;
@@ -6004,7 +6005,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }
 
       var me = this;
-      axios.post("/egreso/registrar", {
+      axios.post("egreso/registrar", {
         descripcion: this.descripcion,
         monto: this.debeTotal,
         data: this.arrayDetalle
@@ -6030,7 +6031,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }
 
       var me = this;
-      axios.put("/egreso/actualizar", {
+      axios.put("egreso/actualizar", {
         descripcion: this.descripcion,
         monto: this.debeTotal,
         data: this.arrayDetalle,
@@ -6205,7 +6206,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
                   this.haberTotal = data["monto"];
                   this.descripcion = data["descripcion"];
                   var me = this;
-                  var url = "/egreso/listarEgreso?id=" + data["id"];
+                  var url = "egreso/listarEgreso?id=" + data["id"];
                   axios.get(url).then(function (response) {
                     var respuesta = response.data;
                     me.arrayDetalle = respuesta.egresos.detalles;
@@ -7497,7 +7498,10 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       haber: 0
     };
   },
-  computed: {},
+  mounted: function mounted() {
+    this.cargarFecha();
+    this.listar(this.fechaInicio, this.fechaFin);
+  },
   methods: {
     listar: function listar(inicio, fin) {
       var me = this;
@@ -7909,7 +7913,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
     },
     listarCuenta: function listarCuenta(buscar) {
       var me = this;
-      var url = "/cuenta/listarCuenta?filtro=" + buscar;
+      var url = "cuenta/listarCuenta?filtro=" + buscar;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         me.arrayCuenta = respuesta.cuentas;
@@ -8207,9 +8211,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       });
     },
     cargarFecha: function cargarFecha() {
-      var year = this.fecha.getFullYear();
-      var mes = this.fecha.getMonth();
-      mes++;
+      var year = this.fecha.getFullYear(); // let mes = this.fecha.getMonth();
+
+      var mes = 12; // mes++;
 
       if (mes < 10) {
         this.fechaInicio = year + "-0" + mes + "-" + "01";
@@ -8220,8 +8224,10 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
           this.fechaFin = year + "-" + (mes + 1) + "-" + "01";
         }
       } else {
-        this.fechaInicio = year + "-" + mes + "-" + "01";
-        this.fechaFin = year + "-" + (mes + 1) + "-" + "01";
+        // this.fechaInicio = year + "-" + mes + "-" + "01";
+        // this.fechaFin = year + "-" + (mes + 1) + "-" + "01";
+        this.fechaInicio = year - 3 + "-" + mes + "-" + "01";
+        this.fechaFin = year + 1 + "-" + mes + "-" + "31";
       }
     },
     desactivar: function desactivar(id, opcion) {
@@ -8480,10 +8486,6 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
           }
       }
     }
-  },
-  mounted: function mounted() {
-    this.cargarFecha();
-    this.listar(this.fechaInicio, this.fechaFin);
   }
 });
 
@@ -8972,7 +8974,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
   methods: (_methods = {
     listar: function listar(page, buscar, criterio) {
       var me = this;
-      var url = "/formula?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio;
+      var url = "formula?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         me.arrayFormula = respuesta.formulas.data;
@@ -8990,7 +8992,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
     selectProducto: function selectProducto(search, loading) {
       var me = this;
       loading(true);
-      var url = "/producto/selectProducto?filtro=" + search;
+      var url = "producto/selectProducto?filtro=" + search;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
 
@@ -9103,7 +9105,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
     },
     listarProducto: function listarProducto(buscar, criterio) {
       var me = this;
-      var url = "/producto/listarProducto?buscar=" + buscar + "&criterio=" + criterio;
+      var url = "producto/listarProducto?buscar=" + buscar + "&criterio=" + criterio;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         me.arrayProducto = respuesta.productos;
@@ -9152,7 +9154,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }
 
       var me = this;
-      axios.post("/formula/registrar", {
+      axios.post("formula/registrar", {
         nombre: this.nombre,
         cantidad: this.cantidadTotal,
         data: this.arrayDetalle
@@ -9178,7 +9180,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }
 
       var me = this;
-      axios.put("/formula/actualizar", {
+      axios.put("formula/actualizar", {
         nombre: this.nombre,
         cantidad: this.cantidadTotal,
         data: this.arrayDetalle,
@@ -9212,7 +9214,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }).then(function (result) {
         if (result.value) {
           var me = _this;
-          axios.put("/formula/desactivar", {
+          axios.put("formula/desactivar", {
             id: id
           }).then(function (response) {
             me.listar(1, "", "nombre");
@@ -9258,7 +9260,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }).then(function (result) {
         if (result.value) {
           var me = _this2;
-          axios.put("/formula/activar", {
+          axios.put("formula/activar", {
             id: id
           }).then(function (response) {
             me.listar(1, "", "nombre");
@@ -9327,7 +9329,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
                   this.nombre = data["nombre"];
                   this.cantidadTotal = data["cantidad"];
                   var me = this;
-                  var url = "/formula/listarFormula?id=" + data["id"];
+                  var url = "formula/listarFormula?id=" + data["id"];
                   axios.get(url).then(function (response) {
                     var respuesta = response.data;
                     me.arrayDetalle = respuesta.detalles;
@@ -9901,7 +9903,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
   methods: {
     listar: function listar(page, buscar, criterio) {
       var me = this;
-      var url = "/ingreso?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio;
+      var url = "ingreso?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         me.arrayData = respuesta.ingresos.data;
@@ -9919,7 +9921,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
     selectCuenta: function selectCuenta(search, loading) {
       var me = this;
       loading(true);
-      var url = "/cuenta/selectCuenta?filtro=" + search;
+      var url = "cuenta/selectCuenta?filtro=" + search;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
 
@@ -9960,7 +9962,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       me.listado = 2;
       var arrayIngresoT = []; // var arrayDetalle = [];
 
-      var url = "/ingreso/obtenerIngreso?id=" + id;
+      var url = "ingreso/obtenerIngreso?id=" + id;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         arrayIngresoT = respuesta.ingreso;
@@ -9973,7 +9975,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
         console.log(error);
       }); //obtener los Datos de los Detalles
 
-      var urld = "/ingreso/obtenerDetalles?id=" + id;
+      var urld = "ingreso/obtenerDetalles?id=" + id;
       axios.get(urld).then(function (response) {
         console.log(response);
         var respuesta = response.data;
@@ -10063,7 +10065,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
     },
     listarCuenta: function listarCuenta(buscar) {
       var me = this;
-      var url = "/cuenta/listarCuenta?filtro=" + buscar;
+      var url = "cuenta/listarCuenta?filtro=" + buscar;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         me.arrayCuenta = respuesta.cuentas;
@@ -10085,7 +10087,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }
 
       var me = this;
-      axios.post("/ingreso/registrar", {
+      axios.post("ingreso/registrar", {
         descripcion: this.descripcion,
         monto: this.debeTotal,
         data: this.arrayDetalle
@@ -10111,7 +10113,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }
 
       var me = this;
-      axios.put("/ingreso/actualizar", {
+      axios.put("ingreso/actualizar", {
         descripcion: this.descripcion,
         monto: this.debeTotal,
         data: this.arrayDetalle,
@@ -10191,7 +10193,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }).then(function (result) {
         if (result.value) {
           var me = _this2;
-          axios.put("/ingreso/activar", {
+          axios.put("ingreso/activar", {
             id: id
           }).then(function (response) {
             me.listar(1, "", "nombre");
@@ -10284,7 +10286,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
                   this.debeTotal = data["monto"];
                   this.descripcion = data["descripcion"];
                   var me = this;
-                  var url = "/ingreso/listarIngreso?id=" + data["id"];
+                  var url = "ingreso/listarIngreso?id=" + data["id"];
                   axios.get(url).then(function (response) {
                     var respuesta = response.data;
                     me.arrayDetalle = respuesta.detalles;
@@ -10783,7 +10785,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
   methods: {
     listar: function listar(page, buscar, criterio) {
       var me = this;
-      var url = "/cuenta?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio;
+      var url = "cuenta?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         me.arrayData = respuesta.cuentas.data;
@@ -10808,7 +10810,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
     selectCuenta: function selectCuenta(search, loading) {
       var me = this;
       loading(true);
-      var url = "/cuenta/cuenta?filtro=" + search;
+      var url = "cuenta/cuenta?filtro=" + search;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
 
@@ -10902,7 +10904,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }
 
       var me = this;
-      axios.post("/cuenta/registrar", {
+      axios.post("cuenta/registrar", {
         idCuenta: me.idCuenta,
         nombre: me.nombre,
         direccion: me.direccion,
@@ -10938,7 +10940,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }
 
       var me = this;
-      axios.put("/cuenta/actualizar", {
+      axios.put("cuenta/actualizar", {
         nombre: this.nombre,
         direccion: this.direccion,
         empresa: this.empresa,
@@ -10979,7 +10981,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }).then(function (result) {
         if (result.value) {
           var me = _this;
-          axios.put("/cuenta/desactivar", {
+          axios.put("cuenta/desactivar", {
             id: id
           }).then(function (response) {
             me.listar(1, "", "nombre");
@@ -11025,7 +11027,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }).then(function (result) {
         if (result.value) {
           var me = _this2;
-          axios.put("/cuenta/activar", {
+          axios.put("cuenta/activar", {
             id: id
           }).then(function (response) {
             me.listar(1, "", "nombre");
@@ -12462,7 +12464,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
   methods: {
     listar: function listar(page, buscar, criterio) {
       var me = this;
-      var url = "/venta?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio;
+      var url = "venta?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         me.arrayData = respuesta.ventas.data;
@@ -12480,7 +12482,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
     selectCliente: function selectCliente(search, loading) {
       var me = this;
       loading(true);
-      var url = "/cuenta/selectCuenta?filtro=" + search;
+      var url = "cuenta/selectCuenta?filtro=" + search;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
 
@@ -12507,7 +12509,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
     selectProducto: function selectProducto(search, loading) {
       var me = this;
       loading(true);
-      var url = "/producto/selectProducto?filtro=" + search;
+      var url = "producto/selectProducto?filtro=" + search;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
 
@@ -12765,7 +12767,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
     },
     listarProducto: function listarProducto(buscar, criterio) {
       var me = this;
-      var url = "/producto/listarProducto?buscar=" + buscar + "&criterio=" + criterio;
+      var url = "producto/listarProducto?buscar=" + buscar + "&criterio=" + criterio;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         me.arrayProducto = respuesta.productos;
@@ -12787,7 +12789,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }
 
       var me = this;
-      axios.post("/venta/registrar", {
+      axios.post("venta/registrar", {
         idCliente: this.idCliente,
         idFormula: this.idFormula,
         pago: this.pago,
@@ -12817,7 +12819,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }
 
       var me = this;
-      axios.put("/venta/actualizar", {
+      axios.put("venta/actualizar", {
         idCliente: this.idCliente,
         idFormula: this.idFormula,
         pago: this.pago,
@@ -12855,7 +12857,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }).then(function (result) {
         if (result.value) {
           var me = _this;
-          axios.put("/venta/desactivar", {
+          axios.put("venta/desactivar", {
             id: id
           }).then(function (response) {
             me.listar(1, "", "nombre");
@@ -12901,7 +12903,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
       }).then(function (result) {
         if (result.value) {
           var me = _this2;
-          axios.put("/venta/activar", {
+          axios.put("venta/activar", {
             id: id
           }).then(function (response) {
             me.listar(1, "", "nombre");
@@ -13033,7 +13035,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("v-select", vue_select__WEB
                   }
 
                   var me = this;
-                  var url = "/venta/listarVentas?id=" + data["id"] + "&idFormula=" + me.idFormula;
+                  var url = "venta/listarVentas?id=" + data["id"] + "&idFormula=" + me.idFormula;
                   axios.get(url).then(function (response) {
                     var respuesta = response.data;
                     me.arrayDetalle = respuesta.detalles;
@@ -94575,7 +94577,7 @@ var render = function() {
                       data.nivel == 2
                         ? _c("td", [
                             _c("b", [
-                              _vm._v(_vm._s(data.nivel2 + "." + data.nivel2))
+                              _vm._v(_vm._s(data.nivel1 + "." + data.nivel2))
                             ])
                           ])
                         : _vm._e(),
