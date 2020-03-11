@@ -18,9 +18,9 @@ class CreateIngresosTable extends Migration
             $table->integer('factura');
             $table->integer('registro');
             $table->dateTime('fecha');
-            $table->decimal('monto',11,2);
-            $table->string('descripcion',200)->nullable();
-            $table->string('tipo',10)->nullable();
+            $table->decimal('monto_total',11,2);
+            $table->string('descripcion')->nullable();
+            $table->string('tipo',10)->default('ingresos');
             $table->boolean('estado')->default(1);
             $table->timestamps();
         });

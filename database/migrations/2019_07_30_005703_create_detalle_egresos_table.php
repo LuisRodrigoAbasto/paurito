@@ -15,16 +15,16 @@ class CreateDetalleEgresosTable extends Migration
     {
         Schema::create('detalle_egresos', function (Blueprint $table) {
             $table->bigIncrements('id');
-           $table->unsignedBigInteger('idEgreso');
-           $table->unsignedBigInteger('idCuenta');
+           $table->unsignedBigInteger('egreso_id');
+           $table->unsignedBigInteger('cuenta_id');
             $table->integer('orden');
             $table->decimal('debe',11,2)->nullable();
             $table->decimal('haber',11,2)->nullable();
-            $table->string('descripcionD',200)->nullable();
+            $table->string('descripcion')->nullable();
             $table->boolean('estado')->default(1);
             // $table->primary(['idIE','idCuenta']);
-            $table->foreign('idEgreso')->references('id')->on('egresos');
-            $table->foreign('idCuenta')->references('id')->on('cuentas');
+            $table->foreign('egreso_id')->references('id')->on('egresos');
+            $table->foreign('cuenta_id')->references('id')->on('cuentas');
             $table->timestamps();
         });
     }

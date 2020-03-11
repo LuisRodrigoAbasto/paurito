@@ -15,16 +15,16 @@ class CreateDetalleIngresosTable extends Migration
     {
         Schema::create('detalle_ingresos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('idIngreso');
-            $table->unsignedBigInteger('idCuenta');
+            $table->unsignedBigInteger('ingreso_id');
+            $table->unsignedBigInteger('cuenta_id');
             $table->integer('orden');
             $table->decimal('debe',11,2)->nullable();
             $table->decimal('haber',11,2)->nullable();
-            $table->string('descripcionD',200)->nullable();
+            $table->string('descripcion')->nullable();
             $table->boolean('estado')->default(1);
-            // $table->primary(['idIE','idCuenta']);
-            $table->foreign('idIngreso')->references('id')->on('ingresos');
-            $table->foreign('idCuenta')->references('id')->on('cuentas');
+            // $table->primary(['idIE','cuenta_id']);
+            $table->foreign('ingreso_id')->references('id')->on('ingresos');
+            $table->foreign('cuenta_id')->references('id')->on('cuentas');
             $table->timestamps();
         });
     }

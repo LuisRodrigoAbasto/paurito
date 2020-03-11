@@ -15,15 +15,15 @@ class CreateDetalleComprasTable extends Migration
     {
         Schema::create('detalle_compras', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('idCompra');
-            $table->unsignedBigInteger('idProducto');
+            $table->unsignedBigInteger('compra_id');
+            $table->unsignedBigInteger('producto_id');
             $table->integer('orden');
             $table->decimal('cantidad',11,2);
             $table->decimal('precio',11,2);
             $table->boolean('estado')->default(1);
-            // $table->primary(['idCompra','idProducto']);
-            $table->foreign('idCompra')->references('id')->on('compras');
-            $table->foreign('idProducto')->references('id')->on('productos');
+            // $table->primary(['compra_id','producto_id']);
+            $table->foreign('compra_id')->references('id')->on('compras');
+            $table->foreign('producto_id')->references('id')->on('productos');
             $table->timestamps();
         });
     }

@@ -15,14 +15,14 @@ class CreateDetalleFormulasTable extends Migration
     {
         Schema::create('detalle_formulas', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('idFormula');
-            $table->unsignedBigInteger('idProducto');
+            $table->unsignedBigInteger('formula_id');
+            $table->unsignedBigInteger('producto_id');
             $table->integer('orden');
             $table->decimal('cantidad',11,2);
             $table->boolean('estado')->default(1);
             // $table->primary(['idFormula','idProducto']);
-            $table->foreign('idFormula')->references('id')->on('formulas');
-            $table->foreign('idProducto')->references('id')->on('productos');
+            $table->foreign('formula_id')->references('id')->on('formulas');
+            $table->foreign('producto_id')->references('id')->on('productos');
             $table->timestamps();
         });
     }

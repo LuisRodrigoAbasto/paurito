@@ -17,15 +17,15 @@ class CreateComprasTable extends Migration
             $table->bigIncrements('id');
             $table->integer('factura');
             $table->integer('registro');
-            $table->unsignedBigInteger('idProveedor');
+            $table->unsignedBigInteger('proveedor_id');
             $table->dateTime('fecha');
             $table->integer('pago');
             $table->decimal('cantidad',11,2);
-            $table->decimal('montoCompra',11,2);
-            $table->string('descripcion',200)->nullable();
-            $table->string('tipo',10)->nullable();
+            $table->decimal('monto_total',11,2);
+            $table->string('descripcion')->nullable();
+            $table->string('tipo',10)->default('compras');
             $table->boolean('estado')->default(1);
-            $table->foreign('idProveedor')->references('id')->on('cuentas');
+            $table->foreign('proveedor_id')->references('id')->on('cuentas');
             $table->timestamps();
         });
     }

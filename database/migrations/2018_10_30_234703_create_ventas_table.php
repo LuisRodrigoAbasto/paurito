@@ -17,16 +17,16 @@ class CreateVentasTable extends Migration
             $table->bigIncrements('id');
             $table->integer('factura');
             $table->integer('registro');
-            $table->unsignedBigInteger('idCliente');
-            $table->Biginteger('idFormula');
+            $table->unsignedBigInteger('cliente_id');
+            $table->Biginteger('formula_id');
             $table->dateTime('fecha');
             $table->integer('pago');
             $table->decimal('cantidad',11,2);
-            $table->decimal('montoVenta',11,2);
-            $table->string('descripcion',200)->nullable();
-            $table->string('tipo',10)->nullable();
+            $table->decimal('monto_total',11,2);
+            $table->string('descripcion')->nullable();
+            $table->string('tipo',10)->default('ventas');
             $table->boolean('estado')->default(1);
-            $table->foreign('idCliente')->references('id')->on('cuentas');
+            $table->foreign('cliente_id')->references('id')->on('cuentas');
             $table->timestamps();
         });
     }

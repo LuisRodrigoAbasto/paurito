@@ -15,16 +15,16 @@ class CreateDetalleVentasTable extends Migration
     {
         Schema::create('detalle_ventas', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('idVenta');
-            $table->unsignedBigInteger('idProducto');
+            $table->unsignedBigInteger('venta_id');
+            $table->unsignedBigInteger('producto_id');
             $table->integer('orden');
             $table->decimal('cantidad',11,2);
             $table->decimal('precio',11,2);
-            $table->string('descripcionD',200)->nullable();
+            $table->string('descripcion')->nullable();
             $table->boolean('estado')->default(1);
             // $table->primary(['idVenta','idProducto']);
-            $table->foreign('idVenta')->references('id')->on('ventas');
-            $table->foreign('idProducto')->references('id')->on('productos');
+            $table->foreign('venta_id')->references('id')->on('ventas');
+            $table->foreign('producto_id')->references('id')->on('productos');
             $table->timestamps();
         });
     }
