@@ -27,7 +27,7 @@ class MenusTableSeeder extends Seeder
         Menu::create([
             'nombre'=>'Producto',
             'icono'=>'nav-icon fa fa-product-hunt',
-            'url'=>'Producto',
+            'url'=>'producto',
             'padre_id'=>null
         ]);
 

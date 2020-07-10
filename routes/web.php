@@ -17,7 +17,10 @@
 Route::get('/', 'PauritoController@index');
 
 Route::get('/dashboard_controller','Api\DashboardController@index');
-   
+
+Route::get('/api/menu', 'Api\MenuController@index');   
+
+
 Route::get('/formula', 'FormulaController@index');
 Route::post('/formula/registrar', 'FormulaController@store');
 Route::put('/formula/actualizar', 'FormulaController@update');

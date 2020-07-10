@@ -9316,42 +9316,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      array_menu: []
+    };
+  },
+  methods: {
+    listarMenu: function listarMenu() {
+      var _this = this;
+
+      var url = "api/menu";
+      axios.get(url).then(function (resp) {
+        _this.array_menu = resp.data.data;
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.listarMenu();
+  }
+});
 
 /***/ }),
 
@@ -89363,167 +89349,102 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "sidebar" }, [
+    _c("nav", { staticClass: "sidebar-nav" }, [
+      _c(
+        "ul",
+        { staticClass: "nav" },
+        [
+          _vm._l(_vm.array_menu, function(data) {
+            return [
+              data.padre_id != null
+                ? _c(
+                    "li",
+                    {
+                      key: data.padre_id,
+                      staticClass: "nav-item nav-dropdown"
+                    },
+                    [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "nav-link nav-dropdown-toggle",
+                          attrs: { href: "#" }
+                        },
+                        [
+                          _c("i", { class: data.icono }),
+                          _vm._v(" " + _vm._s(data.nombre) + "\n        ")
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _vm._l(data.data, function(sub) {
+                        return _c(
+                          "ul",
+                          {
+                            key: sub.nombre,
+                            staticClass: "nav-dropdown-items"
+                          },
+                          [
+                            _c(
+                              "li",
+                              { staticClass: "nav-item" },
+                              [
+                                _c(
+                                  "router-link",
+                                  {
+                                    staticClass: "nav-link",
+                                    attrs: { to: sub.url, href: "#" }
+                                  },
+                                  [
+                                    _c("i", { class: sub.icono }),
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(sub.nombre) +
+                                        "\n                \n            "
+                                    )
+                                  ]
+                                )
+                              ],
+                              1
+                            )
+                          ]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                : _c(
+                    "li",
+                    { key: data.nombre, staticClass: "nav-item" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "nav-link",
+                          attrs: { to: data.url, href: "#" }
+                        },
+                        [
+                          _c("i", { class: data.icono }),
+                          _vm._v(" " + _vm._s(data.nombre) + " ")
+                        ]
+                      )
+                    ],
+                    1
+                  )
+            ]
+          })
+        ],
+        2
+      )
+    ]),
+    _vm._v(" "),
+    _c("button", {
+      staticClass: "sidebar-minimizer brand-minimizer",
+      attrs: { type: "button" }
+    })
+  ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "sidebar" }, [
-      _c("nav", { staticClass: "sidebar-nav" }, [
-        _c("ul", { staticClass: "nav" }, [
-          _c("li", { staticClass: "nav-item nav-dropdown" }, [
-            _c(
-              "a",
-              {
-                staticClass: "nav-link nav-dropdown-toggle",
-                attrs: { href: "#" }
-              },
-              [
-                _c("i", { staticClass: "nav-icon icon-bag" }),
-                _vm._v(" Almacén\n        ")
-              ]
-            ),
-            _vm._v(" "),
-            _c("ul", { staticClass: "nav-dropdown-items" }, [
-              _c("li", { staticClass: "nav-item" }, [
-                _c(
-                  "a",
-                  { staticClass: "nav-link", attrs: { href: "formulas" } },
-                  [
-                    _c("i", { staticClass: "nav-icon icon-grid" }),
-                    _vm._v(" Formulas\n            ")
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("li", { staticClass: "nav-item" }, [
-                _c(
-                  "a",
-                  { staticClass: "nav-link", attrs: { href: "productos" } },
-                  [
-                    _c("i", { staticClass: "nav-icon fa fa-product-hunt" }),
-                    _vm._v(" Productos\n            ")
-                  ]
-                )
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "nav-item" }, [
-            _c("a", { staticClass: "nav-link", attrs: { href: "ventas" } }, [
-              _c("i", { staticClass: "nav-icon icon-basket-loaded" }),
-              _vm._v(" Venta")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "nav-item" }, [
-            _c("a", { staticClass: "nav-link", attrs: { href: "compras" } }, [
-              _c("i", { staticClass: "nav-icon icon-handbag" }),
-              _vm._v(" Compra")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "nav-item" }, [
-            _c("a", { staticClass: "nav-link", attrs: { href: "ingresos" } }, [
-              _c("i", { staticClass: "nav-icon fa fa-money" }),
-              _vm._v(" Ingreso")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "nav-item" }, [
-            _c("a", { staticClass: "nav-link", attrs: { href: "egresos" } }, [
-              _c("i", { staticClass: "nav-icon fa fa-money" }),
-              _vm._v(" Egreso")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "nav-item" }, [
-            _c("a", { staticClass: "nav-link", attrs: { href: "cuentas" } }, [
-              _c("i", { staticClass: "nav-icon icon-briefcase" }),
-              _vm._v(" Plan de Cuentas")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "nav-item" }, [
-            _c(
-              "a",
-              { staticClass: "nav-link", attrs: { href: "balance_general" } },
-              [
-                _c("i", { staticClass: "nav-icon icon-chart" }),
-                _vm._v(" Balance General")
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "nav-item" }, [
-            _c(
-              "a",
-              { staticClass: "nav-link", attrs: { href: "estado_resultado" } },
-              [
-                _c("i", { staticClass: "nav-icon icon-chart" }),
-                _vm._v(" Estado Resultado")
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "nav-item nav-dropdown" }, [
-            _c(
-              "a",
-              {
-                staticClass: "nav-link nav-dropdown-toggle",
-                attrs: { href: "#" }
-              },
-              [
-                _c("i", { staticClass: "nav-icon icon-people" }),
-                _vm._v(" Acceso")
-              ]
-            ),
-            _vm._v(" "),
-            _c("ul", { staticClass: "nav-dropdown-items" }, [
-              _c("li", { staticClass: "nav-item" }, [
-                _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-                  _c("i", { staticClass: "nav-icon icon-user" }),
-                  _vm._v(" Usuarios")
-                ])
-              ]),
-              _vm._v(" "),
-              _c("li", { staticClass: "nav-item" }, [
-                _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-                  _c("i", { staticClass: "nav-icon icon-user-following" }),
-                  _vm._v(" Roles")
-                ])
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "nav-item" }, [
-            _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-              _c("i", { staticClass: "nav-icon icon-book-open" }),
-              _vm._v(" Ayuda "),
-              _c("span", { staticClass: "badge badge-danger" }, [_vm._v("PDF")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "nav-item" }, [
-            _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-              _c("i", { staticClass: " fa fa-ban" }),
-              _c("i", { staticClass: "nav-icon icon-info" }),
-              _vm._v(" Acerca de..."),
-              _c("span", { staticClass: "badge badge-info" }, [_vm._v("IT")])
-            ])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("button", {
-        staticClass: "sidebar-minimizer brand-minimizer",
-        attrs: { type: "button" }
-      })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

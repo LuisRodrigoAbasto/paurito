@@ -9,63 +9,28 @@
           </a>
         </li> -->
         <!-- <li class="nav-title">SISTEMA</li> -->
-        <li class="nav-item nav-dropdown">
-          <a class="nav-link nav-dropdown-toggle" href="#">
-            <i class="nav-icon icon-bag"></i> Almacén
+        <template v-for="data in array_menu">
+        <li class="nav-item nav-dropdown"  :key="data.padre_id" v-if="data.padre_id!=null">
+          <a class="nav-link nav-dropdown-toggle" href="#" > 
+            <i :class=data.icono></i> {{data.nombre}}
           </a>
-          <ul class="nav-dropdown-items">
-            <li class="nav-item">
-              <a class="nav-link" href="formulas">
-                <i class="nav-icon icon-grid"></i> Formulas
-              </a>
+
+          <ul class="nav-dropdown-items" v-for="sub in data.data" :key="sub.nombre">
+           
+            <li class="nav-item">            
+               <router-link :to=sub.url class="nav-link" href="#" >
+                <i :class=sub.icono></i> {{ sub.nombre }}
+                  
+              </router-link>        
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="productos">
-                <i class="nav-icon fa fa-product-hunt"></i> Productos
-              </a>
-            </li>
+           
           </ul>
+
         </li>
-       <li class="nav-item">
-                    <a class="nav-link" href="ventas"><i class="nav-icon icon-basket-loaded"></i> Venta</a>
+       <li class="nav-item" v-else :key="data.nombre">
+                     <router-link :to=data.url class="nav-link" href="#"><i :class=data.icono></i> {{data.nombre}} </router-link>
                 </li>
-                <li class="nav-item">
-                <a class="nav-link" href="compras"><i class="nav-icon icon-handbag"></i> Compra</a>
-                </li>
-                
-                <li class="nav-item">
-                <a class="nav-link" href="ingresos"><i class="nav-icon fa fa-money"></i> Ingreso</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="egresos"><i class="nav-icon fa fa-money"></i> Egreso</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="cuentas"><i class="nav-icon icon-briefcase"></i> Plan de Cuentas</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="balance_general"><i class="nav-icon icon-chart"></i> Balance General</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="estado_resultado"><i class="nav-icon icon-chart"></i> Estado Resultado</a>
-                    </li>
-                <li class="nav-item nav-dropdown">
-                        <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon icon-people"></i> Acceso</a>
-                        <ul class="nav-dropdown-items">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="nav-icon icon-user"></i> Usuarios</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="nav-icon icon-user-following"></i> Roles</a>
-                            </li>
-                        </ul>
-                    </li>
-               
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="nav-icon icon-book-open"></i> Ayuda <span class="badge badge-danger">PDF</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"> <i class=" fa fa-ban"></i><i class="nav-icon icon-info"></i> Acerca de...<span class="badge badge-info">IT</span></a>
-                </li>
+        </template>               
         <!-- <li class="nav-item">
           <a class="nav-link" href="typography.html">
             <i class="nav-icon icon-pencil"></i> Typography
@@ -77,5 +42,27 @@
   </div>
 </template>
 <script>
-export default {};
+export default {
+  data(){
+    return {
+    array_menu:[]
+    }
+  },
+  methods:{
+    listarMenu(){
+      var url = "api/menu";
+      axios
+        .get(url)
+        .then(resp=> {
+          this.array_menu=resp.data.data;
+          })
+        .catch(function(error) {
+          console.log(error);
+        });
+    }
+  },
+  mounted(){
+    this.listarMenu();
+  }
+};
 </script>
