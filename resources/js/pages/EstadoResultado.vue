@@ -1,5 +1,6 @@
 <template>
-  <main class="main">
+  <!-- <main class="main"> -->
+    <div>
     <!-- Breadcrumb -->
     <!-- <ol class="breadcrumb">
       <li class="breadcrumb-item">Home</li>
@@ -1161,7 +1162,8 @@
       </div>
       <!-- /.modal-dialog -->
     </div>
-  </main>
+  <!-- </main> -->
+  </div>
 </template>
 <script>
 import Vue from "vue";

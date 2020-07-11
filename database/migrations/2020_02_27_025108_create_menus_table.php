@@ -17,9 +17,8 @@ class CreateMenusTable extends Migration
             $table->bigIncrements('id');
             $table->string('nombre');
             $table->string('icono')->nullable();
-            $table->string('url')->nullable();
-            $table->unsignedBigInteger('padre_id')->nullable();
-            $table->foreign('padre_id')->references('id')->on('menus');
+            $table->string('path')->nullable();
+            $table->string('component')->nullable();
             $table->timestamps();
         });
     }

@@ -1,5 +1,5 @@
 <template>
-  <main class="main">
+  <!-- <main class="main"> -->
     <!-- Breadcrumb-->
     <!-- <ol class="breadcrumb">
       <li class="breadcrumb-item">Home</li>
@@ -21,6 +21,7 @@
         </div>
       </li>
     </ol> -->
+    <div>
     <br>
 
     <div class="col-lg-12">
@@ -615,7 +616,8 @@
         </div>
       </div>
     </div>
-  </main>
+    </div>
+  <!-- </main> -->
 </template>
 <script>
 import Vue from "vue";

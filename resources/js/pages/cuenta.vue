@@ -1,5 +1,6 @@
 <template>
-  <main class="main">
+  <!-- <main class="main"> -->
+    <div>
     <!-- Breadcrumb -->
     <!-- <ol class="breadcrumb">
       <li class="breadcrumb-item">Home</li>
@@ -370,7 +371,8 @@
       <!-- /.modal-dialog -->
     </div>
     <!--Fin del modal-->
-  </main>
+  <!-- </main> -->
+  </div>
 </template>
 
 <script>
@@ -447,7 +449,7 @@ export default {
     listar(page, buscar, criterio) {
       let me = this;
       var url =
-        "cuenta?page=" + page + "&buscar=" + buscar + "&criterio=" + criterio;
+        "api/cuenta?page=" + page + "&buscar=" + buscar + "&opcion=" + criterio;
       axios
         .get(url)
         .then(function(response) {
@@ -609,7 +611,7 @@ export default {
       }
       let me = this;
       axios
-        .put("cuenta/actualizar", {
+        .put("api/cuenta/actualizar", {
           nombre: this.nombre,
           direccion: this.direccion,
           empresa: this.empresa,

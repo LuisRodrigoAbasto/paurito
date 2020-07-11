@@ -11,7 +11,7 @@ class CuentaController extends ApiController
 {
     public function index(Request $request)
     {
-        if(!$request->ajax()) return redirect('/');
+        // if(!$request->ajax()) return redirect('/');
         $buscar = $request->buscar;
         $pagina = $request->pagina;
         $opcion = $request->opcion;
@@ -108,7 +108,7 @@ class CuentaController extends ApiController
     public function store(Request $request)
     {
 
-        if(!$request->ajax()) return redirect('/');
+        // if(!$request->ajax()) return redirect('/');
         DB::beginTransaction();
         try {
         $table = new Cuenta();

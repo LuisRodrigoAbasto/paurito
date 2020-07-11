@@ -16,19 +16,19 @@ class ProductoController extends ApiController
      */
     public function index(Request $request)
     {
-        if (!$request->ajax()) {
-            return redirect('/');
-        }
+        // // if (!$request->ajax()) {
+        //     return redirect('/');
+        // }
 
         $buscar = $request->buscar;
         $pagina = $request->pagina;
         $opcion = $request->opcion;
-        $productos = Producto::where($opcion, 'like', '%' . $buscar . '%')
+        $data = Producto::where($opcion, 'like', '%' . $buscar . '%')
         ->select('id', 'nombre', 'stock', 'unidad', 'codigo', DB::raw("floor(stock) as total,truncate(((stock-floor(stock))*codigo),2) as decimales"), 'referencia', 'estado')
             ->orderBy('id', 'desc')
             ->paginate($pagina);
 
-        return $this->sendResponse($table, 'Datos Recuperados Correctamente');
+        return $this->sendResponse($data, 'Datos Recuperados Correctamente');
     }
     public function notificaciones(Request $request)
     {

@@ -1,5 +1,5 @@
 <template>
-  <main class="main">
+  <!-- <main class="main"> -->
     <!-- Breadcrumb -->
     <!-- <ol class="breadcrumb">
       <li class="breadcrumb-item">Home</li>
@@ -8,6 +8,7 @@
       </li>
       <li class="breadcrumb-item active">Dashboard</li>
     </ol>-->
+    <div>
     <br />
     <div class="container-fluid">
       <!-- Ejemplo de tabla Listado -->
@@ -18,17 +19,17 @@
             type="button"
             data-toggle="modal"
             data-target="#ModalLong"
-            @click="abrirModal('producto','registrar')"
+         
             class="btn btn-secondary"
           >
             <i class="icon-plus"></i>&nbsp;Nuevo
           </button>
 
-          <button type="button" @click="cargarPdf()" class="btn btn-danger">
+          <button type="button"  class="btn btn-danger">
             <i class="fa fa-file-pdf-o"></i>&nbsp;PDF
           </button>
 
-          <button type="button" @click="imprimir()" class="btn btn-info">
+          <button type="button" class="btn btn-info">
             <i class="fa fa-print fa-lg"></i>
           </button>
         </div>
@@ -38,20 +39,20 @@
               <div class="input-group">
                 <div class="col-md-10">
                   <div class="input-group">
-                    <select class="form-control col-md-3">
+                    <select class="form-control col-md-3" v-model="opcion">
                       <option value="nombre">Nombre</option>
                     </select>
                     <input
                       type="text"
                       v-model="buscar"
-                      @keyup.enter="listarProducto(1,buscar)"
+                      @keyup.enter="listar(1,buscar,opcion)"
                       class="form-control"
                       placeholder="Buscar Producto"
                     />
                     <span class="input-group-append">
                       <button
                         type="submit"
-                        @click="listarProducto(1,buscar)"
+                        @click="listar(1,buscar,opcion)"
                         class="btn btn-primary"
                       >
                         <i class="fa fa-search"></i> Buscar
@@ -62,7 +63,7 @@
               </div>
             </div>
           </div>
-          <div class="table-responsive">
+          <!-- <div class="table-responsive">
             <table class="table table-bordered table-striped table-sm">
               <thead>
                 <tr>
@@ -125,10 +126,12 @@
                 </tr>
               </tbody>
             </table>
-          </div>
+          </div> -->
+<app-table :array_data="array_data">
+</app-table>
           <nav>
-            <!-- justify-content-center -->
-            <ul class="pagination">
+
+            <!-- <ul class="pagination">
               <li class="page-item" v-if="pagination.current_page > 1">
                 <a
                   class="page-link"
@@ -156,14 +159,14 @@
                   @click.prevent="cambiarPagina(pagination.current_page + 1,buscar)"
                 >Sig</a>
               </li>
-            </ul>
+            </ul> -->
           </nav>
         </div>
       </div>
-      <!-- Fin ejemplo de tabla Listado -->
+
     </div>
-    <!--Inicio del modal agregar/actualizar-->
-    <div
+
+    <!-- <div
       class="modal fade bd-example-modal-lg"
       tabindex="-1"
       role="dialog"
@@ -274,18 +277,24 @@
             >Actualizar</button>
           </div>
         </div>
-        <!-- /.modal-content -->
+
       </div>
 
-      <!-- /.modal-dialog -->
-    </div>
-    <!--Fin del modal-->
-  </main>
+
+    </div> -->
+
+  <!-- </main> -->
+  </div>
 </template>
 
+
 <script>
+import table from "../components/table.vue";
 import Vue from "vue";
 export default {
+    components: {
+    "app-table": table
+  },
   data() {
     return {
       producto_id: 0,
@@ -294,7 +303,14 @@ export default {
       codigo: 0,
       unidad: "",
       referencia: "",
-      arrayProducto: [],
+     array_data:{
+        titulo:[
+        {nombre:'id',titulo:"ID"},
+        {nombre:"nombre",titulo:"Producto"},
+        {nombre:"stock",titulo:"Stock"},
+        ],
+        data:[]
+      },
       tituloModal: "",
       tipoAccion: 0,
       errorProducto: 0,
@@ -310,7 +326,8 @@ export default {
       offset: 3,
       buscar: "",
       activarValidate: "",
-      mensaje: ""
+      mensaje: "",
+      opcion:"nombre"
     };
   },
   computed: {
@@ -338,251 +355,253 @@ export default {
       return pagesArray;
     }
   },
+    mounted() {
+    this.listar(1, this.buscar,this.opcion);
+  },
   methods: {
-    listarProducto(page, buscar) {
-      let me = this;
-      var url = "producto?page=" + page + "&buscar=" + buscar;
+
+    listar(page, buscar,opcion) {
+      var url = "api/producto?page=" + page + "&buscar=" + buscar+"&opcion="+opcion;
       axios
         .get(url)
-        .then(function(response) {
-          var respuesta = response.data;
-          me.arrayProducto = respuesta.productos.data;
-          me.pagination = respuesta.pagination;
+        .then(resp=> {
+          // var respuesta = response.data;
+          this.array_data.data=resp.data.data.data;
+          // console.log(this.array_data);
+          // this.pagination = resp.data.data
         })
         .catch(function(error) {
           console.log(error);
         });
     },
-    cambiarPagina(page, buscar) {
-      let me = this;
-      // actualizar la Pagina
-      me.pagination.current_page = page;
-      // enviar la peticion para visualizar la data de esta pagina
-      me.listarProducto(page, buscar);
-    },
-    cargarPdf() {
-      window.open("producto/listarPdf");
-    },
-    imprimir() {
-      window.open("producto/imprimir");
-    },
-    registrarProducto() {
-      if (this.validarProducto()) {
-        this.activarValidate = "was-validated";
-        Swal.fire({
-          position: "center",
-          type: "error",
-          title: this.mensaje,
-          showConfirmButton: false,
-          timer: 1500
-        });
-        return;
-      }
-      let me = this;
+    // cambiarPagina(page, buscar) {
+    //   let me = this;
+    //   // actualizar la Pagina
+    //   me.pagination.current_page = page;
+    //   // enviar la peticion para visualizar la data de esta pagina
+    //   me.listarProducto(page, buscar);
+    // },
+    // cargarPdf() {
+    //   window.open("producto/listarPdf");
+    // },
+    // imprimir() {
+    //   window.open("producto/imprimir");
+    // },
+    // registrarProducto() {
+    //   if (this.validarProducto()) {
+    //     this.activarValidate = "was-validated";
+    //     Swal.fire({
+    //       position: "center",
+    //       type: "error",
+    //       title: this.mensaje,
+    //       showConfirmButton: false,
+    //       timer: 1500
+    //     });
+    //     return;
+    //   }
+    //   let me = this;
 
-      axios
-        .post("producto/registrar", {
-          nombre: this.nombre,
-          stock: this.stock,
-          unidad: this.unidad,
-          codigo: this.codigo,
-          referencia: this.referencia
-        })
-        .then(function(response) {
-          $("#ModalLong").modal("hide");
-          me.cerrarModal();
-          me.listarProducto(1, "");
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    },
-    actualizarProducto() {
-      if (this.validarProducto()) {
-        this.activarValidate = "was-validated";
-        Swal.fire({
-          position: "center",
-          type: "error",
-          title: this.mensaje,
-          showConfirmButton: false,
-          timer: 1500
-        });
-        return;
-      }
-      let me = this;
+    //   axios
+    //     .post("producto/registrar", {
+    //       nombre: this.nombre,
+    //       stock: this.stock,
+    //       unidad: this.unidad,
+    //       codigo: this.codigo,
+    //       referencia: this.referencia
+    //     })
+    //     .then(function(response) {
+    //       $("#ModalLong").modal("hide");
+    //       me.cerrarModal();
+    //       me.listarProducto(1, "");
+    //     })
+    //     .catch(function(error) {
+    //       console.log(error);
+    //     });
+    // },
+    // actualizarProducto() {
+    //   if (this.validarProducto()) {
+    //     this.activarValidate = "was-validated";
+    //     Swal.fire({
+    //       position: "center",
+    //       type: "error",
+    //       title: this.mensaje,
+    //       showConfirmButton: false,
+    //       timer: 1500
+    //     });
+    //     return;
+    //   }
+    //   let me = this;
 
-      axios
-        .put("producto/actualizar", {
-          nombre: this.nombre,
-          stock: this.stock,
-          unidad: this.unidad,
-          codigo: this.codigo,
-          referencia: this.referencia,
-          id: this.producto_id
-        })
-        .then(function(response) {
-          $("#ModalLong").modal("hide");
-          me.cerrarModal();
-          me.listarProducto(1, "");
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    },
-    desactivar(id) {
-      const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: "btn btn-success",
-          cancelButton: "btn btn-danger"
-        },
-        buttonsStyling: false
-      });
+    //   axios
+    //     .put("producto/actualizar", {
+    //       nombre: this.nombre,
+    //       stock: this.stock,
+    //       unidad: this.unidad,
+    //       codigo: this.codigo,
+    //       referencia: this.referencia,
+    //       id: this.producto_id
+    //     })
+    //     .then(function(response) {
+    //       $("#ModalLong").modal("hide");
+    //       me.cerrarModal();
+    //       me.listarProducto(1, "");
+    //     })
+    //     .catch(function(error) {
+    //       console.log(error);
+    //     });
+    // },
+    // desactivar(id) {
+    //   const swalWithBootstrapButtons = Swal.mixin({
+    //     customClass: {
+    //       confirmButton: "btn btn-success",
+    //       cancelButton: "btn btn-danger"
+    //     },
+    //     buttonsStyling: false
+    //   });
 
-      swalWithBootstrapButtons
-        .fire({
-          title: "Estas Seguro de Desactivar el Registro?",
-          text: "Si Desactiva no estara en la Lista!",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonText: "Si, Desactivar!",
-          cancelButtonText: "No, Cancelar!",
-          reverseButtons: true
-        })
-        .then(result => {
-          if (result.value) {
-            let me = this;
+    //   swalWithBootstrapButtons
+    //     .fire({
+    //       title: "Estas Seguro de Desactivar el Registro?",
+    //       text: "Si Desactiva no estara en la Lista!",
+    //       type: "warning",
+    //       showCancelButton: true,
+    //       confirmButtonText: "Si, Desactivar!",
+    //       cancelButtonText: "No, Cancelar!",
+    //       reverseButtons: true
+    //     })
+    //     .then(result => {
+    //       if (result.value) {
+    //         let me = this;
 
-            axios
-              .put("producto/desactivar", {
-                id: id
-              })
-              .then(function(response) {
-                me.listarProducto(1, "");
-                Swal.fire({
-                  position: "center",
-                  type: "success",
-                  title: "El Registro ha sido Desactivado",
-                  showConfirmButton: false,
-                  timer: 1000
-                }).catch(function(error) {
-                  console.log(error);
-                });
-              });
-          } else if (result.dismiss === Swal.DismissReason.cancel) {
-            Swal.fire({
-              position: "center",
-              type: "error",
-              title: "Cancelado",
-              showConfirmButton: false,
-              timer: 1000
-            });
-          }
-        });
-    },
-    activar(id) {
-      const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: "btn btn-success",
-          cancelButton: "btn btn-danger"
-        },
-        buttonsStyling: false
-      });
+    //         axios
+    //           .put("producto/desactivar", {
+    //             id: id
+    //           })
+    //           .then(function(response) {
+    //             me.listarProducto(1, "");
+    //             Swal.fire({
+    //               position: "center",
+    //               type: "success",
+    //               title: "El Registro ha sido Desactivado",
+    //               showConfirmButton: false,
+    //               timer: 1000
+    //             }).catch(function(error) {
+    //               console.log(error);
+    //             });
+    //           });
+    //       } else if (result.dismiss === Swal.DismissReason.cancel) {
+    //         Swal.fire({
+    //           position: "center",
+    //           type: "error",
+    //           title: "Cancelado",
+    //           showConfirmButton: false,
+    //           timer: 1000
+    //         });
+    //       }
+    //     });
+    // },
+    // activar(id) {
+    //   const swalWithBootstrapButtons = Swal.mixin({
+    //     customClass: {
+    //       confirmButton: "btn btn-success",
+    //       cancelButton: "btn btn-danger"
+    //     },
+    //     buttonsStyling: false
+    //   });
 
-      swalWithBootstrapButtons
-        .fire({
-          title: "Estas Seguro de Activar el Registro?",
-          text: "Si Activa no estara en la Lista!",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonText: "Si, Activar!",
-          cancelButtonText: "No, Cancelar!",
-          reverseButtons: true
-        })
-        .then(result => {
-          if (result.value) {
-            let me = this;
+    //   swalWithBootstrapButtons
+    //     .fire({
+    //       title: "Estas Seguro de Activar el Registro?",
+    //       text: "Si Activa no estara en la Lista!",
+    //       type: "warning",
+    //       showCancelButton: true,
+    //       confirmButtonText: "Si, Activar!",
+    //       cancelButtonText: "No, Cancelar!",
+    //       reverseButtons: true
+    //     })
+    //     .then(result => {
+    //       if (result.value) {
+    //         let me = this;
 
-            axios
-              .put("producto/activar", {
-                id: id
-              })
-              .then(function(response) {
-                me.listarProducto(1, "");
-                Swal.fire({
-                  position: "center",
-                  type: "success",
-                  title: "El Registro ha sido Activado",
-                  showConfirmButton: false,
-                  timer: 1000
-                }).catch(function(error) {
-                  console.log(error);
-                });
-              });
-          } else if (result.dismiss === Swal.DismissReason.cancel) {
-            Swal.fire({
-              position: "center",
-              type: "error",
-              title: "Cancelado",
-              showConfirmButton: false,
-              timer: 1000
-            });
-          }
-        });
-    },
-    validarProducto() {
-      if (!this.nombre || !this.unidad || !this.referencia) {
-        this.mensaje = "Ingrese El Nombre y Referencia del stock y la Unidad";
-        return true;
-      }
-      if (!this.stock || !this.codigo) {
-        this.mensaje = "Ingrese El Stock y la Unidad no Puede ser 0";
-        return true;
-      }
-      return false;
-    },
-    cerrarModal() {
-      this.tituloModal = "";
-      this.limpiarRegistro();
-    },
-    limpiarRegistro() {
-      this.nombre = "";
-      this.stock = 0;
-      this.codigo = 0;
-      this.unidad = "";
-      this.activarValidate = "";
-      this.mensaje = "";
-      this.referencia = "";
-    },
-    abrirModal(modelo, accion, data = []) {
-      switch (modelo) {
-        case "producto": {
-          switch (accion) {
-            case "registrar": {
-              this.tituloModal = "Registrar Producto";
-              this.limpiarRegistro();
-              this.tipoAccion = 1;
-              break;
-            }
-            case "actualizar": {
-              // console.log(data);
-              this.tituloModal = "Actualizar Producto";
-              this.tipoAccion = 2;
-              this.producto_id = data["id"];
-              this.nombre = data["nombre"];
-              this.stock = data["stock"];
-              this.codigo = data["codigo"];
-              this.unidad = data["unidad"];
-              this.referencia = data["referencia"];
-              break;
-            }
-          }
-        }
-      }
-    }
+    //         axios
+    //           .put("producto/activar", {
+    //             id: id
+    //           })
+    //           .then(function(response) {
+    //             me.listarProducto(1, "");
+    //             Swal.fire({
+    //               position: "center",
+    //               type: "success",
+    //               title: "El Registro ha sido Activado",
+    //               showConfirmButton: false,
+    //               timer: 1000
+    //             }).catch(function(error) {
+    //               console.log(error);
+    //             });
+    //           });
+    //       } else if (result.dismiss === Swal.DismissReason.cancel) {
+    //         Swal.fire({
+    //           position: "center",
+    //           type: "error",
+    //           title: "Cancelado",
+    //           showConfirmButton: false,
+    //           timer: 1000
+    //         });
+    //       }
+    //     });
+    // },
+    // validarProducto() {
+    //   if (!this.nombre || !this.unidad || !this.referencia) {
+    //     this.mensaje = "Ingrese El Nombre y Referencia del stock y la Unidad";
+    //     return true;
+    //   }
+    //   if (!this.stock || !this.codigo) {
+    //     this.mensaje = "Ingrese El Stock y la Unidad no Puede ser 0";
+    //     return true;
+    //   }
+    //   return false;
+    // },
+    // cerrarModal() {
+    //   this.tituloModal = "";
+    //   this.limpiarRegistro();
+    // },
+    // limpiarRegistro() {
+    //   this.nombre = "";
+    //   this.stock = 0;
+    //   this.codigo = 0;
+    //   this.unidad = "";
+    //   this.activarValidate = "";
+    //   this.mensaje = "";
+    //   this.referencia = "";
+    // },
+    // abrirModal(modelo, accion, data = []) {
+    //   switch (modelo) {
+    //     case "producto": {
+    //       switch (accion) {
+    //         case "registrar": {
+    //           this.tituloModal = "Registrar Producto";
+    //           this.limpiarRegistro();
+    //           this.tipoAccion = 1;
+    //           break;
+    //         }
+    //         case "actualizar": {
+    //           // console.log(data);
+    //           this.tituloModal = "Actualizar Producto";
+    //           this.tipoAccion = 2;
+    //           this.producto_id = data["id"];
+    //           this.nombre = data["nombre"];
+    //           this.stock = data["stock"];
+    //           this.codigo = data["codigo"];
+    //           this.unidad = data["unidad"];
+    //           this.referencia = data["referencia"];
+    //           break;
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
   },
-  mounted() {
-    this.listarProducto(1, this.buscar);
-  }
+
 };
 </script>
 <style>

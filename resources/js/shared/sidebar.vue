@@ -18,17 +18,18 @@
           <ul class="nav-dropdown-items" v-for="sub in data.data" :key="sub.nombre">
            
             <li class="nav-item">            
-               <router-link :to=sub.url class="nav-link" href="#" >
+               <router-link :to=sub.path>
+                 <a class="nav-link" href="#">
                 <i :class=sub.icono></i> {{ sub.nombre }}
-                  
-              </router-link>        
+                  </a>
+               </router-link>    
             </li>
-           
+              
           </ul>
 
         </li>
        <li class="nav-item" v-else :key="data.nombre">
-                     <router-link :to=data.url class="nav-link" href="#"><i :class=data.icono></i> {{data.nombre}} </router-link>
+                     <router-link :to=data.path class="nav-link" href="#"><i :class=data.icono></i> {{data.nombre}} </router-link>
                 </li>
         </template>               
         <!-- <li class="nav-item">

@@ -7,9 +7,10 @@ import FormulaComponent from './formula.vue'
 import ProductoComponent from './producto.vue'
 import CuentaComponent from './cuenta.vue'
 
-
-// Vue.use(VueRouter)
-const pages_routes = [
+import axios from "axios";
+// Vue.use(VueRouter)listarMenu(){
+  let pages_routes =
+ [
   { path: "dashboard", component: DashboardComponent, name: 'Dashboard' },
   { path: 'producto', component: ProductoComponent, name: 'Producto' },
   { path: 'formula', component: FormulaComponent, name: 'Formula' },
@@ -23,6 +24,9 @@ const pages_routes = [
   // { path: '**', component: error }
 ];
 
+// pages_routes.push({ path: "", redirect: { name: 'dashboard' } });
+// console.log(DashboardComponent);
+// console.log(pages_routes);
 // const pages_routes = new VueRouter({
 //   routes,
 // //   mode: "history"
