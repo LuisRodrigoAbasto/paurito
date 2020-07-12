@@ -14,7 +14,7 @@
       <!-- Ejemplo de tabla Listado -->
       <div class="card">
         <div class="card-header">
-          <i class="fa fa-align-justify"></i> Productos
+          <i class="fa fa-align-justify"></i> {{ array_data.modal.titulo }}
           <!-- <button
             type="button"
             data-toggle="modal"
@@ -27,14 +27,16 @@
             @click="nuevo()"
             class="btn btn-secondary"
           >
-            <i class="icon-plus"></i>&nbsp;Nuevo
+            <i class="icon-plus"></i>&nbsp;Nuevo {{ array_data.modal.titulo }}
           </button>
 
-          <button type="button"  class="btn btn-danger">
+          <button type="button"  class="btn btn-danger" 
+          @click="cargarPdf()">
             <i class="fa fa-file-pdf-o"></i>&nbsp;PDF
           </button>
 
-          <button type="button" class="btn btn-info">
+          <button type="button" class="btn btn-info"
+          @click="imprimir()">
             <i class="fa fa-print fa-lg"></i>
           </button>
         </div>
@@ -68,7 +70,7 @@
               </div>
             </div>
           </div>
-            <app-table :array_data="array_data" @update="update($event)">
+            <app-table :array_data="array_data" @update="update($event)" @activar="activar($event)" @desactivar="desactivar($event)">
             </app-table>
           <app-pagination-datos :pagination="pagination" :offset="offset" @pagina="pagina($event)">
           </app-pagination-datos>
@@ -101,18 +103,24 @@ export default {
       
      
      array_data:{
+       boton:true,
+       botones:{
+         editar:true,
+         estado:true,
+         mostrar:false,
+       },
         titulo:[
         {nombre:'id',titulo:"ID"},
         {nombre:"nombre",titulo:"Producto"},
         {nombre:"stock",titulo:"Stock"},
-        {nombre:"referencia",titulo:"Referencia"},
+        {nombre:"unidad",titulo:"Unidad"},
         {nombre:"total",titulo:"Total + Unidad"},
         ],
         
         modal:{
           titulo:"Producto",
           id:'producto',
-          validate:false,
+          validate:'',
           datos:[
                 {
                 titulo:"ID",
@@ -198,6 +206,7 @@ export default {
       },
       offset: 3,
       buscar: "",
+      error_messages:{},
       // activarValidate: "",
       // mensaje: "",
       opcion:"nombre",
@@ -218,7 +227,6 @@ export default {
       axios
         .get(url)
         .then(resp=> {
-          // var respuesta = resp.data;
           this.array_data.data=resp.data.data.data;
           this.pagination={
                   total: resp.data.data.total,
@@ -228,14 +236,13 @@ export default {
                   from: resp.data.data.from,
                   to: resp.data.data.to
           }
-          // console.log(this.array_data);
-          // this.pagination = resp.data.data
         })
         .catch(function(error) {
           console.log(error);
         });
     },
     limpiar_datos(){
+      this.array_data.modal.validate="";
       this.array_data.modal.datos=[
                 {
                 titulo:"ID",
@@ -319,7 +326,6 @@ export default {
       this.array_data.modal.datos.forEach(x=>
         this.datos[x.indice]=x.dato      
       );
-      // console.log(this.datos);
     },
     guardar(){
       this.agregar_dato();
@@ -338,16 +344,24 @@ export default {
         this.eventoAlerta(resp.data.alert,resp.data.message)
         this.listar(1,'','nombre');
         this.cerrar_modal();
-        this.array_data.modal.validate=resp.data.success;
+        this.array_data.modal.validate="";
         })
         .catch(error => {
-        this.array_data.modal.validate=error.response.data.success;
+        this.array_data.modal.validate='was-validated';
         this.eventoAlerta(error.response.data.alert,error.response.data.error)
-
-        console.log('ERROR', error);
+        this.error_messages=error.response.data.error_messages;
+        // console.log(this.error_messages);
+        this.pasar_error();
+        // console.log('ERROR', error);
         })
     },
-    pasar_datos(){
+    pasar_error(){
+
+      this.array_data.modal.datos.forEach(x=>
+        x.error=this.error_messages[x.indice]==undefined?'':this.error_messages[x.indice][0]  
+      );
+    },
+     pasar_datos(){
        this.array_data.modal.datos.forEach(x=>
         x.dato=this.datos[x.indice]
       );
@@ -361,262 +375,90 @@ export default {
         .then(resp => {        
           this.datos=resp.data.data
           this.pasar_datos();
-        // this.array_data.modal.datos
-        // console.log(registro);
         })
         .catch(error => {
         this.eventoAlerta(error.response.data.alert,error.response.data.error)
-        // console.log('ERROR', error);
         })
-    }
-    // cambiarPagina(page, buscar) {
-    //   let me = this;
-    //   // actualizar la Pagina
-    //   me.pagination.current_page = page;
-    //   // enviar la peticion para visualizar la data de esta pagina
-    //   me.listarProducto(page, buscar);
-    // },
-    // cargarPdf() {
-    //   window.open("producto/listarPdf");
-    // },
-    // imprimir() {
-    //   window.open("producto/imprimir");
-    // },
-    // registrarProducto() {
-    //   if (this.validarProducto()) {
-    //     this.activarValidate = "was-validated";
-    //     Swal.fire({
-    //       position: "center",
-    //       type: "error",
-    //       title: this.mensaje,
-    //       showConfirmButton: false,
-    //       timer: 1500
-    //     });
-    //     return;
-    //   }
-    //   let me = this;
+    },
+    desactivar(id){
+ const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+      })
 
-    //   axios
-    //     .post("producto/registrar", {
-    //       nombre: this.nombre,
-    //       stock: this.stock,
-    //       unidad: this.unidad,
-    //       codigo: this.codigo,
-    //       referencia: this.referencia
-    //     })
-    //     .then(function(response) {
-    //       $("#ModalLong").modal("hide");
-    //       me.cerrarModal();
-    //       me.listarProducto(1, "");
-    //     })
-    //     .catch(function(error) {
-    //       console.log(error);
-    //     });
-    // },
-    // actualizarProducto() {
-    //   if (this.validarProducto()) {
-    //     this.activarValidate = "was-validated";
-    //     Swal.fire({
-    //       position: "center",
-    //       type: "error",
-    //       title: this.mensaje,
-    //       showConfirmButton: false,
-    //       timer: 1500
-    //     });
-    //     return;
-    //   }
-    //   let me = this;
+      swalWithBootstrapButtons.fire({
+          title: "Estas Seguro de Desactivar el Registro?",
+          text: "Si Desactiva no estara en la Lista!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Si, Desactivar!",
+          cancelButtonText: "No, Cancelar!",
+          reverseButtons: true
+        }).then(result => {
+          if (result.value) {
+            this.registrar_activar(id);
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+           this.eventoAlerta('error',"Cancelado");
+          }
+        });
+    },
+    activar(id)
+    {
+      let sw=false;
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+      });
 
-    //   axios
-    //     .put("producto/actualizar", {
-    //       nombre: this.nombre,
-    //       stock: this.stock,
-    //       unidad: this.unidad,
-    //       codigo: this.codigo,
-    //       referencia: this.referencia,
-    //       id: this.producto_id
-    //     })
-    //     .then(function(response) {
-    //       $("#ModalLong").modal("hide");
-    //       me.cerrarModal();
-    //       me.listarProducto(1, "");
-    //     })
-    //     .catch(function(error) {
-    //       console.log(error);
-    //     });
-    // },
-    // desactivar(id) {
-    //   const swalWithBootstrapButtons = Swal.mixin({
-    //     customClass: {
-    //       confirmButton: "btn btn-success",
-    //       cancelButton: "btn btn-danger"
-    //     },
-    //     buttonsStyling: false
-    //   });
+      swalWithBootstrapButtons
+        .fire({
+          title: "Estas Seguro de Activar el Registro?",
+          text: "Si Activa no estara en la Lista!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Si, Activar!",
+          cancelButtonText: "No, Cancelar!",
+          reverseButtons: true
+        })
+        .then(result => {
+          if (result.value) {
+            this.registrar_activar(id);
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            this.eventoAlerta('error',"Cancelado")
+          }
+        });
 
-    //   swalWithBootstrapButtons
-    //     .fire({
-    //       title: "Estas Seguro de Desactivar el Registro?",
-    //       text: "Si Desactiva no estara en la Lista!",
-    //       type: "warning",
-    //       showCancelButton: true,
-    //       confirmButtonText: "Si, Desactivar!",
-    //       cancelButtonText: "No, Cancelar!",
-    //       reverseButtons: true
-    //     })
-    //     .then(result => {
-    //       if (result.value) {
-    //         let me = this;
-
-    //         axios
-    //           .put("producto/desactivar", {
-    //             id: id
-    //           })
-    //           .then(function(response) {
-    //             me.listarProducto(1, "");
-    //             Swal.fire({
-    //               position: "center",
-    //               type: "success",
-    //               title: "El Registro ha sido Desactivado",
-    //               showConfirmButton: false,
-    //               timer: 1000
-    //             }).catch(function(error) {
-    //               console.log(error);
-    //             });
-    //           });
-    //       } else if (result.dismiss === Swal.DismissReason.cancel) {
-    //         Swal.fire({
-    //           position: "center",
-    //           type: "error",
-    //           title: "Cancelado",
-    //           showConfirmButton: false,
-    //           timer: 1000
-    //         });
-    //       }
-    //     });
-    // },
-    // activar(id) {
-    //   const swalWithBootstrapButtons = Swal.mixin({
-    //     customClass: {
-    //       confirmButton: "btn btn-success",
-    //       cancelButton: "btn btn-danger"
-    //     },
-    //     buttonsStyling: false
-    //   });
-
-    //   swalWithBootstrapButtons
-    //     .fire({
-    //       title: "Estas Seguro de Activar el Registro?",
-    //       text: "Si Activa no estara en la Lista!",
-    //       type: "warning",
-    //       showCancelButton: true,
-    //       confirmButtonText: "Si, Activar!",
-    //       cancelButtonText: "No, Cancelar!",
-    //       reverseButtons: true
-    //     })
-    //     .then(result => {
-    //       if (result.value) {
-    //         let me = this;
-
-    //         axios
-    //           .put("producto/activar", {
-    //             id: id
-    //           })
-    //           .then(function(response) {
-    //             me.listarProducto(1, "");
-    //             Swal.fire({
-    //               position: "center",
-    //               type: "success",
-    //               title: "El Registro ha sido Activado",
-    //               showConfirmButton: false,
-    //               timer: 1000
-    //             }).catch(function(error) {
-    //               console.log(error);
-    //             });
-    //           });
-    //       } else if (result.dismiss === Swal.DismissReason.cancel) {
-    //         Swal.fire({
-    //           position: "center",
-    //           type: "error",
-    //           title: "Cancelado",
-    //           showConfirmButton: false,
-    //           timer: 1000
-    //         });
-    //       }
-    //     });
-    // },
-    // validarProducto() {
-    //   if (!this.nombre || !this.unidad || !this.referencia) {
-    //     this.mensaje = "Ingrese El Nombre y Referencia del stock y la Unidad";
-    //     return true;
-    //   }
-    //   if (!this.stock || !this.codigo) {
-    //     this.mensaje = "Ingrese El Stock y la Unidad no Puede ser 0";
-    //     return true;
-    //   }
-    //   return false;
-    // },
-    // cerrarModal() {
-    //   this.tituloModal = "";
-    //   this.limpiarRegistro();
-    // },
-    // limpiarRegistro() {
-    //   this.nombre = "";
-    //   this.stock = 0;
-    //   this.codigo = 0;
-    //   this.unidad = "";
-    //   this.activarValidate = "";
-    //   this.mensaje = "";
-    //   this.referencia = "";
-    // },
-    // abrirModal(modelo, accion, data = []) {
-    //   switch (modelo) {
-    //     case "producto": {
-    //       switch (accion) {
-    //         case "registrar": {
-    //           this.tituloModal = "Registrar Producto";
-    //           this.limpiarRegistro();
-    //           this.tipoAccion = 1;
-    //           break;
-    //         }
-    //         case "actualizar": {
-    //           // console.log(data);
-    //           this.tituloModal = "Actualizar Producto";
-    //           this.tipoAccion = 2;
-    //           this.producto_id = data["id"];
-    //           this.nombre = data["nombre"];
-    //           this.stock = data["stock"];
-    //           this.codigo = data["codigo"];
-    //           this.unidad = data["unidad"];
-    //           this.referencia = data["referencia"];
-    //           break;
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
+      
+    
+    },
+    registrar_activar(id){
+    axios({
+        method: 'put',
+        url: this.url+'/activar/'+id
+        })
+        .then(resp => {
+          this.eventoAlerta(resp.data.alert,resp.data.message);
+          this.listar(1,'','nombre');
+        })
+        .catch(error => {
+        this.eventoAlerta(error.response.data.alert,error.response.data.error)
+        })
+    },
+    cargarPdf() {
+      window.open("producto/listarPdf");
+    },
+    imprimir() {
+      window.open("producto/imprimir");
+    },
   },
 
 };
 </script>
-<style>
-.modal-content {
-  width: 100% !important;
-  position: absolute !important;
-}
-.mostrar {
-  display: list-item !important;
-  opacity: 1 !important;
-  position: absolute !important;
-  background-color: #3c29297a !important;
-}
-.div-error {
-  display: flex;
-  justify-content: center;
-}
-.text-error {
-  color: red !important;
-  font-weight: bold;
-}
-</style>
+
 

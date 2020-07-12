@@ -21,7 +21,7 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div :class="'modal-body '+ (modal.validate==true)?+ 'was-validated':''">
+          <div :class="'modal-body '+ modal.validate">
             <form action method="post" enctype="multipart/form-data" class="form-horizontal">
             <template v-for="datos in modal.datos" v-if="datos.visible==true">
                         <div class="form-group row" v-if="datos.tipo=='text'" >

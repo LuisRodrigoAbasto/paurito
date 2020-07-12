@@ -16,7 +16,6 @@ class CreateFormulasTable extends Migration
         Schema::create('formulas', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nombre');
-            $table->decimal('cantidad',11,2);
             $table->boolean('estado')->default(1);
             $table->timestamps();
         });

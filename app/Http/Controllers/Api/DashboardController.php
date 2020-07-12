@@ -42,7 +42,7 @@ class DashboardController extends ApiController
         ->whereYear('egresos.fecha',$year)
         ->groupBy(DB::raw('MONTH(egresos.fecha)'),DB::raw('YEAR(egresos.fecha)'))
         ->get();
-        return $this->sendResponse($data, 'Datos Recuperados Correctamente');
+        return $this->responseOk($data, 'Datos Recuperados Correctamente');
  
     }
 }

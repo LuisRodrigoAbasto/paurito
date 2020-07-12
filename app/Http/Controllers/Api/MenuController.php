@@ -11,7 +11,7 @@ class MenuController extends ApiController
 {
     public function index(){
         $data=Menu::select('path','nombre','icono')
-        // ->where('id',1)
+        // ->where('id',3)
         ->get();
         return $this->responseOk($data, 'Datos Recuperados Correctamente');
     }

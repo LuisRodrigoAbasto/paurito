@@ -29,7 +29,7 @@
 
         </li>
        <li class="nav-item" v-else :key="data.nombre">
-                     <router-link :to=data.path class="nav-link" href="#"><i :class=data.icono></i> {{data.nombre}} </router-link>
+                     <router-link :to="data.path" class="nav-link" href="#"><i :class="data.icono"></i> {{data.nombre}} </router-link>
                 </li>
         </template>               
         <!-- <li class="nav-item">

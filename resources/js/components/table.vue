@@ -9,14 +9,14 @@
                   <th>Unidad</th>
                   <th>Total + Unidad</th>
                   <th>Estado</th>-->
-                  <th>Opciones</th> 
+                  <th v-if="array_data.botones.estado">Opciones</th> 
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="data in array_data.data" :key="data.id">                  
                   <td v-for="(row,index) in array_data.titulo" :key="index"> {{ data[row.nombre] }}</td>
-                  <td>
-                    <button
+                  <td v-show="array_data.boton">
+                    <button v-if="array_data.botones.editar"
                       type="button"
                       data-toggle="modal"
                       :data-target="'#'+array_data.modal.id"
@@ -25,21 +25,29 @@
                     >
                       <i class="icon-pencil"></i>
                     </button> &nbsp;
-                    <template v-if="data.estado">
-                      <button
+                    <template v-if="array_data.botones.estado">
+                      <button v-if="data.estado"
                         type="button"
                         class="btn btn-danger btn-sm"
                         @click="desactivar(data.id)"
                       >
                         <i class="icon-trash"></i>
                       </button>
-                    </template>
-                    <template v-else>
-                      <button type="button" class="btn btn-info btn-sm" 
+
+                      <button v-else-if="!data.estado"
+                      type="button" class="btn btn-info btn-sm" 
+                       @click="activar(data.id)"
                       >
                         <i class="icon-check"></i>
                       </button>
                     </template>
+                     &nbsp;
+                     <button v-if="array_data.botones.mostrar"
+                      type="button" class="btn btn-info btn-sm" 
+                      @click="mostrar(data.id)"
+                      >
+                        <i class="icon-eye"></i>
+                      </button>
                   </td>
                 </tr>
               </tbody>
@@ -62,6 +70,15 @@ mounted(){
 methods:{
   update(id){
     this.$emit('update',id);
+  },
+  activar(id){
+    this.$emit('activar',id);
+  },
+  desactivar(id){
+    this.$emit('desactivar',id);
+  },
+  mostrar(){
+    this.$emit('mostrar',id);
   }
 }
 }

@@ -25,48 +25,14 @@ class ProductoController extends ApiController
         $opcion = $request->opcion;
         $data = Producto::where($opcion, 'like', '%' . $buscar . '%')
         ->select('id', 'nombre', DB::raw('concat(stock," ",ref_stock) as stock'),
-         DB::raw('concat(unidad," ",ref_unidad)as referencia'), 
+         DB::raw('concat(unidad," ",ref_unidad)as unidad'), 
          DB::raw("concat(floor(stock),' ',ref_unidad,' + ',truncate(((stock-floor(stock))*unidad),2),' ',ref_unidad) as total"), 'estado')
             ->orderBy('id', 'desc')
             ->paginate(10);
 
         return $this->responseOk($data, 'Datos Recuperados Correctamente');
     }
-    public function notificaciones(Request $request)
-    {
-        if (!$request->ajax()) {
-            return redirect('/');
-        }
 
-        $productos = Producto::where('stock', '<=', '100')
-            ->where('estado', '=', '1')
-            ->get();
-
-        return ['productos' => $productos];
-
-    }
-    public function listarProducto(Request $request)
-    {
-        if (!$request->ajax()) {
-            return redirect('/');
-        }
-
-        $buscar = $request->buscar;
-        $criterio = $request->criterio;
-        if ($buscar == '') {
-            $productos = Producto::where('estado', '=', '1')
-                ->orderBy('id', 'desc')
-                ->limit(10)
-                ->get();
-        } else {
-            $productos = Producto::where($criterio, 'like', '%' . $buscar . '%')
-                ->where('estado', '=', '1')
-                ->orderBy('id', 'desc')
-                ->limit(10)
-                ->get();
-        }
-        return ['productos' => $productos];
-    }
     public function listarPdf(Request $request)
     {
         $productos = Producto::select('id', 'nombre', 'stock', 'unidad', 'codigo',
@@ -93,20 +59,6 @@ class ProductoController extends ApiController
         // $pdf->loadHTML('<h1>Test</h1>');
         // return $pdf->stream();
     }
-    public function selectProducto(Request $request)
-    {
-        if (!$request->ajax()) {
-            return redirect('/');
-        }
-
-        $filtro = $request->filtro;
-        $productos = Producto::where('estado', '=', '1')
-            ->where('nombre', 'like', '%' . $filtro . '%')
-            ->orderBy('nombre', 'asc')
-            ->limit(10)
-            ->get();
-        return ['productos' => $productos];
-    }
     public function get($id){
         $table = Producto::findOrFail($id);
         return $this->responseOk($table,'Recuperado Exitosamente');
@@ -127,9 +79,9 @@ class ProductoController extends ApiController
 
         $validator=Validator::make($request->all(),[
             'nombre'=>'required',
-            'stock'=>'required',
+            'stock'=>['required','int','min:1'],
             'ref_stock'=>'required',
-            'unidad'=>'required',
+            'unidad'=>['required','int','min:1'],
             'ref_unidad'=>'required'
         ]);
         if($validator->fails()){
@@ -140,7 +92,7 @@ class ProductoController extends ApiController
         $input=$request->all();
         $table->fill($input);
         $table->estado="1";
-        $table->save();        
+        $table->save();
         DB::commit();
         return $this->responseOk($table,'Guardado Exitosamente');
     } catch (Exception $ex) {
@@ -188,36 +140,16 @@ class ProductoController extends ApiController
     }
     }
 
-    public function desactivar(Request $request)
+    public function activar($id)
     {
-        if (!$request->ajax()) {
-            return redirect('/');
-        }
-
-        $table = Producto::find($request->id);
+        $table = Producto::findOrFail($id);
         if ($table == null) {
-            return $this->sendError('Error de Datos', ['Producto No Existe'], 422);
+            return $this->responseError('No Existe el Producto', 422);
         }
-        $table->estado = '0';
+        $table->estado = $table->estado?0:1;
         $table->save();
 
-        return $this->sendResponse($table,'Desactivada Exitosamente');
-    }
-
-    public function activar(Request $request)
-    {
-        if (!$request->ajax()) {
-            return redirect('/');
-        }
-
-        $table = Producto::find($request->id);
-        if ($table == null) {
-            return $this->sendError('Error de Datos', ['Producto No Existe'], 422);
-        }
-        $table->estado = '1';
-        $table->save();
-
-        return $this->sendResponse($table,'Activada Exitosamente');
+        return $this->responseOk(['ok'],($table->estado?'Activado':"Desactivado")." Exitosamente");
     }
     
 }

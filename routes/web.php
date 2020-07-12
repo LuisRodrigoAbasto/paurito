@@ -22,12 +22,10 @@ Route::get('/api/menu', 'Api\MenuController@index');
 
 
 Route::get('/api/formula', 'Api\FormulaController@index');
-Route::post('/api/formula/registrar', 'Api\FormulaController@store');
-Route::put('/api/formula/actualizar', 'Api\FormulaController@update');
-Route::put('/api/formula/desactivar', 'Api\FormulaController@desactivar');
-Route::put('/api/formula/activar', 'Api\FormulaController@activar');
-Route::get('/api/formula/selectFormula', 'Api\FormulaController@selectFormula');
-Route::get('/api/formula/listarFormula', 'Api\FormulaController@listarFormula');
+Route::post('/api/formula', 'Api\FormulaController@store');
+Route::put('/api/formula', 'Api\FormulaController@update');
+Route::put('/api/formula/activar/{id}', 'Api\FormulaController@activar');
+
 Route::get('/api/formula/pdf/formula_{id}','FormulaController@pdf')->name('formula_pdf');
 Route::get('/api/formula/imprimir/formula_{id}','FormulaController@imprimir')->name('formula_imprimir');
 
@@ -35,10 +33,8 @@ Route::get('/api/producto', 'Api\ProductoController@index');
 Route::get('/api/producto/get/{id}', 'Api\ProductoController@get');
 Route::post('/api/producto', 'Api\ProductoController@store');
 Route::put('/api/producto', 'Api\ProductoController@update');
-Route::put('/api/producto/desactivar', 'Api\ProductoController@desactivar');
-Route::put('/api/producto/activar', 'Api\ProductoController@activar');
-Route::get('/api/producto/selectProducto', 'Api\ProductoController@selectProducto');
-Route::get('/api/producto/listarProducto', 'Api\ProductoController@listarProducto');
+Route::put('/api/producto/activar/{id}', 'Api\ProductoController@activar');
+
 Route::get('/api/producto/listarPdf', 'ProductoController@listarPdf')->name('productos_pdf');
 Route::get('/api/producto/imprimir', 'ProductoController@listarImprimir')->name('productos_imprimir');
 Route::get('/api/producto/notificaciones', 'ProductoController@notificaciones');

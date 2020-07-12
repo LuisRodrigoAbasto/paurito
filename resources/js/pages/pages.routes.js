@@ -9,7 +9,7 @@ import CuentaComponent from './cuenta.vue'
 
 import axios from "axios";
 // Vue.use(VueRouter)listarMenu(){
-  let pages_routes =
+  let pages =
  [
   { path: "dashboard", component: DashboardComponent, name: 'Dashboard' },
   { path: 'producto', component: ProductoComponent, name: 'Producto' },
@@ -23,21 +23,33 @@ import axios from "axios";
   { path: "", redirect: { name: 'Dashboard' } },
   // { path: '**', component: error }
 ];
+let page_routes=pages;
+let data=[];
+var url = "api/menu";
+axios.get(url)
+        .then(resp=> {
+    data=resp.data.data;     
+      
+  })
+  .catch(error => {
+    console.log(error)
+  })
 
-// pages_routes.push({ path: "", redirect: { name: 'dashboard' } });
-// console.log(DashboardComponent);
-// console.log(pages_routes);
-// const pages_routes = new VueRouter({
-//   routes,
-// //   mode: "history"
-// });
 
-// export default {
-//     components:{
-//         'app-sidebar':sidebar_component,
-//         'app-header':header_component,
-//         'app-breadcrumb':breadcrumb_component
-//     }
+let c=0;
+for(let item in pages)
+{
 
-// }
-export default pages_routes;
+  if(data[item.path])
+  {    
+    page_routes.splice(c ,1);
+  }
+  c++;
+  
+}
+
+page_routes.push(
+  // { path: "dashboard", component: DashboardComponent, name: 'Dashboard' },
+{ path: "", redirect: { name: 'dashboard' } });
+
+export default page_routes;

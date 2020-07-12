@@ -23,7 +23,7 @@ class ApiController extends Controller
         $response=[
             'success'=>false,
             'error'=>$error,
-            'errorMessages'=>$errorMessages,
+            'error_messages'=>$errorMessages,
             'alert'=>"error"
         ];
         return response()->json($response,$code);

@@ -1169,32 +1169,9 @@ export default {
         })
         .then(result => {
           if (result.value) {
-            let me = this;
-
-            axios
-              .put("venta/activar", {
-                id: id
-              })
-              .then(function(response) {
-                me.listar(1, "", "nombre");
-                Swal.fire({
-                  position: "center",
-                  type: "success",
-                  title: "El Registro ha sido Activado",
-                  showConfirmButton: false,
-                  timer: 1000
-                }).catch(function(error) {
-                  console.log(error);
-                });
-              });
+            
           } else if (result.dismiss === Swal.DismissReason.cancel) {
-            Swal.fire({
-              position: "center",
-              type: "error",
-              title: "Cancelado",
-              showConfirmButton: false,
-              timer: 1000
-            });
+            
           }
         });
     },
