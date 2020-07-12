@@ -32,8 +32,9 @@ Route::get('/api/formula/pdf/formula_{id}','FormulaController@pdf')->name('formu
 Route::get('/api/formula/imprimir/formula_{id}','FormulaController@imprimir')->name('formula_imprimir');
 
 Route::get('/api/producto', 'Api\ProductoController@index');
-Route::post('/api/producto/registrar', 'Api\ProductoController@store');
-Route::put('/api/producto/actualizar', 'Api\ProductoController@update');
+Route::get('/api/producto/get/{id}', 'Api\ProductoController@get');
+Route::post('/api/producto', 'Api\ProductoController@store');
+Route::put('/api/producto', 'Api\ProductoController@update');
 Route::put('/api/producto/desactivar', 'Api\ProductoController@desactivar');
 Route::put('/api/producto/activar', 'Api\ProductoController@activar');
 Route::get('/api/producto/selectProducto', 'Api\ProductoController@selectProducto');

@@ -15,11 +15,16 @@
       <div class="card">
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Productos
-          <button
+          <!-- <button
             type="button"
             data-toggle="modal"
-            data-target="#ModalLong"
-         
+            :data-target="'#'+array_data.modal.id"
+            @click="nuevo(true)"
+            class="btn btn-secondary"
+          > -->
+           <button
+            type="button"
+            @click="nuevo()"
             class="btn btn-secondary"
           >
             <i class="icon-plus"></i>&nbsp;Nuevo
@@ -39,21 +44,21 @@
               <div class="input-group">
                 <div class="col-md-10">
                   <div class="input-group">
-                    <select class="form-control col-md-3" v-model="opcion">
+                    <select class="form-control col-md-3" v-model="opcion" >
                       <option value="nombre">Nombre</option>
                     </select>
                     <input
                       type="text"
-                      v-model="buscar"
-                      @keyup.enter="listar(1,buscar,opcion)"
                       class="form-control"
+                      v-model="buscar"
                       placeholder="Buscar Producto"
+                      @keyup.enter="listar(1,buscar,opcion)"
                     />
                     <span class="input-group-append">
                       <button
                         type="submit"
-                        @click="listar(1,buscar,opcion)"
                         class="btn btn-primary"
+                        @click="listar(1,buscar,opcion)"
                       >
                         <i class="fa fa-search"></i> Buscar
                       </button>
@@ -63,226 +68,16 @@
               </div>
             </div>
           </div>
-          <!-- <div class="table-responsive">
-            <table class="table table-bordered table-striped table-sm">
-              <thead>
-                <tr>
-                  <th>N°</th>
-
-                  <th>Nombre</th>
-                  <th>Stock</th>
-                  <th>Unidad</th>
-                  <th>Total + Unidad</th>
-                  <th>Estado</th>
-                  <th>Opciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="data in arrayProducto" :key="data.id">
-                  <td>
-                    <span class="badge badge-success" v-text="data.id"></span>
-                  </td>
-                  <td>{{ data.nombre}}</td>
-                  <td>{{ data.stock }} {{ data.unidad }}</td>
-                  <td>{{ data.codigo }} {{ data.referencia }}</td>
-
-                  <td>
-                    {{ data.total }} {{ data.unidad }} +
-                    {{ data.decimales }} {{ data.referencia }}
-                  </td>
-                  <td>
-                    <div v-if="data.estado">
-                      <span class="badge badge-success">Activo</span>
-                    </div>
-                    <div v-else>
-                      <span class="badge badge-danger">Desactivado</span>
-                    </div>
-                  </td>
-                  <td>
-                    <button
-                      type="button"
-                      data-toggle="modal"
-                      data-target="#ModalLong"
-                      @click="abrirModal('producto','actualizar',data)"
-                      class="btn btn-warning btn-sm"
-                    >
-                      <i class="icon-pencil"></i>
-                    </button> &nbsp;
-                    <template v-if="data.estado">
-                      <button
-                        type="button"
-                        class="btn btn-danger btn-sm"
-                        @click="desactivar(data.id)"
-                      >
-                        <i class="icon-trash"></i>
-                      </button>
-                    </template>
-                    <template v-else>
-                      <button type="button" class="btn btn-info btn-sm" @click="activar(data.id)">
-                        <i class="icon-check"></i>
-                      </button>
-                    </template>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div> -->
-<app-table :array_data="array_data">
-</app-table>
-          <nav>
-
-            <!-- <ul class="pagination">
-              <li class="page-item" v-if="pagination.current_page > 1">
-                <a
-                  class="page-link"
-                  href="#"
-                  @click.prevent="cambiarPagina(pagination.current_page - 1,buscar)"
-                >Ant</a>
-              </li>
-              <li
-                class="page-item"
-                v-for="page in pagesNumber"
-                :key="page"
-                :class="[page == isActived ? 'active' : '']"
-              >
-                <a
-                  class="page-link"
-                  href="#"
-                  @click.prevent="cambiarPagina(page,buscar)"
-                  v-text="page"
-                ></a>
-              </li>
-              <li class="page-item" v-if="pagination.current_page < pagination.last_page">
-                <a
-                  class="page-link"
-                  href="#"
-                  @click.prevent="cambiarPagina(pagination.current_page + 1,buscar)"
-                >Sig</a>
-              </li>
-            </ul> -->
-          </nav>
+            <app-table :array_data="array_data" @update="update($event)">
+            </app-table>
+          <app-pagination-datos :pagination="pagination" :offset="offset" @pagina="pagina($event)">
+          </app-pagination-datos>
         </div>
       </div>
-
     </div>
 
-    <!-- <div
-      class="modal fade bd-example-modal-lg"
-      tabindex="-1"
-      role="dialog"
-      id="ModalLong"
-      aria-labelledby="myModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-primary modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title" v-text="tituloModal"></h4>
-            <button
-              type="button"
-              class="close"
-              @click="cerrarModal()"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div :class="'modal-body '+activarValidate">
-            <form action method="post" enctype="multipart/form-data" class="form-horizontal">
-              <div class="form-group row">
-                <label class="col-md-3 form-control-label" for="text-input">Nombre</label>
-                <div class="col-md-9">
-                  <input
-                    type="text"
-                    v-model="nombre"
-                    placeholder="Nombre del Producto............"
-                    class="form-control"
-                    required
-                  />
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-md-3 form-control-label" for="text-input">Stock</label>
-                <div class="col-md-9">
-                  <input
-                    type="number"
-                    min="0"
-                    step="any"
-                    v-model="stock"
-                    class="form-control"
-                    required
-                    placeholder="Ingrese el Stock"
-                  />
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-md-3 form-control-label" for="text-input">Ref/Stock</label>
-                <div class="col-md-9">
-                  <input
-                    type="text"
-                    v-model="unidad"
-                    class="form-control"
-                    required
-                    placeholder="Ingrese la Referencia para el Stock...."
-                  />
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-md-3 form-control-label" for="text-input">Unidad</label>
-                <div class="col-md-9">
-                  <input
-                    type="number"
-                    v-model="codigo"
-                    min="0"
-                    step="any"
-                    class="form-control"
-                    required
-                    placeholder="Ingrese La Cantidad...."
-                  />
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-md-3 form-control-label" for="text-input">Ref/Unidad</label>
-                <div class="col-md-9">
-                  <input
-                    type="text"
-                    v-model="referencia"
-                    class="form-control"
-                    required
-                    placeholder="Ingrese Su Referencia de la Unidad...."
-                  />
-                </div>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-              @click="cerrarModal()"
-            >Cerrar</button>
-            <button
-              type="button"
-              v-if="tipoAccion==1"
-              class="btn btn-primary"
-              @click="registrarProducto()"
-            >Guardar</button>
-            <button
-              type="button"
-              v-if="tipoAccion==2"
-              class="btn btn-primary"
-              @click="actualizarProducto()"
-            >Actualizar</button>
-          </div>
-        </div>
-
-      </div>
-
-
-    </div> -->
-
+  <app-modal-datos :modal="array_data.modal" @cerrar_modal="cerrar_modal()" @registrar="guardar()">
+  </app-modal-datos>
   <!-- </main> -->
   </div>
 </template>
@@ -290,31 +85,109 @@
 
 <script>
 import table from "../components/table.vue";
+import modal_datos from "../components/modal_datos.vue";
+import pagination_datos from "../components/pagination.vue";
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import "sweetalert2/src/sweetalert2.scss";
 import Vue from "vue";
 export default {
     components: {
-    "app-table": table
+    "app-table": table,
+    "app-modal-datos": modal_datos,
+    "app-pagination-datos": pagination_datos,
   },
   data() {
     return {
-      producto_id: 0,
-      nombre: "",
-      stock: 0,
-      codigo: 0,
-      unidad: "",
-      referencia: "",
+      
+     
      array_data:{
         titulo:[
         {nombre:'id',titulo:"ID"},
         {nombre:"nombre",titulo:"Producto"},
         {nombre:"stock",titulo:"Stock"},
+        {nombre:"referencia",titulo:"Referencia"},
+        {nombre:"total",titulo:"Total + Unidad"},
         ],
-        data:[]
+        
+        modal:{
+          titulo:"Producto",
+          id:'producto',
+          validate:false,
+          datos:[
+                {
+                titulo:"ID",
+                indice:'id',
+                tipo:'numero',
+                dato:0,
+                visible:false,
+                placeholder:'',
+                required:false,
+                error:''
+                },
+                {
+                titulo:"Nombre",
+                indice:'nombre',
+                tipo:'text',
+                dato:'',
+                visible:true,
+                placeholder:'Ingrese El Nombre del Producto',
+                required:true,
+                error:''
+                },
+                {
+                titulo:"Stock",
+                indice:'stock',
+                tipo:'decimal',
+                dato:0,
+                visible:true,
+                placeholder:'Ingrese el Stock',
+                required:true,
+                error:''
+                },
+                {
+                titulo:"Ref/Stock",
+                indice:'ref_stock',
+                tipo:'text',
+                dato:'',
+                visible:true,
+                placeholder:'Ingrese la Referencia para el Stock',
+                required:true,
+                error:''
+                },
+                {
+                titulo:"Unidad",
+                indice:'unidad',
+                tipo:'decimal',
+                dato:0,
+                visible:true,
+                placeholder:'Ingrese Unidad',
+                required:true,
+                error:''
+                },
+                {
+                titulo:"Ref/Unidad",
+                indice:'ref_unidad',
+                tipo:'text',
+                dato:'',
+                visible:true,
+                placeholder:'Ingrese la Referencia de la Unidad',
+                required:true,
+                error:''
+                },
+                ]
+            ,
+          },
+        data:[],
       },
-      tituloModal: "",
-      tipoAccion: 0,
-      errorProducto: 0,
-      errorMostrarMsjProducto: [],
+      
+      datos:{
+        id:0,
+        nombre:'',
+        stock:0,
+        ref_stock:'',
+        unidad:0,
+        ref_unidad:''
+      },
       pagination: {
         total: 0,
         current_page: 0,
@@ -325,48 +198,36 @@ export default {
       },
       offset: 3,
       buscar: "",
-      activarValidate: "",
-      mensaje: "",
-      opcion:"nombre"
+      // activarValidate: "",
+      // mensaje: "",
+      opcion:"nombre",
+      metodo:'',
+      url:'api/producto'
     };
-  },
-  computed: {
-    isActived: function() {
-      return this.pagination.current_page;
-    },
-    pagesNumber: function() {
-      if (!this.pagination.to) {
-        return [];
-      }
-      var from = this.pagination.current_page - this.offset;
-      if (from < 1) {
-        from = 1;
-      }
-      var to = from + this.offset * 2;
-      if (to >= this.pagination.last_page) {
-        to = this.pagination.last_page;
-      }
-
-      var pagesArray = [];
-      while (from <= to) {
-        pagesArray.push(from);
-        from++;
-      }
-      return pagesArray;
-    }
   },
     mounted() {
     this.listar(1, this.buscar,this.opcion);
+    // console.log(this.array_data[0]);
   },
   methods: {
-
+    pagina(page){
+      this.listar(page,this.buscar,this.opcion)
+    },
     listar(page, buscar,opcion) {
-      var url = "api/producto?page=" + page + "&buscar=" + buscar+"&opcion="+opcion;
+      var url = this.url+"?page=" + page + "&buscar=" + buscar+"&opcion="+opcion;
       axios
         .get(url)
         .then(resp=> {
-          // var respuesta = response.data;
+          // var respuesta = resp.data;
           this.array_data.data=resp.data.data.data;
+          this.pagination={
+                  total: resp.data.data.total,
+                  current_page: resp.data.data.current_page,
+                  per_page: resp.data.data.per_page,
+                  last_page: resp.data.data.last_page,
+                  from: resp.data.data.from,
+                  to: resp.data.data.to
+          }
           // console.log(this.array_data);
           // this.pagination = resp.data.data
         })
@@ -374,6 +235,140 @@ export default {
           console.log(error);
         });
     },
+    limpiar_datos(){
+      this.array_data.modal.datos=[
+                {
+                titulo:"ID",
+                indice:'id',
+                tipo:'numero',
+                dato:0,
+                visible:false,
+                placeholder:'',
+                required:false,
+                error:''
+                },
+                {
+                titulo:"Nombre",
+                indice:'nombre',
+                tipo:'text',
+                dato:'',
+                visible:true,
+                placeholder:'Ingrese El Nombre del Producto',
+                required:true,
+                error:''
+                },
+                {
+                titulo:"Stock",
+                indice:'stock',
+                tipo:'decimal',
+                dato:0,
+                visible:true,
+                placeholder:'Ingrese el Stock',
+                required:true,
+                error:''
+                },
+                {
+                titulo:"Ref/Stock",
+                indice:'ref_stock',
+                tipo:'text',
+                dato:'',
+                visible:true,
+                placeholder:'Ingrese la Referencia para el Stock',
+                required:true,
+                error:''
+                },
+                {
+                titulo:"Unidad",
+                indice:'unidad',
+                tipo:'decimal',
+                dato:0,
+                visible:true,
+                placeholder:'Ingrese Unidad',
+                required:true,
+                error:''
+                },
+                {
+                titulo:"Ref/Unidad",
+                indice:'ref_unidad',
+                tipo:'text',
+                dato:'',
+                visible:true,
+                placeholder:'Ingrese la Referencia de la Unidad',
+                required:true,
+                error:''
+                },
+                ];
+    },
+    eventoAlerta(success, mensaje) {
+      Swal.fire({
+        position: "center",
+        icon: success,
+        title: mensaje,
+        showConfirmButton: false,
+        timer: 1500
+      });
+    },
+    cerrar_modal(){
+      $(`#${this.array_data.modal.id}`).modal('hide');
+      this.limpiar_datos()
+    },
+    nuevo(){
+      $(`#${this.array_data.modal.id}`).modal('show');
+    },
+    agregar_dato(){
+      this.array_data.modal.datos.forEach(x=>
+        this.datos[x.indice]=x.dato      
+      );
+      // console.log(this.datos);
+    },
+    guardar(){
+      this.agregar_dato();
+      if( this.datos.id==0){
+        this.metodo="post"
+      }
+      else{
+        this.metodo="put"
+      }
+        axios({
+        method: this.metodo,
+        data: this.datos,
+        url: this.url
+        })
+        .then(resp => {
+        this.eventoAlerta(resp.data.alert,resp.data.message)
+        this.listar(1,'','nombre');
+        this.cerrar_modal();
+        this.array_data.modal.validate=resp.data.success;
+        })
+        .catch(error => {
+        this.array_data.modal.validate=error.response.data.success;
+        this.eventoAlerta(error.response.data.alert,error.response.data.error)
+
+        console.log('ERROR', error);
+        })
+    },
+    pasar_datos(){
+       this.array_data.modal.datos.forEach(x=>
+        x.dato=this.datos[x.indice]
+      );
+    },
+    update(id)
+    {
+      axios({
+        method: 'get',
+        url: this.url+'/get/'+id
+        })
+        .then(resp => {        
+          this.datos=resp.data.data
+          this.pasar_datos();
+        // this.array_data.modal.datos
+        // console.log(registro);
+        })
+        .catch(error => {
+        this.eventoAlerta(error.response.data.alert,error.response.data.error)
+        // console.log('ERROR', error);
+        })
+    }
     // cambiarPagina(page, buscar) {
     //   let me = this;
     //   // actualizar la Pagina

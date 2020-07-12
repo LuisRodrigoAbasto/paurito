@@ -15,20 +15,12 @@
               <tbody>
                 <tr v-for="data in array_data.data" :key="data.id">                  
                   <td v-for="(row,index) in array_data.titulo" :key="index"> {{ data[row.nombre] }}</td>
-                  
-                  <!-- <td>
-                    <div v-if="data.estado">
-                      <span class="badge badge-success">Activo</span>
-                    </div>
-                    <div v-else>
-                      <span class="badge badge-danger">Desactivado</span>
-                    </div>
-                  </td> -->
                   <td>
                     <button
                       type="button"
                       data-toggle="modal"
-                      data-target="#ModalLong"
+                      :data-target="'#'+array_data.modal.id"
+                      @click="update(data.id)"
                       class="btn btn-warning btn-sm"
                     >
                       <i class="icon-pencil"></i>
@@ -43,7 +35,8 @@
                       </button>
                     </template>
                     <template v-else>
-                      <button type="button" class="btn btn-info btn-sm" >
+                      <button type="button" class="btn btn-info btn-sm" 
+                      >
                         <i class="icon-check"></i>
                       </button>
                     </template>
@@ -65,7 +58,11 @@ data(){
     }
 },
 mounted(){
-  console.log(this.array_data);
+},
+methods:{
+  update(id){
+    this.$emit('update',id);
+  }
 }
 }
 </script>

@@ -13,7 +13,7 @@ class MenuController extends ApiController
         $data=Menu::select('path','nombre','icono')
         // ->where('id',1)
         ->get();
-        return $this->sendResponse($data, 'Datos Recuperados Correctamente');
+        return $this->responseOk($data, 'Datos Recuperados Correctamente');
     }
 
     public function sidebar(){
@@ -21,6 +21,6 @@ class MenuController extends ApiController
         DB::raw('(path) as name'))
         // ->where('id',1)
         ->get();
-        return $this->sendResponse($data, 'Datos Recuperados Correctamente');
+        return $this->responseError($data, 'Datos Recuperados Correctamente');
     }
 }

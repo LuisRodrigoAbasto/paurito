@@ -6,6 +6,7 @@ use App\Producto;
 //use Illuminate\Support\Facades\DB;
 use DB;
 use Illuminate\Http\Request;
+use Validator;
 
 class ProductoController extends ApiController
 {
@@ -21,14 +22,15 @@ class ProductoController extends ApiController
         // }
 
         $buscar = $request->buscar;
-        $pagina = $request->pagina;
         $opcion = $request->opcion;
         $data = Producto::where($opcion, 'like', '%' . $buscar . '%')
-        ->select('id', 'nombre', 'stock', 'unidad', 'codigo', DB::raw("floor(stock) as total,truncate(((stock-floor(stock))*codigo),2) as decimales"), 'referencia', 'estado')
+        ->select('id', 'nombre', DB::raw('concat(stock," ",ref_stock) as stock'),
+         DB::raw('concat(unidad," ",ref_unidad)as referencia'), 
+         DB::raw("concat(floor(stock),' ',ref_unidad,' + ',truncate(((stock-floor(stock))*unidad),2),' ',ref_unidad) as total"), 'estado')
             ->orderBy('id', 'desc')
-            ->paginate($pagina);
+            ->paginate(10);
 
-        return $this->sendResponse($data, 'Datos Recuperados Correctamente');
+        return $this->responseOk($data, 'Datos Recuperados Correctamente');
     }
     public function notificaciones(Request $request)
     {
@@ -63,9 +65,7 @@ class ProductoController extends ApiController
                 ->limit(10)
                 ->get();
         }
-
         return ['productos' => $productos];
-
     }
     public function listarPdf(Request $request)
     {
@@ -107,6 +107,10 @@ class ProductoController extends ApiController
             ->get();
         return ['productos' => $productos];
     }
+    public function get($id){
+        $table = Producto::findOrFail($id);
+        return $this->responseOk($table,'Recuperado Exitosamente');
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -115,26 +119,33 @@ class ProductoController extends ApiController
      */
     public function store(Request $request)
     {
-        if (!$request->ajax()) {
-            return redirect('/');
-        }
+        // if (!$request->ajax()) {
+        //     return redirect('/');
+        // }
         DB::beginTransaction();
         try {
 
-        $table = new Producto();
-        $table->nombre = $request->nombre;
-        $table->stock = $request->stock;
-        $table->unidad = $request->unidad;
-        $table->codigo = $request->codigo;
-        $table->referencia = $request->referencia;
-        $table->estado = '1';
-        $table->save();
+        $validator=Validator::make($request->all(),[
+            'nombre'=>'required',
+            'stock'=>'required',
+            'ref_stock'=>'required',
+            'unidad'=>'required',
+            'ref_unidad'=>'required'
+        ]);
+        if($validator->fails()){
+            return $this->responseError('Error de Validacion Producto',422,$validator->errors());
+        }
         
+        $table = new Producto();
+        $input=$request->all();
+        $table->fill($input);
+        $table->estado="1";
+        $table->save();        
         DB::commit();
-        return $this->sendResponse($table,'Guardado Exitosamente');
-    } catch (Exception $e) {
+        return $this->responseOk($table,'Guardado Exitosamente');
+    } catch (Exception $ex) {
         DB::rollBack();
-        return $this->sendError('Error al Guardar',422);
+        return $this->responseError('Error al Guardar el Producto',422);
     }
     }
 
@@ -147,26 +158,33 @@ class ProductoController extends ApiController
      */
     public function update(Request $request)
     {
-        if (!$request->ajax()) {
-            return redirect('/');
-        }
+        // if (!$request->ajax()) {
+        //     return redirect('/');
+        // }
         DB::beginTransaction();
         try {
-
-        $table = Producto::find($request->id);
-        $table->nombre = $request->nombre;
-        $table->stock = $request->stock;
-        $table->unidad = $request->unidad;
-        $table->codigo = $request->codigo;
-        $table->referencia = $request->referencia;
-        $table->estado = '1';
-        $table->save();
+        $validator=Validator::make($request->all(),[
+            'id'=>'required',
+            'nombre'=>'required',
+            'stock'=>'required',
+            'ref_stock'=>'required',
+            'unidad'=>'required',
+            'ref_unidad'=>'required'
+        ]);
+        if($validator->fails()){
+            return $this->responseError('Error de Validacion Producto',422,$validator->errors());
+        }
         
+        $table = Producto::findOrFail($request->get('id'));
+        $input=$request->all();
+        $table->fill($input);
+        $table->estado="1";
+        $table->save();        
         DB::commit();
-        return $this->sendResponse($table,'Actualizado Exitosamente');
-    } catch (Exception $e) {
+        return $this->responseOk($table,'Actualizado Exitosamente');
+    } catch (Exception $ex) {
         DB::rollBack();
-        return $this->sendError('Error al Actualizar',422);
+        return $this->responseError('Error al Actualizar el Producto',422);
     }
     }
 

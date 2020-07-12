@@ -17,10 +17,10 @@ class CreateProductosTable extends Migration
             $table->bigIncrements('id');
             $table->string('nombre', 100);
             $table->decimal('stock', 11,2);
-            $table->string('unidad',20);
-            $table->decimal('codigo',11,2);
-            $table->string('referencia',20);
-            $table->boolean('estado')->default(1);
+            $table->string('ref_stock',20);
+            $table->decimal('unidad',11,2);
+            $table->string('ref_unidad',20);
+            $table->boolean('estado')->nullable()->default(1);
             $table->timestamps();
         });
     }
